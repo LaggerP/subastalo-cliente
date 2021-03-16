@@ -1,0 +1,12 @@
+{
+  "name": "distribuidas-cliente",
+  "displayName": "distribuidas-cliente",
+  "expo": {
+    "name": "distribuidas-cliente",
+    "slug": "distribuidas-cliente",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
