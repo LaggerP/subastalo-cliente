@@ -12,7 +12,6 @@ export const Dashboard = ({ navigation }) => {
             </View>
             
             <Button title='Mi Perfil' onPress={() => navigation.push('Perfil')} />
-            <Button title='Mi Perfil' onPress={() => navigation.push('Perfil')} />
             
             <ScrollView vertical showsHorizontalScrollIndicator={false} >
 
