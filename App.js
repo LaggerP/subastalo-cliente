@@ -1,22 +1,32 @@
-import { StatusBar } from 'expo-status-bar';
 import React, {useContext} from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+
+// Navigator
+import {NavigationContainer} from "@react-navigation/native";
+import {createStackNavigator} from "@react-navigation/stack";
+
+// Screens
+import Dashboard from "./src/Screens/Dashboard/Dashboard";
+import Perfil from "./src/Screens/Perfil/Perfil";
+
+// Providers
+import { DataProvider } from "./src/context/DataContext";
+
+const AuthStack = createStackNavigator();
 
 export default function App() {
   return (
-      <View style={styles.container}>
-        <Text>Open up App.js to start working on your app!</Text>
-
-        <StatusBar style="auto" />
-      </View>
+    <DataProvider>
+      <NavigationContainer>
+        <AuthStack.Navigator>
+          <AuthStack.Screen name='Dashboard' component={Dashboard} options={{title: '', headerTransparent: true}}/>
+          <AuthStack.Screen name='Perfil' component={Perfil} options={{title: 'Perfil', headerTransparent: true}}/>
+          {/* <AuthStack.Screen name='Historial' component={} options={{ title: '', headerTransparent: true }}/>
+        <AuthStack.Screen name='MisProductos' component={} options={{ title: '', headerTransparent: true }}/>
+        <AuthStack.Screen name='MetodosDePago' component={} options={{ title: '', headerTransparent: true }}/>
+        <AuthStack.Screen name='Subasta' component={} options={{ title: '', headerTransparent: true }}/>
+        <AuthStack.Screen name='Catalogo' component={} options={{ title: '', headerTransparent: true }}/> */}
+        </AuthStack.Navigator>
+      </NavigationContainer>
+    </DataProvider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
