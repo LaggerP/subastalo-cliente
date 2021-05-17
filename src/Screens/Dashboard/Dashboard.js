@@ -1,49 +1,74 @@
-import { StatusBar } from 'expo-status-bar';
-import React, { useContext } from 'react';
-import { StyleSheet, Text, View, Button, ScrollView } from 'react-native';
+import {StatusBar} from 'expo-status-bar';
+import React, {useContext, useEffect} from 'react';
+import {StyleSheet, Text, View, Button, ScrollView} from 'react-native';
+import {DataContext} from "../../context/DataContext";
 
-export const Dashboard = ({ navigation }) => {
+const Dashboard = ({navigation}) => {
 
-    return (
-        <View style={styles.container}>
+  //Data from context provider
+  const {userData, subastas, setSubastas} = useContext(DataContext);
+  console.log(subastas)
 
-            <View style={styles.userContainer}>
+  const getSubastas = async () => {
+    return await fetch('http://localhost:3000/api/subastas')
+      .then((response) => response.json())
+      .then((json) => {
+        setSubastas(json.subastas);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }
 
-            </View>
-            
-            <Button title='Mi Perfil' onPress={() => navigation.push('Perfil')} />
-            
-            <ScrollView vertical showsHorizontalScrollIndicator={false} >
+  useEffect(() => {
+    getSubastas()
+  }, [])
 
-            </ScrollView>
+  return (
+    <View style={styles.container}>
 
-        </View>
-    )
+      <View style={styles.userContainer}>
+        <Text>
+          asdfasdf
+        </Text>
+      </View>
+
+      <Button title='Mi Perfil' onPress={() => navigation.push('Perfil')}/>
+
+      <ScrollView vertical showsHorizontalScrollIndicator={false}>
+
+      </ScrollView>
+
+    </View>
+  )
 };
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#FC9905',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
+  container: {
+    flex: 1,
+    backgroundColor: '#FC9905',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
 
-    userContainer: {
-        flexDirection: 'column',
-        backgroundColor: '#FAFAFA',
-        borderRadius: 10,
-        marginTop: '10%',
-        height: '30%',
-        width: '90%',
-    },
+  userContainer: {
+    flexDirection: 'column',
+    backgroundColor: '#FAFAFA',
+    borderRadius: 10,
+    marginTop: '10%',
+    height: '30%',
+    width: '90%',
+  },
 
-    auctionCard: {
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: '#FAFAFA',
-        borderRadius: 10,
-        height: '30%',
-        width: '90%',
-    },
+  auctionCard: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#FAFAFA',
+    borderRadius: 10,
+    height: '30%',
+    width: '90%',
+  },
 });
+
+
+export default Dashboard
