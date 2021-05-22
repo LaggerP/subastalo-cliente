@@ -1,8 +1,8 @@
-import React, {useContext} from 'react';
+import React, { useContext } from 'react';
 
 // Navigator
-import {NavigationContainer} from "@react-navigation/native";
-import {createStackNavigator} from "@react-navigation/stack";
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
 
 // Screens
 import Dashboard from "./src/Screens/Dashboard/Dashboard";
@@ -19,7 +19,7 @@ export default function App() {
     <DataProvider>
       <NavigationContainer>
         <AuthStack.Navigator>
-          <AuthStack.Screen name='Dashboard' component={Dashboard} options={{title: '', headerTransparent: true }}/>
+          <AuthStack.Screen name='Dashboard' component={Dashboard} options={{title: '', headerTransparent: true, cardStyle: { backgroundColor: '#FC9905' } }}/>
           <AuthStack.Screen name='Perfil' component={Perfil} options={{title: 'Perfil', headerTransparent: true}}/>
           <AuthStack.Screen name='Subasta' component={Subasta} options={{ title: 'Subasta', headerShown: false }}/>
           {/* <AuthStack.Screen name='Historial' component={} options={{ title: '', headerTransparent: true }}/>
