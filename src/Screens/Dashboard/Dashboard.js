@@ -158,7 +158,7 @@ const Dashboard = ({ navigation }) => {
 
             <View style={styles.auctionsContainer}>
               {filteredAuctions.map((subasta, i) => (
-                <AuctionCard key={i} {...subasta}></AuctionCard>
+                <AuctionCard key={i} {...subasta} navigation={navigation} />
               ))}
             </View>
 
@@ -260,7 +260,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#14181B',
     width: '100%',
     height: 73,
-    marginTop: 15,
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 15,

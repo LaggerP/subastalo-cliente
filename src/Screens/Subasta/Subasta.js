@@ -1,146 +1,103 @@
 import {StatusBar} from 'expo-status-bar';
-import React, {useContext, useEffect} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {StyleSheet, Text, View, Button, ScrollView, Pressable} from 'react-native';
 import {Icon} from 'react-native-elements'
 import {DataContext} from "../../context/DataContext";
 import SubastaCarousel from "./SubastaCarousel";
 
-const Subasta = ({navigation}) => {
+const Subasta = ({route, navigation}) => {
 
-  const getItemSubastandose = () => {
+  const [item, setItem] = useState(null);
+
+  const getItemSubastandose = async () => {
+    return await fetch(`http://10.0.2.2:3000/api/subastas/catalogo/${route.params.idSubasta}/item-catalogo`)
+      .then((response) => response.json())
+      .then((json) => {
+        setItem(json)
+        console.log(item)
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   }
 
-  useEffect(() => {
-    getItemSubastandose()
+  useEffect( () => {
+     getItemSubastandose()
   }, [])
 
-  return (
-    <View style={styles.container}>
-      <View style={styles.imagesContainer}>
-        <SubastaCarousel navigation={navigation}/>
-      </View>
-      <View style={styles.itemDescriptionContainer}>
-        <Text style={styles.itemTitle}>
-          Nombre Item
-        </Text>
-        <View style={styles.itemCardDescription}>
-          <View style={styles.itemTextContainer}>
-            <Text style={styles.itemTextDescription}>
-              Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
-              industry's standard dummy text ever since the 1500s.
-            </Text>
+  if (item) {
+    return (
+      <View style={styles.container}>
+        <View style={styles.imagesContainer}>
+          <SubastaCarousel navigation={navigation}/>
+        </View>
+        <View style={styles.itemDescriptionContainer}>
+          <Text style={styles.itemTitle}>
+            {item.descripcionCatalogo}
+          </Text>
+          <View style={styles.itemCardDescription}>
+            <View style={styles.itemTextContainer}>
+              <Text style={styles.itemTextDescription}>
+                {item.descripcionCompleta}
+              </Text>
+            </View>
+            <View style={styles.verticleLine}/>
+            <View style={styles.itemTextPriceContainer}>
+              <Text style={{fontSize: 12}}>
+                Precio Base
+              </Text>
+              <Text>
+                ${item.precioBase}
+              </Text>
+              <Text style={{fontSize: 12}}>
+                Tiempo restante
+              </Text>
+              <Text>
+                00:00:00
+              </Text>
+            </View>
           </View>
-          <View style={styles.verticleLine}/>
-          <View style={styles.itemTextPriceContainer}>
-            <Text style={{fontSize: 12}}>
-              Precio Base
-            </Text>
-            <Text>
-              $1000
-            </Text>
-            <Text style={{fontSize: 12}}>
-              Tiempo restante
-            </Text>
-            <Text>
-              00:00:00
-            </Text>
-          </View>
+
         </View>
 
-      </View>
+        <View style={styles.pujasListContainer}>
+          <ScrollView vertical showsVerticalScrollIndicator={false}>
+            {
+              item.pujas.map((item, idx) => {
+                return (
+                  <View style={styles.itemPuja}>
+                    <Icon
+                      name='sc-telegram'
+                      type='evilicon'
+                      color='#517fa4'
+                      reverse
+                      size={18}
+                    />
+                    <Text style={{fontSize: 15, paddingLeft: '12%', paddingRight: '12%'}}>Realizó una oferta</Text>
+                    <Text style={{fontSize: 15, fontWeight: 'bold', paddingRight: 15}}>${item.importe}</Text>
+                  </View>
+                )
+              })
+            }
 
-      <View style={styles.pujasListContainer}>
-        <ScrollView vertical showsVerticalScrollIndicator={false}>
-          <View style={styles.itemPuja}>
-            <Icon
-              name='sc-telegram'
-              type='evilicon'
-              color='#517fa4'
-              reverse
-              size={18}
-            />
-            <Text style={{fontSize: 15, paddingLeft: '12%', paddingRight: '12%'}}>Realizó una oferta</Text>
-            <Text style={{fontSize: 15, fontWeight: 'bold', paddingRight: 15}}>$27.5K</Text>
-          </View>
-          <View style={styles.itemPuja}>
-            <Icon
-              name='sc-telegram'
-              type='evilicon'
-              color='#517fa4'
-              reverse
-              size={18}
-            />
-            <Text style={{fontSize: 15, paddingLeft: '12%', paddingRight: '12%'}}>Realizó una oferta</Text>
-            <Text style={{fontSize: 15, fontWeight: 'bold', paddingRight: 15}}>$27.5K</Text>
-          </View>
-          <View style={styles.itemPuja}>
-            <Icon
-              name='sc-telegram'
-              type='evilicon'
-              color='#517fa4'
-              reverse
-              size={18}
-            />
-            <Text style={{fontSize: 15, paddingLeft: '12%', paddingRight: '12%'}}>Realizó una oferta</Text>
-            <Text style={{fontSize: 15, fontWeight: 'bold', paddingRight: 15}}>$27.5K</Text>
-          </View>
-          <View style={styles.itemPuja}>
-            <Icon
-              name='sc-telegram'
-              type='evilicon'
-              color='#517fa4'
-              reverse
-              size={18}
-            />
-            <Text style={{fontSize: 15, paddingLeft: '12%', paddingRight: '12%'}}>Realizó una oferta</Text>
-            <Text style={{fontSize: 15, fontWeight: 'bold', paddingRight: 15}}>$27.5K</Text>
-          </View>
-          <View style={styles.itemPuja}>
-            <Icon
-              name='sc-telegram'
-              type='evilicon'
-              color='#517fa4'
-              reverse
-              size={18}
-            />
-            <Text style={{fontSize: 15, paddingLeft: '12%', paddingRight: '12%'}}>Realizó una oferta</Text>
-            <Text style={{fontSize: 15, fontWeight: 'bold', paddingRight: 15}}>$27.5K</Text>
-          </View>
-          <View style={styles.itemPuja}>
-            <Icon
-              name='sc-telegram'
-              type='evilicon'
-              color='#517fa4'
-              reverse
-              size={18}
-            />
-            <Text style={{fontSize: 15, paddingLeft: '12%', paddingRight: '12%'}}>Realizó una oferta</Text>
-            <Text style={{fontSize: 15, fontWeight: 'bold', paddingRight: 15}}>$27.5K</Text>
-          </View>
-          <View style={styles.itemPuja}>
-            <Icon
-              name='sc-telegram'
-              type='evilicon'
-              color='#517fa4'
-              reverse
-              size={18}
-            />
-            <Text style={{fontSize: 15, paddingLeft: '12%', paddingRight: '12%'}}>Realizó una oferta</Text>
-            <Text style={{fontSize: 15, fontWeight: 'bold', paddingRight: 15}}>$27.5K</Text>
+
+
+
+
+          </ScrollView>
+          <View style={{marginBottom: 8}}>
+            <Pressable style={styles.btnPuja} onPress={() => console.log("hola")}>
+              <Text style={styles.btnPujaText}>Nueva Oferta</Text>
+            </Pressable>
           </View>
 
 
-        </ScrollView>
-        <View style={{marginBottom: 8}}>
-          <Pressable style={styles.btnPuja} onPress={() => console.log("hola")}>
-            <Text style={styles.btnPujaText}>Nueva Oferta</Text>
-          </Pressable>
         </View>
-
-
       </View>
-    </View>
-  )
+    )
+  } else {
+    return null
+  }
 };
 
 const styles = StyleSheet.create({
@@ -151,7 +108,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 
-  catalogoIcono:{
+  catalogoIcono: {
     marginTop: 40,
   },
 
