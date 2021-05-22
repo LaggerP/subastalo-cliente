@@ -1,10 +1,12 @@
 import {StatusBar} from 'expo-status-bar';
 import React, {useContext, useEffect} from 'react';
-import {StyleSheet, Text, View, Button, ScrollView, Pressable } from 'react-native';
+import {StyleSheet, Text, View, Button, ScrollView, Pressable} from 'react-native';
 import {Icon} from 'react-native-elements'
 import {DataContext} from "../../context/DataContext";
+import SubastaCarousel from "./SubastaCarousel";
 
 const Subasta = ({navigation}) => {
+
   const getItemSubastandose = () => {
   }
 
@@ -14,6 +16,9 @@ const Subasta = ({navigation}) => {
 
   return (
     <View style={styles.container}>
+      <View style={styles.imagesContainer}>
+        <SubastaCarousel navigation={navigation}/>
+      </View>
       <View style={styles.itemDescriptionContainer}>
         <Text style={styles.itemTitle}>
           Nombre Item
@@ -53,19 +58,84 @@ const Subasta = ({navigation}) => {
               color='#517fa4'
               reverse
               size={18}
-
             />
-            <Text style={{fontSize: 18}}>Realizó una oferta</Text>
-            <Text style={{fontSize: 18, fontWeight: 'bold', paddingRight: 15}}>$27.5K</Text>
+            <Text style={{fontSize: 15, paddingLeft: '12%', paddingRight: '12%'}}>Realizó una oferta</Text>
+            <Text style={{fontSize: 15, fontWeight: 'bold', paddingRight: 15}}>$27.5K</Text>
           </View>
+          <View style={styles.itemPuja}>
+            <Icon
+              name='sc-telegram'
+              type='evilicon'
+              color='#517fa4'
+              reverse
+              size={18}
+            />
+            <Text style={{fontSize: 15, paddingLeft: '12%', paddingRight: '12%'}}>Realizó una oferta</Text>
+            <Text style={{fontSize: 15, fontWeight: 'bold', paddingRight: 15}}>$27.5K</Text>
+          </View>
+          <View style={styles.itemPuja}>
+            <Icon
+              name='sc-telegram'
+              type='evilicon'
+              color='#517fa4'
+              reverse
+              size={18}
+            />
+            <Text style={{fontSize: 15, paddingLeft: '12%', paddingRight: '12%'}}>Realizó una oferta</Text>
+            <Text style={{fontSize: 15, fontWeight: 'bold', paddingRight: 15}}>$27.5K</Text>
+          </View>
+          <View style={styles.itemPuja}>
+            <Icon
+              name='sc-telegram'
+              type='evilicon'
+              color='#517fa4'
+              reverse
+              size={18}
+            />
+            <Text style={{fontSize: 15, paddingLeft: '12%', paddingRight: '12%'}}>Realizó una oferta</Text>
+            <Text style={{fontSize: 15, fontWeight: 'bold', paddingRight: 15}}>$27.5K</Text>
+          </View>
+          <View style={styles.itemPuja}>
+            <Icon
+              name='sc-telegram'
+              type='evilicon'
+              color='#517fa4'
+              reverse
+              size={18}
+            />
+            <Text style={{fontSize: 15, paddingLeft: '12%', paddingRight: '12%'}}>Realizó una oferta</Text>
+            <Text style={{fontSize: 15, fontWeight: 'bold', paddingRight: 15}}>$27.5K</Text>
+          </View>
+          <View style={styles.itemPuja}>
+            <Icon
+              name='sc-telegram'
+              type='evilicon'
+              color='#517fa4'
+              reverse
+              size={18}
+            />
+            <Text style={{fontSize: 15, paddingLeft: '12%', paddingRight: '12%'}}>Realizó una oferta</Text>
+            <Text style={{fontSize: 15, fontWeight: 'bold', paddingRight: 15}}>$27.5K</Text>
+          </View>
+          <View style={styles.itemPuja}>
+            <Icon
+              name='sc-telegram'
+              type='evilicon'
+              color='#517fa4'
+              reverse
+              size={18}
+            />
+            <Text style={{fontSize: 15, paddingLeft: '12%', paddingRight: '12%'}}>Realizó una oferta</Text>
+            <Text style={{fontSize: 15, fontWeight: 'bold', paddingRight: 15}}>$27.5K</Text>
+          </View>
+
 
         </ScrollView>
         <View style={{marginBottom: 8}}>
-          <Pressable style={styles.btnPuja} onPress={()=>console.log("hola")}>
+          <Pressable style={styles.btnPuja} onPress={() => console.log("hola")}>
             <Text style={styles.btnPujaText}>Nueva Oferta</Text>
           </Pressable>
         </View>
-
 
 
       </View>
@@ -81,12 +151,21 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 
+  catalogoIcono:{
+    marginTop: 40,
+  },
+
+  imagesContainer: {
+    marginTop: 40,
+    marginBottom: 390
+  },
+
   itemDescriptionContainer: {
     position: 'absolute',
     bottom: 0,
     backgroundColor: '#000',
     minWidth: '100%',
-    height: '63%',
+    height: '54%',
     borderTopRightRadius: 32,
     borderTopLeftRadius: 32
   },
@@ -95,15 +174,15 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: 'white',
     marginLeft: '10%',
-    marginTop: 15,
+    marginTop: 10,
     marginBottom: 10
   },
 
   itemCardDescription: {
     backgroundColor: '#FAFAFA',
     padding: 8,
-    marginLeft: 30,
-    marginRight: 30,
+    marginLeft: 25,
+    marginRight: 25,
     borderRadius: 10,
     flexDirection: 'row'
   },
@@ -130,11 +209,11 @@ const styles = StyleSheet.create({
 
   pujasListContainer: {
     minWidth: '100%',
-    height: '41%',
+    height: '35%',
     backgroundColor: '#FAFAFA',
     position: 'absolute',
-    borderTopRightRadius: 20,
-    borderTopLeftRadius: 20,
+    borderTopRightRadius: 15,
+    borderTopLeftRadius: 15,
     bottom: 0,
     paddingRight: 20,
     paddingLeft: 20,
@@ -142,9 +221,9 @@ const styles = StyleSheet.create({
 
   itemPuja: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     alignItems: 'center',
-
+    paddingTop: 5
   },
   btnPuja: {
     alignItems: 'center',

@@ -19,9 +19,9 @@ export default function App() {
     <DataProvider>
       <NavigationContainer>
         <AuthStack.Navigator>
-          <AuthStack.Screen name='Dashboard' component={Dashboard} options={{title: '', headerTransparent: true}}/>
+          <AuthStack.Screen name='Dashboard' component={Dashboard} options={{title: '', headerTransparent: true }}/>
           <AuthStack.Screen name='Perfil' component={Perfil} options={{title: 'Perfil', headerTransparent: true}}/>
-          <AuthStack.Screen name='Subasta' component={Subasta} options={{ title: 'Subasta', headerTransparent: true }}/>
+          <AuthStack.Screen name='Subasta' component={Subasta} options={{ title: 'Subasta', headerShown: false }}/>
           {/* <AuthStack.Screen name='Historial' component={} options={{ title: '', headerTransparent: true }}/>
         <AuthStack.Screen name='MisProductos' component={} options={{ title: '', headerTransparent: true }}/>
         <AuthStack.Screen name='MetodosDePago' component={} options={{ title: '', headerTransparent: true }}/>
