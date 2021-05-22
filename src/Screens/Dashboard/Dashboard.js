@@ -1,19 +1,22 @@
-import { StatusBar } from 'expo-status-bar';
 import React, { useContext, useEffect, useState } from 'react';
-import { StyleSheet, Text, View, ScrollView, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, } from 'react-native';
 import { DataContext } from "../../context/DataContext";
-
-import { Icon, Avatar, SearchBar } from 'react-native-elements'
-import AuctionCard from './AuctionCard';
-
-//Font
+import { Icon, Avatar, SearchBar, } from 'react-native-elements';
 import { useFonts, CinzelDecorative_400Regular, CinzelDecorative_700Bold, CinzelDecorative_900Black, } from '@expo-google-fonts/cinzel-decorative';
 import { Button } from 'react-native-elements/dist/buttons/Button';
+import AuctionCard from './AuctionCard';
+import ErrorModal from './ErrorModal';
 
 const Dashboard = ({ navigation }) => {
 
   //Data from context provider
   const { userData, subastas, setSubastas } = useContext(DataContext);
+
+  //Error modal
+  const [visible, setVisible] = useState(false);
+  const toggleOverlay = () => {
+    setVisible(!visible);
+  };
 
   const getSubastas = async () => {
     return await fetch('http://10.0.2.2:3000/api/subastas')
@@ -23,6 +26,7 @@ const Dashboard = ({ navigation }) => {
       })
       .catch((error) => {
         console.error(error);
+        toggleOverlay();
       });
   }
 
@@ -50,11 +54,11 @@ const Dashboard = ({ navigation }) => {
   const sesionIniciada = getSesionIniciada();
 
   if (!fontsLoaded) {
-    return <Text>CARGANDO</Text>;
+    return <Text>Loading</Text>;
   } else {
     return (
       <View style={{ flex: 1 }}>
-        <ScrollView vertical showsVerticalScrollIndicator={false}>
+        <ScrollView vertical showsVerticalScrollIndicator={false} >
           <View style={styles.container} >
 
             {
@@ -150,17 +154,26 @@ const Dashboard = ({ navigation }) => {
                 inputStyle={{ backgroundColor: '#EDEDED', fontSize: 13 }}
                 inputContainerStyle={{ borderRadius: 5, width: '85%', height: 35, backgroundColor: '#EDEDED' }}
                 containerStyle={{ borderRadius: 5, backgroundColor: '#FFFFFF', shadowColor: '#00000021', elevation: 5, }}
-                placeholder="Buscar subasta"
+                placeholder="Buscar"
                 onChangeText={setSearch}
                 value={search}
               />
             </View>
 
-            <View style={styles.auctionsContainer}>
-              {filteredAuctions.map((subasta, i) => (
-                <AuctionCard key={i} {...subasta} navigation={navigation} />
-              ))}
-            </View>
+            {
+              Object.keys(filteredAuctions).length !== 0 ?
+
+                <View style={styles.auctionsContainer}>
+                  {filteredAuctions.map((subasta, i) => (
+                    <AuctionCard key={i} {...subasta} navigation={navigation} />
+                  ))}
+                </View>
+                :
+                <ErrorModal
+                  isVisible={visible}
+                  toggleOverlay={toggleOverlay}
+                />
+            }
 
           </View>
 
