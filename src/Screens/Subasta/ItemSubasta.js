@@ -4,8 +4,12 @@ import {StyleSheet, Text, View, Button, ScrollView, Pressable} from 'react-nativ
 import {Icon} from 'react-native-elements'
 import {DataContext} from "../../context/DataContext";
 import SubastaCarousel from "./SubastaCarousel";
+import NuevaPuja from "./NuevaPuja";
 
-const Subasta = ({route, navigation}) => {
+
+
+
+const ItemSubasta = ({route, navigation}) => {
 
   const [item, setItem] = useState(null);
   const [getMorePujas, setGetMorePujas] = useState(false);
@@ -108,7 +112,9 @@ const Subasta = ({route, navigation}) => {
             }
           </ScrollView>
           <View style={{marginBottom: 8}}>
-            <Pressable style={styles.btnPuja} onPress={() => console.log("hola")}>
+            <Pressable style={styles.btnPuja} onPress={() => {
+              navigation.navigate('NuevaPuja', {item});
+            }}>
               <Text style={styles.btnPujaText}>Nueva Oferta</Text>
             </Pressable>
           </View>
@@ -221,4 +227,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default Subasta
+export default ItemSubasta

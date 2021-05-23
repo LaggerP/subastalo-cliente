@@ -53,7 +53,7 @@ const AuctionCard = ({idSubasta,fechaSubasta,horaSubasta,categoriaSubasta,nombre
       <View style={{flex: 1, flexDirection: 'row',}}>
         <View style={{flex: 1, flexDirection: 'column', justifyContent: 'flex-end',}}>
           <Button
-            disabled={estadoSubasta === 'En vivo' ? false : true}
+            disabled={estadoSubasta !== 'En vivo'}
             disabledStyle={{borderColor: '#C4C4C4'}}
             title='Ingresar'
             type='solid'
@@ -66,8 +66,9 @@ const AuctionCard = ({idSubasta,fechaSubasta,horaSubasta,categoriaSubasta,nombre
               borderColor: '#FC9905'
             }}
             containerStyle={{width: 165, alignSelf: 'flex-start'}}
-            onPress={() => navigation.navigate('Subasta', {
-              idSubasta: idSubasta
+            onPress={() => navigation.navigate('SubastaScreen', {
+              screen: 'ItemSubasta',
+              params: { idSubasta },
             })}
           />
         </View>
