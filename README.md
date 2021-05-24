@@ -27,7 +27,7 @@ la misma debe permitir lo siguiente:
 
 ---
 
-####Disclaimer Legal: las imágenes/logos/tipografías/etc que fueron usadas en este proyecto fueron utilizadas solamente para fines educativos.
+#### Disclaimer Legal: las imágenes/logos/tipografías que fueron usadas en este proyecto fueron utilizadas solamente para fines educativos.
 
-###README EN CONSTRUCCIÓN....
-######ÚLTIMA MODIFICACIÓN: 24 DE MAYO 2021
+### README EN CONSTRUCCIÓN....
+##### ÚLTIMA MODIFICACIÓN: 24 DE MAYO 2021
