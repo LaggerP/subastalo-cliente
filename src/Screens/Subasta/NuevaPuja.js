@@ -1,24 +1,60 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {StyleSheet, Text, TextInput, View, Image, TouchableWithoutFeedback, Pressable} from 'react-native';
-import {Button, Icon} from 'react-native-elements'
+import {Button, Icon} from 'react-native-elements';
 
-import visaIcon from '../../../assets/cardIcons/visa.png'
+// Provider
+import {MetodoPagoContext, MetodoPagoProvider} from "../../context/MetodoPagoContext";
+
+//Logos
+import visaIcon from '../../../assets/cardIcons/visa.png';
+import masterCardIcon from "../../../assets/cardIcons/mastercard.png";
+import BBVALogo from "../../../assets/bankIcons/BBVA.png";
+import santanderLogo from "../../../assets/bankIcons/Santander.png";
+import galiciaLogo from "../../../assets/bankIcons/Galicia.png";
+
+
+let initStatePuja = {
+  idSubasta: 0,
+  idCliente: 0,
+  numeroPostor: 0,
+  importe: 0,
+  idItem: 0,
+  asistente: 0
+}
 
 
 const NuevaPuja = ({route, navigation}) => {
-
   const {descripcionCompleta, precioBase} = route.params.item;
 
-  const [oferta, setOferta] = useState(0);
+  //Data from Metodo Pago Provider
+  const {metodoPagoElegido} = useContext(MetodoPagoContext);
+
+  const {idTarjeta,numero, entidad, lastNumbers,cbu_alias} = metodoPagoElegido
+
+  const [oferta, setOferta] = useState('');
   const [ofertaMinima, setOfertaMinima] = useState(false);
   const [ofertaMaxima, setOfertaMaxima] = useState(false);
   const [allowOferta, setAllowOferta] = useState(false);
+  const [newPuja, setNewPuja] = useState(initStatePuja);
 
+  // data obtenida a través de la DB
   const minValue = 25000;
   const maxValue = 30000;
+
+  const financialCoIcon = {
+    4: visaIcon,
+    5: masterCardIcon
+  }
+
+  const bankCoIcon = {
+    'bbva': BBVALogo,
+    'santander': santanderLogo,
+    'galicia': galiciaLogo,
+  }
+
   const checkOferta = (_oferta) => {
-    if (_oferta > minValue && _oferta < maxValue) {
-      setOferta(_oferta);
+    setOferta(_oferta);
+    if (_oferta >= minValue && _oferta <= maxValue) {
       setOfertaMinima(false);
       setOfertaMaxima(false);
       setAllowOferta(true)
@@ -26,138 +62,176 @@ const NuevaPuja = ({route, navigation}) => {
       setOfertaMaxima(true);
       setOfertaMinima(false);
       setAllowOferta(false);
-      setOferta(0);
     } else if (_oferta < minValue) {
       setOfertaMaxima(false);
       setOfertaMinima(true);
       setAllowOferta(false);
-      setOferta(0);
     } else {
       setAllowOferta(false);
     }
   }
 
   return (
-    <View style={styles.container}>
-      <View style={styles.itemDescriptionContainer}>
-        <Text style={styles.itemTitle}>
-          Descripción Item
-        </Text>
-        <View style={styles.itemCardDescription}>
-          <View style={styles.itemTextContainer}>
-            <Text style={styles.itemTextDescription}>
-              {descripcionCompleta} hola
-            </Text>
+    <MetodoPagoProvider>
+      <View style={styles.container}>
+        <View style={styles.itemDescriptionContainer}>
+          <Text style={styles.itemTitle}>
+            Descripción Item
+          </Text>
+          <View style={styles.itemCardDescription}>
+            <View style={styles.itemTextContainer}>
+              <Text style={{fontSize: 12}} numberOfLines={5} onPress={() => console.log('chau')}>
+                {descripcionCompleta}
+              </Text>
+            </View>
+            <View style={styles.verticleLine}/>
+            <View style={styles.itemTextPriceContainer}>
+              <Text style={{fontSize: 12}}>
+                Precio Base
+              </Text>
+              <Text>
+                {precioBase}
+              </Text>
+              <Text style={{fontSize: 12}}>
+                Tiempo restante
+              </Text>
+              <Text>
+                00:00:00
+              </Text>
+            </View>
           </View>
-          <View style={styles.verticleLine}/>
-          <View style={styles.itemTextPriceContainer}>
-            <Text style={{fontSize: 12}}>
-              Precio Base
-            </Text>
-            <Text>
-              {precioBase}
-            </Text>
-            <Text style={{fontSize: 12}}>
-              Tiempo restante
-            </Text>
-            <Text>
-              00:00:00
-            </Text>
-          </View>
+
         </View>
-
-      </View>
-      <View style={styles.ofertaContainer}>
-        <TouchableWithoutFeedback
-          onPress={() => console.log(":)")}
-        >
-          <View style={styles.metodoDePagoContainer}>
-
-            <View style={{marginHorizontal: 15}}>
-              <Image
-                style={{width: 65, height: 65,}}
-                source={visaIcon}
-              />
-            </View>
-            <View style={{marginHorizontal: 15}}>
-              <Text style={{fontSize: 15, fontWeight: 'bold'}}>Visa Débito **** 1234</Text>
-              <Text style={{fontSize: 13, color: '#FC9905', fontWeight: 'bold'}}>Cambiar medio de pago</Text>
-            </View>
-            <View style={{
-              display: 'flex',
-              flex: 1,
-              flexDirection: 'row',
-              justifyContent: 'flex-end', paddingRight: 20
-            }}>
-              <Icon
-                name='chevron-forward-outline'
-                type='ionicon'
-                color='#000'
-                size={30}
-              />
-            </View>
-
-          </View>
-        </TouchableWithoutFeedback>
-        <Text style={{fontSize: 18, fontWeight: 'bold', paddingTop: 20, paddingLeft: 10}}>¿Cúanto Ofertás?</Text>
-        <View style={styles.nuevaPuja}>
-          <TextInput
-            style={styles.nuevaPujaInput}
-            placeholder="$0"
-            keyboardType={'numeric'}
-            textAlign={'center'}
-            value={oferta}
-            onChangeText={checkOferta}
-            autoFocus={true}
-            maxLength={maxValue.toString().length + 1}
-          />
+        <View style={styles.ofertaContainer}>
           {
-            ofertaMinima ? <Text style={{color: '#FF0000'}}> Oferta mínima $25000</Text>
-              : null}
-          {
-            ofertaMaxima ? <Text style={{color: '#FF0000'}}> Oferta máxima $30000</Text>
-              : null
+            (idTarjeta)
+              ?
+              <TouchableWithoutFeedback
+                onPress={() => navigation.navigate('MetodoDePagoSubasta')}>
+                <View style={styles.metodoDePagoContainer}>
+                  <View style={{marginHorizontal: 15}}>
+                    <Image style={{width: 65, height: 65,}}
+                           source={financialCoIcon[numero.charAt(0)]}/>
+                  </View>
+                  <View style={{marginHorizontal: 15}}>
+                    <Text style={{
+                      fontSize: 15,
+                      fontWeight: 'bold'
+                    }}>{entidad} **** {lastNumbers}</Text>
+                    <Text style={{fontSize: 13, color: '#FC9905', fontWeight: 'bold'}}>Cambiar método de pago</Text>
+                  </View>
+                  <View style={{
+                    flex: 1,
+                    flexDirection: 'row',
+                    justifyContent: 'flex-end', paddingRight: 20
+                  }}>
+                    <Icon
+                      name='chevron-forward-outline'
+                      type='ionicon'
+                      color='#000'
+                      size={30}
+                    />
+                  </View>
+                </View>
+
+              </TouchableWithoutFeedback>
+              :
+              <TouchableWithoutFeedback
+                onPress={() => navigation.navigate('MetodoDePagoSubasta')}>
+                <View style={styles.metodoDePagoContainer}>
+                  <View style={{marginHorizontal: 15}}>
+                    <Image style={{width: 65, height: 30,}}
+                           source={bankCoIcon[entidad.toLowerCase()]}/>
+                  </View>
+                  <View style={{marginHorizontal: 15}}>
+                    <Text style={{
+                      fontSize: 15,
+                      fontWeight: 'bold'
+                    }}>Cuenta {cbu_alias} </Text>
+                    <Text style={{fontSize: 13, color: '#FC9905', fontWeight: 'bold'}}>Cambiar método de pago</Text>
+                  </View>
+                  <View style={{
+                    flex: 1,
+                    flexDirection: 'row',
+                    justifyContent: 'flex-end', paddingRight: 20
+                  }}>
+                    <Icon
+                      name='chevron-forward-outline'
+                      type='ionicon'
+                      color='#000'
+                      size={30}
+                    />
+                  </View>
+                </View>
+
+              </TouchableWithoutFeedback>
           }
+          <Text style={{fontSize: 18, fontWeight: 'bold', paddingTop: 20, paddingLeft: 10}}>¿Cuánto Ofertás?</Text>
+          <View style={styles.nuevaPuja}>
+            <TextInput
+              style={styles.nuevaPujaInput}
+              placeholder="$0"
+              keyboardType={'numeric'}
+              textAlign={'center'}
+              value={oferta.toString()}
+              onChangeText={(_oferta) => checkOferta(_oferta)}
+              autoFocus={true}
+              maxLength={maxValue.toString().length + 1}
+            />
+            {
+              ofertaMinima ? <Text style={{color: '#FF0000'}}> Oferta mínima $25000</Text>
+                : null}
+            {
+              ofertaMaxima ? <Text style={{color: '#FF0000'}}> Oferta máxima $30000</Text>
+                : null
+            }
 
 
-        </View>
-        <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
-          <Button
-            disabled={!allowOferta}
-            disabledStyle={{borderColor: '#C4C4C4'}}
-            title='Ofertar'
-            type='solid'
-            titleStyle={{fontWeight: '100'}}
-            buttonStyle={{
-              backgroundColor: '#FC9905',
-              borderRadius: 5,
-              height: 45,
-              width: 150,
-              borderWidth: 1.7,
-              borderColor: '#FC9905',
-              marginHorizontal: 5
-            }}
-          />
-          <Button
-            onPress={() => console.log(oferta)}
-            disabledStyle={{borderColor: '#C4C4C4'}}
-            title='Ofertar'
-            type='solid'
-            titleStyle={{fontWeight: '100'}}
-            buttonStyle={{
-              backgroundColor: '#FC9905',
-              borderRadius: 5,
-              height: 45,
-              width: 150,
-              borderWidth: 1.7,
-              borderColor: '#FC9905',
-              marginHorizontal: 5
+          </View>
+          <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
+            <Button
+              disabled={!allowOferta}
+              disabledStyle={{borderColor: '#C4C4C4'}}
+              title='Ofertar'
+              type='solid'
+              titleStyle={{fontWeight: '100'}}
+              buttonStyle={{
+                backgroundColor: '#FC9905',
+                borderRadius: 5,
+                height: 45,
+                width: 150,
+                borderWidth: 1.7,
+                borderColor: '#FC9905',
+                marginHorizontal: 5
+              }}
+            />
+            <Button
+              onPress={() => navigation.goBack()}
+              disabledStyle={{borderColor: '#C4C4C4'}}
+              title='Cancelar'
+              type='solid'
+              titleStyle={{fontWeight: '100', color: '#FC9905',}}
+              buttonStyle={{
+                backgroundColor: '#fafafa',
+                borderRadius: 5,
+                height: 45,
+                width: 150,
+                borderWidth: 1.7,
+                borderColor: '#FC9905',
+                marginHorizontal: 5
 
-            }}
-          />
+              }}
+            />
+          </View>
+          <View style={{justifyContent: 'center', alignItems: 'center', marginTop: 25,}}>
+            <Text style={{textAlign: 'center', fontSize: 12, color: '#B6B6B6', paddingHorizontal: 20}}>
+              Al ofertar usted se compromete, en el caso de ganar, a aceptar el cobro automático del monto especificado
+              anteriormente.
+            </Text>
+          </View>
         </View>
       </View>
-    </View>
+    </MetodoPagoProvider>
   )
 };
 
@@ -181,7 +255,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
     color: 'white',
-    marginLeft: '10%',
+    marginLeft: 25,
     marginTop: 60,
     marginBottom: 10
   },
@@ -228,7 +302,6 @@ const styles = StyleSheet.create({
   },
 
   metodoDePagoContainer: {
-    display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
     marginTop: 15,
@@ -247,7 +320,6 @@ const styles = StyleSheet.create({
 
   nuevaPuja: {
     height: '50%',
-    display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
   },

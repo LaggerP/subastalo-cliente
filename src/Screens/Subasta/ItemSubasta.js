@@ -1,13 +1,7 @@
-import {StatusBar} from 'expo-status-bar';
-import React, {useContext, useEffect, useState} from 'react';
-import {StyleSheet, Text, View, Button, ScrollView, Pressable} from 'react-native';
-import {Icon} from 'react-native-elements'
-import {DataContext} from "../../context/DataContext";
-import SubastaCarousel from "./SubastaCarousel";
-import NuevaPuja from "./NuevaPuja";
-
-
-
+import React, {useEffect, useState} from 'react';
+import {StyleSheet, Text, View, ScrollView, Pressable} from 'react-native';
+import {Button, Icon} from 'react-native-elements'
+import SubastaCarousel from '../../Components/Subasta/SubastaCarousel';
 
 const ItemSubasta = ({route, navigation}) => {
 
@@ -59,7 +53,7 @@ const ItemSubasta = ({route, navigation}) => {
           </Text>
           <View style={styles.itemCardDescription}>
             <View style={styles.itemTextContainer}>
-              <Text style={styles.itemTextDescription}>
+              <Text style={{fontSize: 12}} numberOfLines={5}>
                 {item.descripcionCompleta}
               </Text>
             </View>
@@ -112,11 +106,22 @@ const ItemSubasta = ({route, navigation}) => {
             }
           </ScrollView>
           <View style={{marginBottom: 8}}>
-            <Pressable style={styles.btnPuja} onPress={() => {
-              navigation.navigate('NuevaPuja', {item});
-            }}>
-              <Text style={styles.btnPujaText}>Nueva Oferta</Text>
-            </Pressable>
+            <Button
+              onPress={() => {
+                navigation.navigate('NuevaPuja', {item})
+              }}
+              title='Nueva Oferta'
+              type='solid'
+              titleStyle={{fontWeight: '100', color: '#fafafa', paddingLeft: 8}}
+              buttonStyle={{
+                backgroundColor: '#FC9905',
+                borderRadius: 5,
+                width: 350,
+                borderWidth: 1.7,
+                borderColor: '#FC9905',
+                marginHorizontal: 5
+              }}
+            />
           </View>
         </View>
       </View>
@@ -157,7 +162,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
     color: 'white',
-    marginLeft: '10%',
+    marginLeft: 25,
     marginTop: 10,
     marginBottom: 10
   },
@@ -176,8 +181,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-
-  itemTextDescription: {fontSize: 12,},
 
   itemTextPriceContainer: {
     paddingLeft: 6,
