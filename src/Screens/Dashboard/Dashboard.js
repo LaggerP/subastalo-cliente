@@ -34,6 +34,7 @@ const Dashboard = ({navigation}) => {
       </View>
 
       <Button title='Mi Perfil' onPress={() => navigation.push('Perfil')}/>
+      <Button title='Metodos de Pago' onPress={() => navigation.push('MetodosPago')}/>
 
       <ScrollView vertical showsHorizontalScrollIndicator={false}>
 
