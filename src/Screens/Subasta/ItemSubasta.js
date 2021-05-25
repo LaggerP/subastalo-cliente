@@ -1,40 +1,23 @@
-import React, {useEffect, useState} from 'react';
-import {StyleSheet, Text, View, ScrollView, Pressable} from 'react-native';
+import React, {useEffect, useContext} from 'react';
+import {StyleSheet, Text, View, ScrollView} from 'react-native';
 import {Button, Icon} from 'react-native-elements'
+
+//Context
+import {PujasContext} from "../../context/PujasContext";
+
+// Components
 import SubastaCarousel from '../../Components/Subasta/SubastaCarousel';
 
 const ItemSubasta = ({route, navigation}) => {
 
-  const [item, setItem] = useState(null);
-  const [getMorePujas, setGetMorePujas] = useState(false);
+  // Pujas Context
+  const {getItemSubastandose, getPujas, item} = useContext(PujasContext);
 
-  const getItemSubastandose = async () => {
-    return await fetch(`http://10.0.2.2:3000/api/subastas/catalogo/${route.params.idSubasta}/item-catalogo`)
-      .then((response) => response.json())
-      .then((_itemData) => {
-        setItem(_itemData)
-        setGetMorePujas(true)
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }
-
-  const getPujas = async () => {
-    return await fetch(`http://10.0.2.2:3000/api/pujas/catalogo/${item.idItemCatalogo}/`)
-      .then((response) => response.json())
-      .then((_newPujas) => {
-        setItem({...item, pujas: _newPujas})
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }
 
   useEffect(() => {
-    getItemSubastandose();
-    if (getMorePujas) {
-      let interval = setInterval(() => getPujas(), 10000)
+    getItemSubastandose(route.params.idSubasta);
+    if (item !== null) {
+      let interval = setInterval(() => getPujas(), 8000)
       //destroy interval on unmount
       return () => clearInterval(interval)
     }
@@ -108,7 +91,7 @@ const ItemSubasta = ({route, navigation}) => {
           <View style={{marginBottom: 8}}>
             <Button
               onPress={() => {
-                navigation.navigate('NuevaPuja', {item})
+                navigation.navigate('NuevaPuja')
               }}
               title='Nueva Oferta'
               type='solid'
