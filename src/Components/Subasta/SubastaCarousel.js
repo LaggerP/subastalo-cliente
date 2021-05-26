@@ -57,10 +57,9 @@ const SubastaCarousel = ({ navigation: { goBack } }) => {
 
   return (
     <>
-      <View style={{display:'flex', flexDirection:'row', alignItems: 'center', justifyContent:'center'}}>
+      <View style={{ flexDirection:'row', alignItems: 'center', justifyContent:'center'}}>
         <TouchableOpacity
           style={{
-            display: 'flex',
             justifyContent: 'flex-start',
             marginTop: '15%',
             paddingLeft: 20,
@@ -78,7 +77,6 @@ const SubastaCarousel = ({ navigation: { goBack } }) => {
 
         <TouchableOpacity
           style={{
-            display: 'flex',
             flex: 1,
             flexDirection: 'row',
             justifyContent: 'flex-end',

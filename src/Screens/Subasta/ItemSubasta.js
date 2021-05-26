@@ -1,28 +1,35 @@
-import {StatusBar} from 'expo-status-bar';
-import React, {useContext, useEffect, useState} from 'react';
-import {StyleSheet, Text, View, Button, ScrollView, Pressable} from 'react-native';
-import {Icon} from 'react-native-elements'
-import {DataContext} from "../../context/DataContext";
-import SubastaCarousel from "./SubastaCarousel";
+import React, {useEffect, useContext, useState} from 'react';
+import {StyleSheet, Text, View, ScrollView} from 'react-native';
+import {Button, Icon} from 'react-native-elements'
 
-const Subasta = ({route, navigation}) => {
+//Context
+import {PujasContext} from "../../context/PujasContext";
 
-  const [item, setItem] = useState(null);
+// Components
+import SubastaCarousel from '../../Components/Subasta/SubastaCarousel';
+import {ModalSubasta} from "../../Components/Subasta/ModalSubasta";
 
-  const getItemSubastandose = async () => {
-    return await fetch(`http://10.0.2.2:3000/api/subastas/catalogo/${route.params.idSubasta}/item-catalogo`)
-      .then((response) => response.json())
-      .then((json) => {
-        setItem(json)
-        console.log(item)
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }
+const ItemSubasta = ({route, navigation}) => {
 
-  useEffect( () => {
-     getItemSubastandose()
+  const [showModal, setShowModal] = useState({
+    visible: true,
+    title: '¡Ups!',
+    msg: 'Ha ocurrido un error al encontrar el ítem. Vuelva a intentarlo mas tarde',
+    icon: 'subastaError'
+  });
+
+  // Pujas Context
+  const {getItemSubastandose, getPujas, item} = useContext(PujasContext);
+
+
+  useEffect(() => {
+    getItemSubastandose(route.params.idSubasta);
+    if (item !== null) {
+      let interval = setInterval(() => getPujas(), 8000)
+      //destroy interval on unmount
+      return () => clearInterval(interval)
+    }
+
   }, [])
 
   if (item) {
@@ -33,11 +40,11 @@ const Subasta = ({route, navigation}) => {
         </View>
         <View style={styles.itemDescriptionContainer}>
           <Text style={styles.itemTitle}>
-            {item.descripcionCatalogo}
+            Descripción Item
           </Text>
           <View style={styles.itemCardDescription}>
             <View style={styles.itemTextContainer}>
-              <Text style={styles.itemTextDescription}>
+              <Text style={{fontSize: 12}} numberOfLines={5}>
                 {item.descripcionCompleta}
               </Text>
             </View>
@@ -64,8 +71,17 @@ const Subasta = ({route, navigation}) => {
           <ScrollView vertical showsVerticalScrollIndicator={false}>
             {
               item.pujas.map((item, idx) => {
+
+                const numFormatter = (importe) => {
+                  if (importe > 999 && importe < 1000000) return item.importe = (importe / 1000).toFixed(1) + 'K';
+                  else if (importe > 1000000) return item.importe = (importe / 1000000).toFixed(1) + 'M';
+                  else if (importe < 900) return importe;
+                }
+
+                numFormatter(item.importe);
+
                 return (
-                  <View style={styles.itemPuja}>
+                  <View style={styles.itemPuja} key={idx}>
                     <Icon
                       name='sc-telegram'
                       type='evilicon'
@@ -73,31 +89,38 @@ const Subasta = ({route, navigation}) => {
                       reverse
                       size={18}
                     />
-                    <Text style={{fontSize: 15, paddingLeft: '12%', paddingRight: '12%'}}>Realizó una oferta</Text>
-                    <Text style={{fontSize: 15, fontWeight: 'bold', paddingRight: 15}}>${item.importe}</Text>
+                    <Text style={{fontSize: 15,}}>Realizó una oferta</Text>
+                    <Text style={{fontSize: 16, fontWeight: 'bold'}}>${item.importe}</Text>
                   </View>
                 )
               })
             }
-
-
-
-
-
           </ScrollView>
           <View style={{marginBottom: 8}}>
-            <Pressable style={styles.btnPuja} onPress={() => console.log("hola")}>
-              <Text style={styles.btnPujaText}>Nueva Oferta</Text>
-            </Pressable>
+            <Button
+              onPress={() => {
+                navigation.navigate('NuevaPuja')
+              }}
+              title='Nueva Oferta'
+              type='solid'
+              titleStyle={{fontWeight: '100', color: '#fafafa', paddingLeft: 8}}
+              buttonStyle={{
+                backgroundColor: '#FC9905',
+                borderRadius: 5,
+                width: 350,
+                borderWidth: 1.7,
+                borderColor: '#FC9905',
+                marginHorizontal: 5
+              }}
+            />
           </View>
-
-
         </View>
       </View>
     )
   } else {
-    return null
+    return (<ModalSubasta modalData={showModal} setShowModal={setShowModal} navigation={navigation}/>)
   }
+
 };
 
 const styles = StyleSheet.create({
@@ -129,8 +152,9 @@ const styles = StyleSheet.create({
 
   itemTitle: {
     fontSize: 18,
+    fontWeight: 'bold',
     color: 'white',
-    marginLeft: '10%',
+    marginLeft: 25,
     marginTop: 10,
     marginBottom: 10
   },
@@ -149,8 +173,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-
-  itemTextDescription: {fontSize: 12,},
 
   itemTextPriceContainer: {
     paddingLeft: 6,
@@ -178,16 +200,17 @@ const styles = StyleSheet.create({
 
   itemPuja: {
     flexDirection: 'row',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 20,
     alignItems: 'center',
-    paddingTop: 5
+    paddingTop: 8
   },
   btnPuja: {
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#FC9905',
     paddingVertical: 15,
-    paddingHorizontal: 32,
+    paddingHorizontal: 15,
     borderRadius: 4,
     elevation: 3,
   },
@@ -199,4 +222,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default Subasta
+export default ItemSubasta
