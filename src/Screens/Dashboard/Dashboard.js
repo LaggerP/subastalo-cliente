@@ -34,6 +34,7 @@ const Dashboard = ({navigation}) => {
       </View>
 
       <Button title='Mi Perfil' onPress={() => navigation.push('Perfil')}/>
+      <Button title='Login' onPress={() => navigation.push('Login')}/>
 
       <ScrollView vertical showsHorizontalScrollIndicator={false}>
 
