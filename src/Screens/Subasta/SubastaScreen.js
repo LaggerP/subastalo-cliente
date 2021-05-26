@@ -5,7 +5,6 @@ import {createStackNavigator} from '@react-navigation/stack';
 import {MetodoPagoProvider} from '../../context/MetodoPagoContext';
 import {PujasProvider} from "../../context/PujasContext";
 
-
 // Components
 import NuevaPuja from './NuevaPuja';
 import ItemSubasta from './ItemSubasta';

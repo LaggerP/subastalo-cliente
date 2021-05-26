@@ -4,6 +4,8 @@ import { DataContext } from "../../context/DataContext";
 import { Icon, Avatar, SearchBar, } from 'react-native-elements';
 import { useFonts, CinzelDecorative_400Regular, CinzelDecorative_700Bold, CinzelDecorative_900Black, } from '@expo-google-fonts/cinzel-decorative';
 import { Button } from 'react-native-elements/dist/buttons/Button';
+
+// Components
 import AuctionCard from './AuctionCard';
 import ErrorModal from './ErrorModal';
 

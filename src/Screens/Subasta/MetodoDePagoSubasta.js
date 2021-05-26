@@ -37,7 +37,7 @@ const MetodosDePagoSubasta = ({navigation}) => {
       </View>
       <ScrollView vertical showsVerticalScrollIndicator={false} contentContainerStyle={{flexGrow: 1}}>
         <Text style={{fontSize: 20, fontWeight: 'bold', paddingVertical: 8, paddingLeft: 15}}>Mis tarjetas</Text>
-        {tarjetas.map((tarjeta, idx) => <TarjetaCard data={tarjeta} key={idx} navigation={navigation} />)}
+        {tarjetas.map((tarjeta, idx) => <TarjetaCard data={tarjeta} key={idx} navigation={navigation}/>)}
         <Text style={{fontSize: 20, fontWeight: 'bold', paddingVertical: 25, paddingLeft: 15}}>Mis Cuentas
           Bancarias</Text>
         {cuentasBancarias.map((cuenta, idx) => <CuentaBancariaCard data={cuenta} key={idx} navigation={navigation}/>)}
@@ -50,7 +50,7 @@ const MetodosDePagoSubasta = ({navigation}) => {
           type='solid'
           titleStyle={{fontWeight: '100', color: '#fafafa', paddingLeft: 8}}
           icon={<Icon name='add-circle-outline' size={25} color='#fafafa' type='ionicons'/>}
-            buttonStyle={{
+          buttonStyle={{
             backgroundColor: '#FC9905',
             borderRadius: 5,
             width: 350,

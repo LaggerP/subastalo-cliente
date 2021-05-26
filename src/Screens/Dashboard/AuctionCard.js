@@ -6,7 +6,7 @@ import Moment from 'moment';
 import {Button} from 'react-native-elements'
 
 
-const AuctionCard = ({idSubasta,fechaSubasta,horaSubasta,categoriaSubasta,nombreSubastador,estadoSubasta,navigation}) => {
+const AuctionCard = ({idSubasta, fechaSubasta, horaSubasta, categoriaSubasta, nombreSubastador, estadoSubasta, navigation}) => {
   const Strong = (props) => <Text style={{fontWeight: 'bold'}}>{props.children}</Text>
   const AuctionState = () => {
     let color;
