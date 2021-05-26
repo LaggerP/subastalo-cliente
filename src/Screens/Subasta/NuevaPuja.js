@@ -1,10 +1,13 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {StyleSheet, Text, TextInput, View, Image, TouchableWithoutFeedback, Pressable} from 'react-native';
 import {Button, Icon} from 'react-native-elements';
+// Components
+import {ModalSubasta} from "../../Components/Subasta/ModalSubasta";
 
 // Context
 import {MetodoPagoContext} from "../../context/MetodoPagoContext";
 import {DataContext} from "../../context/DataContext";
+import {PujasContext} from "../../context/PujasContext";
 
 //Logos
 import visaIcon from '../../../assets/cardIcons/visa.png';
@@ -12,7 +15,6 @@ import masterCardIcon from "../../../assets/cardIcons/mastercard.png";
 import BBVALogo from "../../../assets/bankIcons/BBVA.png";
 import santanderLogo from "../../../assets/bankIcons/Santander.png";
 import galiciaLogo from "../../../assets/bankIcons/Galicia.png";
-import {PujasContext} from "../../context/PujasContext";
 
 
 let initStatePuja = {
@@ -23,15 +25,22 @@ let initStatePuja = {
   idItem: 0,
   asistente: 0
 }
-
+const financialCoIcon = {
+  4: visaIcon,
+  5: masterCardIcon
+}
+const bankCoIcon = {
+  'bbva': BBVALogo,
+  'santander': santanderLogo,
+  'galicia': galiciaLogo,
+}
 
 const NuevaPuja = ({navigation}) => {
-
+  //Data from Data Context
   const {userData} = useContext(DataContext);
-
-  const {item, idAsistente, newPuja} = useContext(PujasContext);
+  //Data from Pujas Context
+  const {item, newPuja} = useContext(PujasContext);
   const {descripcionCompleta, precioBase, idItemCatalogo, idSubasta} = item
-
   //Data from Metodo Pago Context
   const {metodoPagoElegido} = useContext(MetodoPagoContext);
   const {idTarjeta, numero, entidad, lastNumbers, cbu_alias} = metodoPagoElegido
@@ -40,21 +49,17 @@ const NuevaPuja = ({navigation}) => {
   const [ofertaMinima, setOfertaMinima] = useState(false);
   const [ofertaMaxima, setOfertaMaxima] = useState(false);
   const [allowOferta, setAllowOferta] = useState(false);
+  const [showModal, setShowModal] = useState({
+    visible: false,
+    title: '',
+    msg: '',
+    icon: ''
+  });
+  const [spinnerLoading, setSpinnerLoading] = useState(false);
 
   // data obtenida a través de la DB
   const minValue = 25000;
   const maxValue = 30000;
-
-  const financialCoIcon = {
-    4: visaIcon,
-    5: masterCardIcon
-  }
-
-  const bankCoIcon = {
-    'bbva': BBVALogo,
-    'santander': santanderLogo,
-    'galicia': galiciaLogo,
-  }
 
   const checkOferta = (_oferta) => {
     setOferta(_oferta);
@@ -75,19 +80,29 @@ const NuevaPuja = ({navigation}) => {
     }
   }
 
-  const newOferta = (_oferta) => {
+  const newOferta = async (_oferta) => {
+    setSpinnerLoading(true)
     let oferta = {
       idSubasta: idSubasta,
       idCliente: userData.idCliente,
       numeroPostor: 1,
-      importe: parseInt(_oferta,10),
+      importe: parseInt(_oferta, 10),
       idItem: idItemCatalogo,
     }
-    newPuja(oferta);
-    navigation.goBack();
+    await newPuja(oferta);
+    setShowModal({
+      visible: true,
+      title: '¡Oferta exitosa!',
+      msg: 'Podrá visualizar su oferta en la lista. Recuerde que el artículo no será suyo hasta ser la oferta más alta' +
+        ' al finalizar el tiempo.',
+      icon: 'nuevaOferta'
+    })
+    setSpinnerLoading(false)
   }
+
   return (
     <View style={styles.container}>
+      <ModalSubasta modalData={showModal} setShowModal={setShowModal} navigation={navigation}/>
       <View style={styles.itemDescriptionContainer}>
         <Text style={styles.itemTitle}>
           Descripción Item
@@ -114,7 +129,6 @@ const NuevaPuja = ({navigation}) => {
             </Text>
           </View>
         </View>
-
       </View>
       <View style={styles.ofertaContainer}>
         {
@@ -193,10 +207,10 @@ const NuevaPuja = ({navigation}) => {
             maxLength={maxValue.toString().length}
           />
           {
-            ofertaMinima ? <Text style={{color: '#FF0000'}}> Oferta mínima $25000</Text>
+            ofertaMinima ? <Text style={{color: '#FF0000'}}> Oferta mínima ${minValue}</Text>
               : null}
           {
-            ofertaMaxima ? <Text style={{color: '#FF0000'}}> Oferta máxima $30000</Text>
+            ofertaMaxima ? <Text style={{color: '#FF0000'}}> Oferta máxima ${maxValue}</Text>
               : null
           }
 
@@ -208,6 +222,20 @@ const NuevaPuja = ({navigation}) => {
             disabled={!allowOferta}
             disabledStyle={{borderColor: '#C4C4C4'}}
             title='Ofertar'
+            loading={spinnerLoading}
+            loadingProps={{
+              color: '#fafafa',
+              size: 35
+            }}
+            loadingStyle={{
+              position: 'absolute',
+              left: 0,
+              right: 0,
+              top: 0,
+              bottom: 0,
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}
             type='solid'
             titleStyle={{fontWeight: '100'}}
             buttonStyle={{
@@ -240,8 +268,7 @@ const NuevaPuja = ({navigation}) => {
         </View>
         <View style={{justifyContent: 'center', alignItems: 'center', marginTop: 25,}}>
           <Text style={{textAlign: 'center', fontSize: 12, color: '#B6B6B6', paddingHorizontal: 20}}>
-            Al ofertar usted se compromete, en el caso de ganar, a aceptar el cobro automático del monto especificado
-            anteriormente.
+            Al ofertar usted se compromete, en el caso de ganar, en aceptar el cobro automático del monto especificado.
           </Text>
         </View>
       </View>

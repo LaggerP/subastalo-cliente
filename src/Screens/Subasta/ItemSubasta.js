@@ -1,4 +1,4 @@
-import React, {useEffect, useContext} from 'react';
+import React, {useEffect, useContext, useState} from 'react';
 import {StyleSheet, Text, View, ScrollView} from 'react-native';
 import {Button, Icon} from 'react-native-elements'
 
@@ -7,8 +7,16 @@ import {PujasContext} from "../../context/PujasContext";
 
 // Components
 import SubastaCarousel from '../../Components/Subasta/SubastaCarousel';
+import {ModalSubasta} from "../../Components/Subasta/ModalSubasta";
 
 const ItemSubasta = ({route, navigation}) => {
+
+  const [showModal, setShowModal] = useState({
+    visible: true,
+    title: '¡Ups!',
+    msg: 'Ha ocurrido un error al encontrar el ítem. Vuelva a intentarlo mas tarde',
+    icon: 'subastaError'
+  });
 
   // Pujas Context
   const {getItemSubastandose, getPujas, item} = useContext(PujasContext);
@@ -110,8 +118,9 @@ const ItemSubasta = ({route, navigation}) => {
       </View>
     )
   } else {
-    return null
+    return (<ModalSubasta modalData={showModal} setShowModal={setShowModal} navigation={navigation}/>)
   }
+
 };
 
 const styles = StyleSheet.create({
