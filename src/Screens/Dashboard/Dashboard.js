@@ -1,9 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { StyleSheet, Text, View, ScrollView, } from 'react-native';
-import { DataContext } from "../../context/DataContext";
-import { Icon, Avatar, SearchBar, } from 'react-native-elements';
+import { Roboto_500Medium, } from '@expo-google-fonts/roboto';
 import { useFonts, CinzelDecorative_400Regular, CinzelDecorative_700Bold, CinzelDecorative_900Black, } from '@expo-google-fonts/cinzel-decorative';
-import { Button } from 'react-native-elements/dist/buttons/Button';
+import { StyleSheet, Text, View, ScrollView, } from 'react-native';
+import { Icon, Avatar, SearchBar, Overlay, CheckBox } from 'react-native-elements';
+import { DataContext } from "../../context/DataContext";
 
 // Components
 import AuctionCard from './AuctionCard';
@@ -19,6 +19,26 @@ const Dashboard = ({ navigation }) => {
   const toggleOverlay = () => {
     setVisible(!visible);
   };
+
+  //Checkbox filter
+  const [openedCheck, setOpenedCheck] = useState([
+    selected = true,
+    state = 'abierta'
+  ]);
+  const [closedCheck, setClosedCheck] = useState([
+    selected = true,
+    state = 'cerrada'
+  ]);
+
+  const [filter, setFilterVisible] = useState(false);
+  const toggleFilter = () => {
+    setFilterVisible(!filter);
+  };
+
+  const [filterPosition, setFilterPosition] = useState([
+    x = '',
+    y = ''
+  ]);
 
   const getSubastas = async () => {
     return await fetch('http://10.0.2.2:3000/api/subastas')
@@ -41,13 +61,14 @@ const Dashboard = ({ navigation }) => {
     CinzelDecorative_400Regular,
     CinzelDecorative_700Bold,
     CinzelDecorative_900Black,
+    Roboto_500Medium,
   });
 
   //SearchBar
   const [search, setSearch] = useState('');
 
-  //Filtro por categoria
-  const filteredAuctions = search ? subastas.filter((i) => (i.categoriaSubasta.toLowerCase()).includes(search.toLowerCase())) : subastas;
+  //Filtro
+  const filteredAuctions = search ? subastas.filter((i) => (i.categoriaSubasta.toLowerCase()).includes(search.toLowerCase()) || (i.nombreSubastador.toLowerCase()).includes(search.toLowerCase())) : subastas;
 
   //Sesion iniciada
   const getSesionIniciada = () => {
@@ -55,12 +76,25 @@ const Dashboard = ({ navigation }) => {
   }
   const sesionIniciada = getSesionIniciada();
 
+  const goToTop = () => {
+    scroll.scrollTo({ x: 0, y: 0, animated: true });
+  }
+
+  //Linea
+  const Linea = () => {
+    return (
+      <View style={{ flexDirection: 'row', alignItems: 'center', }}>
+        <View style={{ flex: 1, height: 1.5, backgroundColor: '#CACACA', }} />
+      </View>
+    )
+  };
+
   if (!fontsLoaded) {
     return <Text>Loading</Text>;
   } else {
     return (
       <View style={{ flex: 1 }}>
-        <ScrollView vertical showsVerticalScrollIndicator={false} >
+        <ScrollView vertical showsVerticalScrollIndicator={false} ref={(c) => {scroll = c}}>
           <View style={styles.container} >
 
             {
@@ -77,7 +111,7 @@ const Dashboard = ({ navigation }) => {
                             'https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg',
                         }}
                       />
-                      <Text style={{ fontSize: 16, textAlign: 'center' }}>Tamara Cabello</Text>
+                      <Text style={{ fontSize: 16, textAlign: 'center', fontFamily: 'Roboto_500Medium' }}>Tamara Cabello</Text>
                     </View>
                   </View>
 
@@ -150,16 +184,61 @@ const Dashboard = ({ navigation }) => {
             }
 
             <View style={styles.searchBarContainer}>
-              <SearchBar
-                lightTheme={true}
-                searchIcon={{ size: 26 }}
-                inputStyle={{ backgroundColor: '#EDEDED', fontSize: 13 }}
-                inputContainerStyle={{ borderRadius: 5, width: '85%', height: 35, backgroundColor: '#EDEDED' }}
-                containerStyle={{ borderRadius: 5, backgroundColor: '#FFFFFF', shadowColor: '#00000021', elevation: 5, }}
-                placeholder="Buscar"
-                onChangeText={setSearch}
-                value={search}
-              />
+              <View style={{ flexDirection: 'column', flex: 2, }}>
+                <SearchBar
+                  lightTheme={true}
+                  searchIcon={{ size: 26 }}
+                  inputStyle={{ backgroundColor: '#EDEDED', fontSize: 13, }}
+                  inputContainerStyle={{ borderRadius: 5, width: '100%', height: 35, backgroundColor: '#EDEDED', }}
+                  containerStyle={{ borderTopLeftRadius: 5, borderBottomLeftRadius: 5, backgroundColor: '#FFFFFF', shadowColor: '#00000021', elevation: 5, borderTopWidth: 0, borderBottomWidth: 0 }}
+                  placeholder="Buscar"
+                  onChangeText={setSearch}
+                  value={search}
+                />
+              </View>
+              <View onLayout={e => { const layout = e.nativeEvent.layout; setFilterPosition({ x: layout.x, y: layout.y }) }} style={{ flexDirection: 'column', flex: 0.4, borderTopRightRadius: 5, borderBottomRightRadius: 5, backgroundColor: '#FFFFFF', shadowColor: '#00000021', elevation: 5, justifyContent: 'center', }}>
+                <Icon
+                  name='options-outline'
+                  type='ionicon'
+                  size={29}
+                  iconStyle={{ alignSelf: 'center', }}
+                  containerStyle={{ alignSelf: 'center' }}
+                  onPress={() => {goToTop(); toggleFilter() }}
+                />
+              </View>
+            </View>
+
+            <View>
+              <Overlay isVisible={filter} onBackdropPress={toggleFilter} overlayStyle={{ width: 194, height: 140, padding: 0, paddingTop: 8, paddingBottom: 10, position: 'absolute', transform: [{ translateX: filterPosition.x - 220 }, { translateY: filterPosition.y + 30 }] }}>
+                <View style={{ justifyContent: 'flex-start', height: 30, }}>
+                  <Text style={{ fontSize: 15, fontWeight: 'bold', marginLeft: 10, }}>Filtrar por:</Text>
+                </View>
+                <Linea />
+                <CheckBox
+                  title='En Vivo'
+                  checkedIcon='dot-circle-o'
+                  uncheckedIcon='circle-o'
+                  iconRight={true}
+                  size={20}
+                  containerStyle={styles.checkContainer}
+                  wrapperStyle={{ justifyContent: 'space-between', }}
+                  onPress={() => { setOpenedCheck(!openedCheck) }}
+                  checked={openedCheck}
+                />
+                <Linea />
+                <CheckBox
+                  title='Próximo'
+                  checkedIcon='dot-circle-o'
+                  uncheckedIcon='circle-o'
+                  iconRight={true}
+                  size={20}
+                  containerStyle={styles.checkContainer}
+                  wrapperStyle={{ justifyContent: 'space-between', }}
+                  onPress={() => setClosedCheck(!closedCheck)}
+                  checked={closedCheck}
+                />
+                <Linea />
+              </Overlay>
             </View>
 
             {
@@ -172,8 +251,8 @@ const Dashboard = ({ navigation }) => {
                 </View>
                 :
                 <ErrorModal
-                  isVisible={visible}
                   toggleOverlay={toggleOverlay}
+                  isVisible={visible}
                 />
             }
 
@@ -248,10 +327,10 @@ const styles = StyleSheet.create({
   },
 
   searchBarContainer: {
+    flexDirection: 'row',
     marginTop: '3%',
     paddingBottom: 10,
     width: '95%',
-
   },
 
   auctionsContainer: {
@@ -286,6 +365,14 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 67,
     justifyContent: 'center',
+  },
+
+  checkContainer: {
+    width: '100%',
+    backgroundColor: '#EDEDED',
+    alignSelf: 'center',
+    marginTop: 0,
+    marginBottom: 0,
   },
 
 });

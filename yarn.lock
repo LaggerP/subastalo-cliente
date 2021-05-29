@@ -1171,6 +1171,11 @@
   resolved "https://registry.yarnpkg.com/@expo-google-fonts/cinzel-decorative/-/cinzel-decorative-0.1.0.tgz#a7d829c133de70e3d948a3c4477e3284afc3b939"
   integrity sha512-0UxLaRw5ihXj7B/jSJjuvFgWltlw0xNK8BnHczJKCL0/29Xwgyp7QKjf9UfgLpVQIFaNX5/DA2/xQhFtsrFvyg==
 
+"@expo-google-fonts/roboto@^0.1.0":
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/@expo-google-fonts/roboto/-/roboto-0.1.0.tgz#2897dc09db4ceb9f5ba337103090e1d70236e811"
+  integrity sha512-q+68xWZpLIS/iPC5jwoakEskyTVgIC1jfpNzWFMnUnBoZsWRq1rlpnleR3MjKDeN1Vt0NcvUI/aaZoCyIXhisw==
+
 "@expo/config-plugins@1.0.31", "@expo/config-plugins@^1.0.18":
   version "1.0.31"
   resolved "https://registry.yarnpkg.com/@expo/config-plugins/-/config-plugins-1.0.31.tgz#c6e24cee0892ea2fb4f7633a80ae63cbc8cb80de"
