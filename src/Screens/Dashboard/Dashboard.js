@@ -111,7 +111,7 @@ const Dashboard = ({ navigation }) => {
                             'https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg',
                         }}
                       />
-                      <Text style={{ fontSize: 16, textAlign: 'center', fontFamily: 'Roboto_500Medium' }}>Tamara Cabello</Text>
+                      <Text style={{ fontSize: 16, textAlign: 'center', fontFamily: 'Roboto_500Medium' }}>{userData.nombreCompleto}</Text>
                     </View>
                   </View>
 

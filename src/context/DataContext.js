@@ -8,7 +8,7 @@ export const DataProvider = ({children}) => {
     idPersona: 6, //cambiar este valor, no debería se el inicial. ESTA PARA HACER TEST
     idCliente: 6,//cambiar este valor, no debería se el inicial. ESTA PARA HACER TEST
     documento: '',
-    nombreCompleto: '',
+    nombreCompleto: 'Claudio Godio', //TEST
     primerInicio: false,//cambiar este valor, no debería se el inicial. ESTA PARA HACER TEST
     direccion: '',
     estado: '',
