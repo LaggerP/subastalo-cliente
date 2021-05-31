@@ -1,6 +1,8 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {StyleSheet, Text, TextInput, View, Image, TouchableWithoutFeedback, Pressable} from 'react-native';
 import {Button, Icon} from 'react-native-elements';
+import CountDown from "react-native-countdown-component";
+
 // Components
 import {ModalSubasta} from "../../Components/Subasta/ModalSubasta";
 
@@ -115,18 +117,25 @@ const NuevaPuja = ({navigation}) => {
           </View>
           <View style={styles.verticleLine}/>
           <View style={styles.itemTextPriceContainer}>
-            <Text style={{fontSize: 12}}>
+            <Text style={{fontSize: 12, fontWeight:'bold'}}>
               Precio Base
             </Text>
             <Text>
               {precioBase}
             </Text>
-            <Text style={{fontSize: 12}}>
+            <Text style={{fontSize: 12, paddingBottom: 2, fontWeight:'bold'}}>
               Tiempo restante
             </Text>
-            <Text>
-              00:00:00
-            </Text>
+            <CountDown
+              until={60 * 10 + 20}
+              onFinish={() => changeItemEstado()}
+              digitStyle={{backgroundColor: '#FFF', borderWidth: 2, borderColor: '#FC9905'}}
+              separatorStyle={{color: '#000'}}
+              timeToShow={['M', 'S']}
+              timeLabels={{m: null, s: null}}
+              showSeparator
+              size={12}
+            />
           </View>
         </View>
       </View>
@@ -145,7 +154,7 @@ const NuevaPuja = ({navigation}) => {
                   <Text style={{
                     fontSize: 15,
                     fontWeight: 'bold'
-                  }}>{entidad} **** {lastNumbers}</Text>
+                  }}>{entidad.toUpperCase()} **** {lastNumbers}</Text>
                   <Text style={{fontSize: 13, color: '#FC9905', fontWeight: 'bold'}}>Cambiar método de pago</Text>
                 </View>
                 <View style={{
@@ -298,7 +307,7 @@ const styles = StyleSheet.create({
     color: 'white',
     marginLeft: 25,
     marginTop: 60,
-    marginBottom: 10
+    marginBottom: 8
   },
 
   itemCardDescription: {

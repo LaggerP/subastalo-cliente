@@ -10,31 +10,14 @@ import {
 } from 'react-native';
 import {Icon} from 'react-native-elements'
 
-const ENTRIES1 = [
-  {
-    illustration: 'https://i.imgur.com/UYiroysl.jpg',
-  },
-  {
-    illustration: 'https://i.imgur.com/UPrs1EWl.jpg',
-  },
-  {
-    illustration: 'https://i.imgur.com/MABUbpDl.jpg',
-  },
-  {
-    illustration: 'https://i.imgur.com/KZsmUi2l.jpg',
-  },
-  {
-    illustration: 'https://i.imgur.com/2nCt3Sbl.jpg',
-  },
-];
 const {width: screenWidth} = Dimensions.get('window');
 
-const SubastaCarousel = ({ navigation: { goBack } }) => {
+const SubastaCarousel = ({ navigation: { goBack }, fotos }) => {
   const [entries, setEntries] = useState([]);
   const carouselRef = useRef(null);
 
   useEffect(() => {
-    setEntries(ENTRIES1);
+    setEntries(fotos);
   }, []);
 
   const renderItem = ({item, index}, parallaxProps) => {
@@ -42,10 +25,10 @@ const SubastaCarousel = ({ navigation: { goBack } }) => {
 
       <View style={styles.item}>
         <ParallaxImage
-          source={{uri: item.illustration}}
+          source={{uri: item.foto}}
           containerStyle={styles.imageContainer}
           style={styles.image}
-          parallaxFactor={0.4}
+          parallaxFactor={0.6}
           {...parallaxProps}
         />
         <Text style={styles.title} numberOfLines={2}>
@@ -85,7 +68,7 @@ const SubastaCarousel = ({ navigation: { goBack } }) => {
             paddingBottom: 10,
             paddingTop: 10
           }}
-          onPress={() => console.log("hola")}>
+          onPress={() => console.log("NOS VAMOS AL CATALOGO")}>
           <Icon
             name='pricetags-outline'
             type='ionicon'
@@ -102,6 +85,8 @@ const SubastaCarousel = ({ navigation: { goBack } }) => {
           sliderHeight={screenWidth - 20}
           itemWidth={screenWidth - 60}
           itemHeight={screenWidth - 80}
+          loop={true}
+          enableSnap={true}
           data={entries}
           renderItem={renderItem}
           hasParallaxImages={true}
@@ -123,10 +108,10 @@ const styles = StyleSheet.create({
     flex: 1,
     marginBottom: Platform.select({ios: 0, android: 1}), // Prevent a random Android rendering issue
     backgroundColor: 'white',
-    borderRadius: 10,
+    borderRadius: 8,
   },
   image: {
     ...StyleSheet.absoluteFillObject,
-    resizeMode: 'cover',
+    resizeMode: 'contain',
   },
 });

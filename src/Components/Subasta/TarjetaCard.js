@@ -33,7 +33,7 @@ const TarjetaCard = ({navigation, data}) => {
               />
             </View>
             <View style={{marginHorizontal: 15}}>
-              <Text style={{fontSize: 15, fontWeight: 'bold'}}>{entidad} **** {lastNumbers}</Text>
+              <Text style={{fontSize: 15, fontWeight: 'bold'}}>{entidad.toUpperCase()} **** {lastNumbers}</Text>
               <Text style={{fontSize: 13, color: '#000', fontWeight: 'bold'}}>
                 Vencimiento: {vencimiento}
               </Text>

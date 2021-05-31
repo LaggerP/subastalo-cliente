@@ -9,6 +9,7 @@ import {MetodoPagoContext} from "../../context/MetodoPagoContext";
 import BBVALogo from '../../../assets/bankIcons/BBVA.png';
 import santanderLogo from '../../../assets/bankIcons/Santander.png';
 import galiciaLogo from '../../../assets/bankIcons/Galicia.png';
+import itauLogo from '../../../assets/bankIcons/Itau.png'
 
 const CuentaBancariaCard = ({navigation, data}) => {
   const {metodoPagoElegido, setMetodoPagoElegido} = useContext(MetodoPagoContext);
@@ -18,6 +19,7 @@ const CuentaBancariaCard = ({navigation, data}) => {
     'bbva': BBVALogo,
     'santander': santanderLogo,
     'galicia': galiciaLogo,
+    'itau':itauLogo
   }
 
   if (data) {

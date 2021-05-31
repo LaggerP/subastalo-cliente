@@ -1,6 +1,7 @@
 import React, {useEffect, useContext, useState} from 'react';
 import {StyleSheet, Text, View, ScrollView} from 'react-native';
 import {Button, Icon} from 'react-native-elements'
+import CountDown from 'react-native-countdown-component';
 
 //Context
 import {PujasContext} from "../../context/PujasContext";
@@ -8,6 +9,7 @@ import {PujasContext} from "../../context/PujasContext";
 // Components
 import SubastaCarousel from '../../Components/Subasta/SubastaCarousel';
 import {ModalSubasta} from "../../Components/Subasta/ModalSubasta";
+
 
 const ItemSubasta = ({route, navigation}) => {
 
@@ -32,11 +34,29 @@ const ItemSubasta = ({route, navigation}) => {
 
   }, [])
 
+
+  const changeItemEstado = async () => {
+    return await fetch(`http://10.0.2.2:3000/api/subastas/catalogo/change-item-estado`, {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({idItemCatalogo: item.idItemCatalogo, idProducto:item.idProducto})
+    })
+      .then((response) => response.text())
+      .then((responseData) => {console.log(responseData)})
+
+      .catch((error) => {
+        console.error(error);
+      });
+  }
+
   if (item) {
     return (
       <View style={styles.container}>
         <View style={styles.imagesContainer}>
-          <SubastaCarousel navigation={navigation}/>
+          <SubastaCarousel navigation={navigation} fotos={item.fotos}/>
         </View>
         <View style={styles.itemDescriptionContainer}>
           <Text style={styles.itemTitle}>
@@ -50,51 +70,72 @@ const ItemSubasta = ({route, navigation}) => {
             </View>
             <View style={styles.verticleLine}/>
             <View style={styles.itemTextPriceContainer}>
-              <Text style={{fontSize: 12}}>
+              <Text style={{fontSize: 12, fontWeight: 'bold'}}>
                 Precio Base
               </Text>
               <Text>
                 ${item.precioBase}
               </Text>
-              <Text style={{fontSize: 12}}>
+              <Text style={{fontSize: 12, paddingBottom: 2, fontWeight: 'bold'}}>
                 Tiempo restante
               </Text>
-              <Text>
-                00:00:00
-              </Text>
+              <CountDown
+                until={60 * 10 + 20}
+                onFinish={() => changeItemEstado()}
+                digitStyle={{backgroundColor: '#FFF', borderWidth: 2, borderColor: '#FC9905'}}
+                separatorStyle={{color: '#000'}}
+                timeToShow={['M', 'S']}
+                timeLabels={{m: null, s: null}}
+                showSeparator
+                size={12}
+              />
             </View>
           </View>
 
         </View>
 
         <View style={styles.pujasListContainer}>
+
+
           <ScrollView vertical showsVerticalScrollIndicator={false}>
             {
-              item.pujas.map((item, idx) => {
+              (item.pujas.length > 0) ? item.pujas.map((item, idx) => {
 
-                const numFormatter = (importe) => {
-                  if (importe > 999 && importe < 1000000) return item.importe = (importe / 1000).toFixed(1) + 'K';
-                  else if (importe > 1000000) return item.importe = (importe / 1000000).toFixed(1) + 'M';
-                  else if (importe < 900) return importe;
-                }
+                  const numFormatter = (importe) => {
+                    if (importe > 999 && importe < 1000000) return item.importe = (importe / 1000).toFixed(1) + 'K';
+                    else if (importe > 1000000) return item.importe = (importe / 1000000).toFixed(1) + 'M';
+                    else if (importe < 900) return importe;
+                  }
 
-                numFormatter(item.importe);
+                  numFormatter(item.importe);
 
-                return (
-                  <View style={styles.itemPuja} key={idx}>
-                    <Icon
-                      name='sc-telegram'
-                      type='evilicon'
-                      color='#517fa4'
-                      reverse
-                      size={18}
-                    />
-                    <Text style={{fontSize: 15,}}>Realizó una oferta</Text>
-                    <Text style={{fontSize: 16, fontWeight: 'bold'}}>${item.importe}</Text>
-                  </View>
-                )
-              })
+                  return (
+                    <View style={styles.itemPuja} key={idx}>
+                      <Icon
+                        name='sc-telegram'
+                        type='evilicon'
+                        color='#517fa4'
+                        reverse
+                        size={18}
+                      />
+                      <Text style={{fontSize: 15,}}>Realizó una oferta</Text>
+                      <Text style={{fontSize: 16, fontWeight: 'bold'}}>${item.importe}</Text>
+                    </View>
+                  )
+                })
+                :
+                <Text style={{
+                  left: 0,
+                  right: 0,
+                  top: '50%',
+                  height: 200,
+                  textAlign: 'center',
+                  fontSize: 20,
+                  fontWeight: 'bold'
+                }}>¡Se la primera persona en ofertar!</Text>
+
             }
+
           </ScrollView>
           <View style={{marginBottom: 8}}>
             <Button
@@ -156,7 +197,7 @@ const styles = StyleSheet.create({
     color: 'white',
     marginLeft: 25,
     marginTop: 10,
-    marginBottom: 10
+    marginBottom: 6
   },
 
   itemCardDescription: {
