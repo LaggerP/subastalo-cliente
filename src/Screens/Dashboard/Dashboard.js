@@ -132,7 +132,7 @@ const Dashboard = ({ navigation }) => {
                         reverseColor='#000000'
                         color='#FFCD61'
                         size={22}
-                        onPress={() => navigation.push('Perfil')} />
+                        onPress={() => navigation.push('MetodosPago')} />
                       <Text style={{ fontSize: 12, textAlign: 'center' }}>Métodos de</Text>
                       <Text style={{ fontSize: 12, textAlign: 'center' }}>Pago</Text>
                     </View>
