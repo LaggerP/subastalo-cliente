@@ -14,24 +14,32 @@ import {ModalSubasta} from "../../Components/Subasta/ModalSubasta";
 const ItemSubasta = ({route, navigation}) => {
 
   const [showModal, setShowModal] = useState({
-    visible: true,
+    visible: false,
     title: '¡Ups!',
-    msg: 'Ha ocurrido un error al encontrar el ítem. Vuelva a intentarlo mas tarde',
+    msg: 'Ha ocurrido un error al encontrar el ítem que está subastándose. Vuelva a intentarlo' +
+      ' mas tarde',
     icon: 'subastaError'
   });
 
   // Pujas Context
-  const {getItemSubastandose, getPujas, item} = useContext(PujasContext);
+  const {getPujas, setItem, item} = useContext(PujasContext);
 
+  const getItemSubastandose = async (idSubasta) => {
+    try {
+      let _item = await fetch(`http://10.0.2.2:3000/api/subastas/catalogo/${idSubasta}/item-catalogo`);
+      setItem(await _item.json())
+    } catch (e) {
+      setShowModal({...showModal, visible: true});
+    }
+  }
 
   useEffect(() => {
     getItemSubastandose(route.params.idSubasta);
-    if (item !== null) {
+    if (item) {
       let interval = setInterval(() => getPujas(), 8000)
       //destroy interval on unmount
       return () => clearInterval(interval)
     }
-
   }, [])
 
 
@@ -42,11 +50,12 @@ const ItemSubasta = ({route, navigation}) => {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({idItemCatalogo: item.idItemCatalogo, idProducto:item.idProducto})
+      body: JSON.stringify({idItemCatalogo: item.idItemCatalogo, idProducto: item.idProducto})
     })
       .then((response) => response.text())
-      .then((responseData) => {console.log(responseData)})
-
+      .then((responseData) => {
+        console.log(responseData)
+      })
       .catch((error) => {
         console.error(error);
       });
@@ -158,9 +167,9 @@ const ItemSubasta = ({route, navigation}) => {
         </View>
       </View>
     )
-  } else {
+  } else if (showModal.visible) {
     return (<ModalSubasta modalData={showModal} setShowModal={setShowModal} navigation={navigation}/>)
-  }
+  } else return null
 
 };
 
