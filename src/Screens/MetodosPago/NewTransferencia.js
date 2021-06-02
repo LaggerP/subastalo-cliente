@@ -1,49 +1,47 @@
 import {StatusBar} from 'expo-status-bar';
 import React, {useContext} from 'react';
 import {DataContext} from "../../context/DataContext";
-import {StyleSheet, View, Button, TextInput} from 'react-native';
+import {StyleSheet, View, Button, TextInput, Pressable, Text} from 'react-native';
 import {CheckBox} from 'react-native-elements';
 
-const NewTrasnfrerencia = () => {
+const NewTransferencia = () => {
     const [entidadB, onChangeEntidadB] = React.useState(null);
     const [CBU, onChangeCBU] = React.useState(null);
     const [nombre, onChangeNombre] = React.useState(null);
-    const [terminos , checkTerminos] = React.useState(false);
+    const [checked , toggleChecked] = React.useState(false);
 
-    // const createTransferencia = async () => {
-        
-    // }
+    const aceptar = () => {
+        console.log(entidadB, CBU, nombre, checked)
+     }
 
     return (
     <View style={styles.container}>
         <TextInput
-            style={styles.input}
-            onChangeText={onChangeEntidadB}
-            value={entidadB}
-            placeholder='Entidad Bancaria'
+          style={styles.input}
+          onChangeText={onChangeEntidadB}
+          value={entidadB}
+          placeholder='Entidad Bancaria'
         />
-      <TextInput
-            style={styles.input}
-            onChangeText={onChangeCBU}
-            value={CBU}
-            placeholder='CBU o Alias'
-            keyboardType='numeric'
-      />
-      <TextInput
-            style={styles.input}
-            onChangeText={onChangeNombre}
-            value={nombre}
-            placeholder='Nombre completo'
-      />
-      <CheckBox
-            title='Acepto términos de pago *'
-            checked={checkTerminos}
+        <TextInput
+          style={styles.input}
+          onChangeText={onChangeCBU}
+          value={CBU}
+          placeholder='CBU o Alias'
         />
-      <Button
-        title="Aceptar"
-        color="#FC9905"
-        // onPress={}
+        <TextInput
+          style={styles.input}
+          onChangeText={onChangeNombre}
+          value={nombre}
+          placeholder='Nombre completo'
       />
+        <CheckBox
+          title='Acepto los términos de pago *'
+          checked={checked}
+          onPress={() => toggleChecked(!checked)}
+        />
+        <Pressable style={styles.button} onPress={aceptar}>
+          <Text style={styles.buttonText}> Aceptar </Text>
+        </Pressable>
     </View>
   )
 };
@@ -56,10 +54,27 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   input: {
-      height: 40,
-      margin: 10,
-      borderWidth: 1
+    height: 50,
+    margin: 10,
+    borderWidth: 1,
+    width: 300,
+    fontSize: 20,
+    padding:10,
+  },
+  button: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#FC9905',
+    borderRadius: 4,
+    marginTop: 20,
+    height:50,
+    width:150
+  },
+  buttonText: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#FAFAFA',
   }
 });
 
-export default NewTrasnfrerencia
+export default NewTransferencia
