@@ -1,26 +1,38 @@
-import React, {useContext, useEffect} from 'react';
-import {StyleSheet, Text, View, ScrollView, Button, Pressable} from 'react-native';
-//import {Button} from 'react-native-elements';
-import {DataContext} from "../../context/DataContext";
+import React, {useContext} from 'react';
+import {StyleSheet, Text, View, ScrollView, Pressable} from 'react-native';
+
+// Provider
+import {MetodoPagoContext} from "../../context/MetodoPagoContext";
+
+// Components
+import CuentaBancariaCard from "../../Components/Subasta/CuentaBancariaCard";
+import TarjetaCard from "../../Components/Subasta/TarjetaCard";
 
 const MetodosPago = ({navigation}) => {
+
+    //Data form Metodo Pago Provider
+    // const {metodosDePago} = useContext(MetodoPagoContext);
+    // const {tarjetas, cuentasBancarias} = metodosDePago;
 
     return (
         <View style={styles.container}>
             <View style={styles.containerAdd}>
-                <Pressable style={styles.btnAdd} onPress={() => navigation.push('NewTarjeta')}>
+                <Pressable style={styles.btnAdd} onPress={() => navigation.push('NuevaTarjeta')}>
                     <Text style={styles.btnAddText}>Agregar</Text>
                     <Text style={styles.btnAddText}>Tarjeta</Text>
                 </Pressable>
-                <Pressable style={styles.btnAdd} onPress={() => navigation.push('NewTransferencia')}>
+                <Pressable style={styles.btnAdd} onPress={() => navigation.push('NuevaCuentaBancaria')}>
                     <Text style={styles.btnAddText}>Agregar</Text>
-                    <Text style={styles.btnAddText}>Cuenta</Text>
+                    <Text style={styles.btnAddText}>Cuenta Bancaria</Text>
                 </Pressable>
             </View>
-            <Pressable style={styles.cardTarjeta} disabled>
-                <Text style={styles.cardTarjetaText}>XXXX XXXX XXXX 1234</Text>
-                <Text style={styles.cardTarjetaText}>Matías Cardozo</Text>
-            </Pressable>
+            {/* <ScrollView vertical showsVerticalScrollIndicator={false} contentContainerStyle={{flexGrow: 1}}>
+                <Text style={{fontSize: 20, fontWeight: 'bold', paddingVertical: 8, paddingLeft: 15}}>Mis tarjetas</Text>
+                {tarjetas.map((tarjeta, idx) => <TarjetaCard data={tarjeta} key={idx} navigation={navigation}/>)}
+                <Text style={{fontSize: 20, fontWeight: 'bold', paddingVertical: 25, paddingLeft: 15}}>Mis Cuentas
+                    Bancarias</Text>
+                {cuentasBancarias.map((cuenta, idx) => <CuentaBancariaCard data={cuenta} key={idx} navigation={navigation}/>)}
+            </ScrollView> */}
         </View>
     )
 };
@@ -41,10 +53,11 @@ const styles = StyleSheet.create({
           justifyContent: 'center',
           backgroundColor: '#FC9905',
           paddingVertical: 15,
-          paddingHorizontal: 49,
+          paddingHorizontal: 10,
           borderRadius: 4,
           elevation: 3,
           marginHorizontal:5,
+          width: 190,
       },
       btnAddText: {
           fontSize: 20,

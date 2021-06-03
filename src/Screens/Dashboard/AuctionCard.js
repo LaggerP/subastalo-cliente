@@ -1,7 +1,8 @@
 import React from 'react';
 import { StyleSheet, Text, View, } from 'react-native';
-import { Button, Badge } from 'react-native-elements';
+import { Button, Badge } from 'react-native-elements'
 import Moment from 'moment';
+
 
 const AuctionCard = ({ idSubasta, fechaSubasta, horaSubasta, categoriaSubasta, nombreSubastador, estadoSubasta, navigation }) => {
     const Strong = (props) => <Text style={{ fontWeight: 'bold' }}>{props.children}</Text>
@@ -23,10 +24,10 @@ const AuctionCard = ({ idSubasta, fechaSubasta, horaSubasta, categoriaSubasta, n
 
             <View style={{ flex: 0.8, flexDirection: 'row', alignItems: 'flex-start' }}>
                 <View style={{ flex: 2, flexDirection: 'column' }}>
-                    <View style={{ flexDirection: 'row' }}>
-                        <Text style={{ fontSize: 20 }}>Categoría </Text>
-                        <Badge containerStyle={{ alignSelf: 'center', marginLeft: 5, marginRight: 5 }} status="warning" />
-                        <Text style={{ fontSize: 20 }}> {categoriaSubasta}</Text>
+                    <View style={{ flexDirection: 'row', }}>
+                        <Text style={{ fontSize: 20 }}>Categoría</Text>
+                        <Badge containerStyle={{ alignSelf: 'center', marginLeft: 10, marginRight: 10 }} status="warning" />
+                        <Text style={{ fontSize: 20 }}>{categoriaSubasta}</Text>
                     </View>
                 </View>
 
@@ -53,7 +54,7 @@ const AuctionCard = ({ idSubasta, fechaSubasta, horaSubasta, categoriaSubasta, n
             <View style={{ flex: 1, flexDirection: 'row', }}>
                 <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'flex-end', }}>
                     <Button
-                        disabled={estadoSubasta === 'En vivo' ? false : true}
+                        disabled={estadoSubasta !== 'En vivo'}
                         disabledStyle={{ borderColor: '#C4C4C4' }}
                         title='Ingresar'
                         type='solid'
@@ -66,8 +67,9 @@ const AuctionCard = ({ idSubasta, fechaSubasta, horaSubasta, categoriaSubasta, n
                             borderColor: '#FC9905'
                         }}
                         containerStyle={{ width: 165, alignSelf: 'flex-start' }}
-                        onPress={() => navigation.navigate('Subasta', {
-                            idSubasta: idSubasta
+                        onPress={() => navigation.navigate('SubastaScreen', {
+                            screen: 'ItemSubasta',
+                            params: { idSubasta },
                         })}
                     />
                 </View>
@@ -79,6 +81,7 @@ const AuctionCard = ({ idSubasta, fechaSubasta, horaSubasta, categoriaSubasta, n
                         buttonStyle={{ borderRadius: 5, borderWidth: 1.7, borderColor: '#FC9905', height: 35 }}
                         titleStyle={{ color: '#FC9905' }}
                         containerStyle={{ width: 165, alignSelf: 'flex-end' }}
+
                     />
                 </View>
             </View>
