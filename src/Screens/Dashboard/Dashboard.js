@@ -184,7 +184,7 @@ const Dashboard = ({ navigation }) => {
                 </View>
             }
 
-            <View style={styles.searchBarContainer} onLayout={e => { const layout = e.nativeEvent.layout; console.log('X: ' + layout.x + 'Y: ' + layout.y); setFilterPosition({ x: layout.x, y: layout.y }) }}>
+            <View style={styles.searchBarContainer} onLayout={e => { const layout = e.nativeEvent.layout; setFilterPosition({ x: layout.x, y: layout.y }) }}>
               <View style={{ flexDirection: 'column', flex: 2, }}>
                 <SearchBar
                   lightTheme={true}
@@ -210,7 +210,7 @@ const Dashboard = ({ navigation }) => {
             </View>
 
             <View>
-              <Overlay isVisible={filter} onBackdropPress={() => { toggleFilter() }} overlayStyle={{ width: 194, height: 140, padding: 0, paddingTop: 8, paddingBottom: 10, position: 'absolute', transform: [{ translateX: filterPosition.x + 80 }, { translateY: filterPosition.y - 275 }] }}>
+              <Overlay isVisible={filter} onBackdropPress={() => { toggleFilter() }} overlayStyle={{ width: 194, height: 140, padding: 0, paddingTop: 8, paddingBottom: 10, position: 'absolute', transform: [{ translateX: (filterPosition.x + 80) }, { translateY: (filterPosition.y - 275) }] }}>
                 <View style={{ justifyContent: 'flex-start', height: 30, }}>
                   <Text style={{ fontSize: 15, fontWeight: 'bold', marginLeft: 10, }}>Filtrar por:</Text>
                 </View>
