@@ -60,7 +60,7 @@ const Dashboard = ({ navigation }) => {
         : !openedCheck && closedCheck ?
           subastas.filter((i) => (i.estadoSubasta == 'cerrada'))
           :
-          subastas.sort((a, b) => (a.estadoSubasta > b.estadoSubasta) ? 1 : -1)
+          subastas.sort((a, b) => a.estadoSubasta.localeCompare(b.estadoSubasta))
     ;
 
   //Fonts
