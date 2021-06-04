@@ -12,6 +12,7 @@ export const DataProvider = ({children}) => {
     primerInicio: false,//cambiar este valor, no debería se el inicial. ESTA PARA HACER TEST
     direccion: '',
     estado: '',
+    foto:'https://pbs.twimg.com/media/EK9KK43WsAE-2I8?format=jpg&name=small', //TEST
     clienteAdmitido: true,//cambiar este valor, no debería se el inicial. ESTA PARA HACER TEST
     categoria: '',
     nombrePais: '',

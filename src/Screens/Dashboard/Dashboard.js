@@ -2,7 +2,9 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Roboto_500Medium, } from '@expo-google-fonts/roboto';
 import { useFonts, CinzelDecorative_400Regular, CinzelDecorative_700Bold, CinzelDecorative_900Black, } from '@expo-google-fonts/cinzel-decorative';
 import { StyleSheet, Text, View, ScrollView, } from 'react-native';
-import { Icon, Avatar, SearchBar, Overlay, CheckBox } from 'react-native-elements';
+import { Icon, Avatar, SearchBar, Overlay, CheckBox, Button } from 'react-native-elements';
+
+//Provider
 import { DataContext } from "../../context/DataContext";
 
 // Components
@@ -13,32 +15,6 @@ const Dashboard = ({ navigation }) => {
 
   //Data from context provider
   const { userData, subastas, setSubastas } = useContext(DataContext);
-
-  //Error modal
-  const [visible, setVisible] = useState(false);
-  const toggleOverlay = () => {
-    setVisible(!visible);
-  };
-
-  //Checkbox filter
-  const [openedCheck, setOpenedCheck] = useState([
-    selected = true,
-    state = 'abierta'
-  ]);
-  const [closedCheck, setClosedCheck] = useState([
-    selected = true,
-    state = 'cerrada'
-  ]);
-
-  const [filter, setFilterVisible] = useState(false);
-  const toggleFilter = () => {
-    setFilterVisible(!filter);
-  };
-
-  const [filterPosition, setFilterPosition] = useState([
-    x = '',
-    y = ''
-  ]);
 
   const getSubastas = async () => {
     return await fetch('http://10.0.2.2:3000/api/subastas')
@@ -53,8 +29,39 @@ const Dashboard = ({ navigation }) => {
   }
 
   useEffect(() => {
-    getSubastas()
+    getSubastas();
   }, [])
+
+  //Error modal
+  const [visible, setVisible] = useState(false);
+  const toggleOverlay = () => {
+    setVisible(!visible);
+  };
+
+  //Checkbox filter & Searchbar
+  const [search, setSearch] = useState('');
+  const [openedCheck, setOpenedCheck] = useState(false);
+  const [closedCheck, setClosedCheck] = useState(false);
+  const [filter, setFilterVisible] = useState(false);
+  const toggleFilter = () => {
+    setFilterVisible(!filter);
+  };
+  const [filterPosition, setFilterPosition] = useState([
+    x = '',
+    y = ''
+  ]);
+  let filteredAuctions = search ? subastas.filter((i) =>
+    (i.categoriaSubasta.toLowerCase()).includes(search.toLowerCase()) ||
+    (i.nombreSubastador.toLowerCase()).includes(search.toLowerCase()))
+    : openedCheck && closedCheck ?
+      subastas.filter((i) => (i.estadoSubasta == 'abierta' || 'cerrada'))
+      : openedCheck && !closedCheck ?
+        subastas.filter((i) => (i.estadoSubasta == 'abierta'))
+        : !openedCheck && closedCheck ?
+          subastas.filter((i) => (i.estadoSubasta == 'cerrada'))
+          :
+          subastas.sort((a, b) => (a.estadoSubasta > b.estadoSubasta) ? 1 : -1)
+    ;
 
   //Fonts
   let [fontsLoaded] = useFonts({
@@ -63,12 +70,6 @@ const Dashboard = ({ navigation }) => {
     CinzelDecorative_900Black,
     Roboto_500Medium,
   });
-
-  //SearchBar
-  const [search, setSearch] = useState('');
-
-  //Filtro
-  const filteredAuctions = search ? subastas.filter((i) => (i.categoriaSubasta.toLowerCase()).includes(search.toLowerCase()) || (i.nombreSubastador.toLowerCase()).includes(search.toLowerCase())) : subastas;
 
   //Sesion iniciada
   const getSesionIniciada = () => {
@@ -94,7 +95,7 @@ const Dashboard = ({ navigation }) => {
   } else {
     return (
       <View style={{ flex: 1 }}>
-        <ScrollView vertical showsVerticalScrollIndicator={false} ref={(c) => {scroll = c}}>
+        <ScrollView vertical showsVerticalScrollIndicator={false} ref={(c) => { scroll = c }}>
           <View style={styles.container} >
 
             {
@@ -108,7 +109,7 @@ const Dashboard = ({ navigation }) => {
                         rounded
                         source={{
                           uri:
-                            'https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg',
+                            userData.foto,
                         }}
                       />
                       <Text style={{ fontSize: 16, textAlign: 'center', fontFamily: 'Roboto_500Medium' }}>{userData.nombreCompleto}</Text>
@@ -203,13 +204,13 @@ const Dashboard = ({ navigation }) => {
                   size={29}
                   iconStyle={{ alignSelf: 'center', }}
                   containerStyle={{ alignSelf: 'center' }}
-                  onPress={() => {goToTop(); toggleFilter() }}
+                  onPress={() => { goToTop(); toggleFilter() }}
                 />
               </View>
             </View>
 
             <View>
-              <Overlay isVisible={filter} onBackdropPress={toggleFilter} overlayStyle={{ width: 194, height: 140, padding: 0, paddingTop: 8, paddingBottom: 10, position: 'absolute', transform: [{ translateX: filterPosition.x - 220 }, { translateY: filterPosition.y + 30 }] }}>
+              <Overlay isVisible={filter} onBackdropPress={() => { toggleFilter() }} overlayStyle={{ width: 194, height: 140, padding: 0, paddingTop: 8, paddingBottom: 10, position: 'absolute', transform: [{ translateX: filterPosition.x - 220 }, { translateY: filterPosition.y + 30 }] }}>
                 <View style={{ justifyContent: 'flex-start', height: 30, }}>
                   <Text style={{ fontSize: 15, fontWeight: 'bold', marginLeft: 10, }}>Filtrar por:</Text>
                 </View>
@@ -242,7 +243,7 @@ const Dashboard = ({ navigation }) => {
             </View>
 
             {
-              Object.keys(filteredAuctions).length !== 0 ?
+              Object.keys(filteredAuctions).length > 0 ?
 
                 <View style={styles.auctionsContainer}>
                   {filteredAuctions.map((subasta, i) => (
