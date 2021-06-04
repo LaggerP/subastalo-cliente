@@ -184,7 +184,7 @@ const Dashboard = ({ navigation }) => {
                 </View>
             }
 
-            <View style={styles.searchBarContainer}>
+            <View style={styles.searchBarContainer} onLayout={e => { const layout = e.nativeEvent.layout; console.log('X: ' + layout.x + 'Y: ' + layout.y); setFilterPosition({ x: layout.x, y: layout.y }) }}>
               <View style={{ flexDirection: 'column', flex: 2, }}>
                 <SearchBar
                   lightTheme={true}
@@ -197,7 +197,7 @@ const Dashboard = ({ navigation }) => {
                   value={search}
                 />
               </View>
-              <View onLayout={e => { const layout = e.nativeEvent.layout; setFilterPosition({ x: layout.x, y: layout.y }) }} style={{ flexDirection: 'column', flex: 0.4, borderTopRightRadius: 5, borderBottomRightRadius: 5, backgroundColor: '#FFFFFF', shadowColor: '#00000021', elevation: 5, justifyContent: 'center', }}>
+              <View style={{ flexDirection: 'column', flex: 0.4, borderTopRightRadius: 5, borderBottomRightRadius: 5, backgroundColor: '#FFFFFF', shadowColor: '#00000021', elevation: 5, justifyContent: 'center', }}>
                 <Icon
                   name='options-outline'
                   type='ionicon'
@@ -210,7 +210,7 @@ const Dashboard = ({ navigation }) => {
             </View>
 
             <View>
-              <Overlay isVisible={filter} onBackdropPress={() => { toggleFilter() }} overlayStyle={{ width: 194, height: 140, padding: 0, paddingTop: 8, paddingBottom: 10, position: 'absolute', transform: [{ translateX: filterPosition.x - 220 }, { translateY: filterPosition.y + 30 }] }}>
+              <Overlay isVisible={filter} onBackdropPress={() => { toggleFilter() }} overlayStyle={{ width: 194, height: 140, padding: 0, paddingTop: 8, paddingBottom: 10, position: 'absolute', transform: [{ translateX: filterPosition.x + 80 }, { translateY: filterPosition.y - 275 }] }}>
                 <View style={{ justifyContent: 'flex-start', height: 30, }}>
                   <Text style={{ fontSize: 15, fontWeight: 'bold', marginLeft: 10, }}>Filtrar por:</Text>
                 </View>
