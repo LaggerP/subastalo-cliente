@@ -26,12 +26,12 @@ export default function App() {
         <AuthStack.Navigator>
           <AuthStack.Screen name='Dashboard' component={Dashboard} options={{title: '', headerTransparent: true}}/>
           <AuthStack.Screen name='Perfil' component={Perfil} options={{title: 'Perfil', headerTransparent: true}}/>
-          <AuthStack.Screen name='Login' component={Login} options={{title: '', headerTransparent: true}}/>
-          <AuthStack.Screen name='RestablecerPrimer' component={RestablecerPrimer} options={{title: '', headerTransparent: true}}/>
-          <AuthStack.Screen name='RestablecerSegundo' component={RestablecerSegundo} options={{title: '', headerTransparent: true}}/>
-          <AuthStack.Screen name='RegistroUno' component={RegistroUno} options={{title: '', headerTransparent: true}}/>
-          <AuthStack.Screen name='RegistroDos' component={RegistroDos} options={{title: '', headerTransparent: true}}/>
-          <AuthStack.Screen name='RegistroExito' component={RegistroExito} options={{title: '', headerTransparent: true}}/>
+          <AuthStack.Screen name='Login' component={Login} options={{title: '', headerLeft: null, headerTransparent: true}}/>
+          <AuthStack.Screen name='RestablecerPrimer' component={RestablecerPrimer} options={{title: '', headerLeft: null, headerTransparent: true}}/>
+          <AuthStack.Screen name='RestablecerSegundo' component={RestablecerSegundo} options={{title: '', headerLeft: null, headerTransparent: true}}/>
+          <AuthStack.Screen name='RegistroUno' component={RegistroUno} options={{title: '', headerLeft: null, headerTransparent: true}}/>
+          <AuthStack.Screen name='RegistroDos' component={RegistroDos} options={{title: '', headerLeft: null, headerTransparent: true}}/>
+          <AuthStack.Screen name='RegistroExito' component={RegistroExito} options={{title: '', headerLeft: null, headerTransparent: true}}/>
           {/* <AuthStack.Screen name='Historial' component={} options={{ title: '', headerTransparent: true }}/>
         <AuthStack.Screen name='MisProductos' component={} options={{ title: '', headerTransparent: true }}/>
         <AuthStack.Screen name='MetodosDePago' component={} options={{ title: '', headerTransparent: true }}/>

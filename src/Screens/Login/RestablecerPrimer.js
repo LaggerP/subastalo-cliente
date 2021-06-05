@@ -1,9 +1,30 @@
 import {StatusBar} from 'expo-status-bar';
-import React, {useContext} from 'react';
+import React, {useContext, useState} from 'react';
 import {StyleSheet, Text, View, TextInput} from 'react-native';
 import { Button } from "react-native-elements";
 
 const RestablecerPrimer = () => {
+
+  const {email, setEmail} = useState('');
+
+  const olvidado = async () => {
+    try{
+      let loginDatos = await fetch('http://10.0.2.2:3000/api/user/change-password', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(email)
+    });
+    if (loginDatos.status == 201){
+      navigation.push('Dashboard')
+    }
+  } catch (e) {
+    console.log(e);
+  }
+}
+
   return (
     <View style={styles.container}>
       <Text style={styles.titulo}>Restablecer Contraseña</Text>
@@ -11,6 +32,7 @@ const RestablecerPrimer = () => {
           style={styles.input}
           placeholder="Correo electrónico"
           keyboardType="email-address"
+          onChangeText={setEmail}
         />
       <Text style={styles.textoAbajo}>Se le estará enviando un correo con un enlace {"\n"}para restablecer su contraseña. {"\n"}Recuerde que el enlace estará activo por un {"\n"}plazo de 24hrs.</Text>
       <Button
@@ -21,7 +43,7 @@ const RestablecerPrimer = () => {
           marginTop: 150,
           }}
           containerStyle={{ margin: 5 }}
-          onPress={() => alert("Enviado")}
+          onPress={olvidado}
           title="Enviar"
         />
     </View>
