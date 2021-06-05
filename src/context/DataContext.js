@@ -13,7 +13,7 @@ export const DataProvider = ({children}) => {
         userData,
         setUserData,
         subastas,
-        setSubastas
+        setSubastas,
       }
     }>
       {children}

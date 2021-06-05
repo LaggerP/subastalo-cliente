@@ -1,20 +1,33 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { Roboto_500Medium, } from '@expo-google-fonts/roboto';
-import { useFonts, CinzelDecorative_400Regular, CinzelDecorative_700Bold, CinzelDecorative_900Black, } from '@expo-google-fonts/cinzel-decorative';
-import { StyleSheet, Text, View, ScrollView, } from 'react-native';
-import { Icon, Avatar, SearchBar, Overlay, CheckBox, Button } from 'react-native-elements';
+import React, {useContext, useEffect, useState} from 'react';
+import {Roboto_500Medium,} from '@expo-google-fonts/roboto';
+import {
+  useFonts,
+  CinzelDecorative_400Regular,
+  CinzelDecorative_700Bold,
+  CinzelDecorative_900Black,
+} from '@expo-google-fonts/cinzel-decorative';
+import {StyleSheet, Text, View, ScrollView,} from 'react-native';
+import {Icon, Avatar, SearchBar, Overlay, CheckBox, Button} from 'react-native-elements';
 
 //Provider
-import { DataContext } from "../../context/DataContext";
+import {DataContext} from "../../context/DataContext";
 
 // Components
 import AuctionCard from './AuctionCard';
 import ErrorModal from './ErrorModal';
 
-const Dashboard = ({ navigation }) => {
+const Dashboard = ({route, navigation}) => {
+
+  const getSesionIniciada = () => (route.params && route.params.sesionIniciada)
+  let sesionIniciada = getSesionIniciada()
+
+  const getUserData = () => (route.params && route.params.userData)
+  let userData = getUserData()
+  console.log(userData)
 
   //Data from context provider
-  const { userData, subastas, setSubastas } = useContext(DataContext);
+  const {subastas, setSubastas} = useContext(DataContext);
+
 
   const getSubastas = async () => {
     return await fetch('http://10.0.2.2:3000/api/subastas')
@@ -70,21 +83,15 @@ const Dashboard = ({ navigation }) => {
     Roboto_500Medium,
   });
 
-  //Sesion iniciada
-  const getSesionIniciada = () => {
-    return true;
-  }
-  const sesionIniciada = getSesionIniciada();
-
   const goToTop = () => {
-    scroll.scrollTo({ x: 0, y: 0, animated: true });
+    scroll.scrollTo({x: 0, y: 0, animated: true});
   }
 
   //Linea
   const Linea = () => {
     return (
-      <View style={{ flexDirection: 'row', alignItems: 'center', }}>
-        <View style={{ flex: 1, height: 1.5, backgroundColor: '#CACACA', }} />
+      <View style={{flexDirection: 'row', alignItems: 'center',}}>
+        <View style={{flex: 1, height: 1.5, backgroundColor: '#CACACA',}}/>
       </View>
     )
   };
@@ -93,25 +100,31 @@ const Dashboard = ({ navigation }) => {
     return <Text>Loading</Text>;
   } else {
     return (
-      <View style={{ flex: 1 }}>
-        <ScrollView vertical showsVerticalScrollIndicator={false} ref={(c) => { scroll = c }}>
-          <View style={styles.container} >
+      <View style={{flex: 1}}>
+        <ScrollView vertical showsVerticalScrollIndicator={false} ref={(c) => {
+          scroll = c
+        }}>
+          <View style={styles.container}>
 
             {
               sesionIniciada ?
                 <View style={styles.userCard}>
 
                   <View style={styles.userSection}>
-                    <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+                    <View style={{flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
                       <Avatar
                         size='large'
                         rounded
                         source={{
                           uri:
-                            userData.foto,
+                          userData.foto,
                         }}
                       />
-                      <Text style={{ fontSize: 16, textAlign: 'center', fontFamily: 'Roboto_500Medium' }}>{userData.nombreCompleto}</Text>
+                      <Text style={{
+                        fontSize: 16,
+                        textAlign: 'center',
+                        fontFamily: 'Roboto_500Medium'
+                      }}>{userData.nombreCompleto}</Text>
                     </View>
                   </View>
 
@@ -126,8 +139,8 @@ const Dashboard = ({ navigation }) => {
                         reverseColor='#000000'
                         color='#FFCD61'
                         size={22}
-                        onPress={() => navigation.push('Perfil')} />
-                      <Text textBreakStrategy='simple' style={{ fontSize: 12, textAlign: 'center' }}>Mi Perfil</Text>
+                        onPress={() => navigation.push('Perfil')}/>
+                      <Text textBreakStrategy='simple' style={{fontSize: 12, textAlign: 'center'}}>Mi Perfil</Text>
                     </View>
 
                     <View style={styles.btn}>
@@ -139,8 +152,8 @@ const Dashboard = ({ navigation }) => {
                         reverseColor='#000000'
                         color='#FFCD61'
                         size={22}
-                        onPress={() => navigation.push('Perfil')} />
-                      <Text style={{ fontSize: 12, textAlign: 'center' }}>Historial</Text>
+                        onPress={() => navigation.push('Perfil')}/>
+                      <Text style={{fontSize: 12, textAlign: 'center'}}>Historial</Text>
 
                     </View>
 
@@ -153,9 +166,9 @@ const Dashboard = ({ navigation }) => {
                         reverseColor='#000000'
                         color='#FFCD61'
                         size={22}
-                        onPress={() => navigation.push('Perfil')} />
-                      <Text style={{ fontSize: 12, textAlign: 'center' }}>Mis</Text>
-                      <Text style={{ fontSize: 12, textAlign: 'center' }}>Productos</Text>
+                        onPress={() => navigation.push('Perfil')}/>
+                      <Text style={{fontSize: 12, textAlign: 'center'}}>Mis</Text>
+                      <Text style={{fontSize: 12, textAlign: 'center'}}>Productos</Text>
                     </View>
 
                     <View style={styles.btn}>
@@ -167,9 +180,9 @@ const Dashboard = ({ navigation }) => {
                         reverseColor='#000000'
                         color='#FFCD61'
                         size={22}
-                        onPress={() => navigation.push('Perfil')} />
-                      <Text style={{ fontSize: 12, textAlign: 'center' }}>Métodos de</Text>
-                      <Text style={{ fontSize: 12, textAlign: 'center' }}>Pago</Text>
+                        onPress={() => navigation.push('Perfil')}/>
+                      <Text style={{fontSize: 12, textAlign: 'center'}}>Métodos de</Text>
+                      <Text style={{fontSize: 12, textAlign: 'center'}}>Pago</Text>
                     </View>
                   </View>
 
@@ -178,41 +191,75 @@ const Dashboard = ({ navigation }) => {
                 :
 
                 <View style={styles.bannerApp}>
-                  <Text style={{ fontSize: 40, color: '#FC9905', fontFamily: 'CinzelDecorative_400Regular' }}>Subastalo</Text>
+                  <Text
+                    style={{fontSize: 40, color: '#FC9905', fontFamily: 'CinzelDecorative_400Regular'}}>Subastalo</Text>
                 </View>
             }
 
-            <View style={styles.searchBarContainer} onLayout={e => { const layout = e.nativeEvent.layout; setFilterPosition({ x: layout.x, y: layout.y }) }}>
-              <View style={{ flexDirection: 'column', flex: 2, }}>
+            <View style={styles.searchBarContainer} onLayout={e => {
+              const layout = e.nativeEvent.layout;
+              setFilterPosition({x: layout.x, y: layout.y})
+            }}>
+              <View style={{flexDirection: 'column', flex: 2,}}>
                 <SearchBar
                   lightTheme={true}
-                  searchIcon={{ size: 26 }}
-                  inputStyle={{ backgroundColor: '#EDEDED', fontSize: 13, }}
-                  inputContainerStyle={{ borderRadius: 5, width: '100%', height: 35, backgroundColor: '#EDEDED', }}
-                  containerStyle={{ borderTopLeftRadius: 5, borderBottomLeftRadius: 5, backgroundColor: '#FFFFFF', shadowColor: '#00000021', elevation: 5, borderTopWidth: 0, borderBottomWidth: 0 }}
+                  searchIcon={{size: 26}}
+                  inputStyle={{backgroundColor: '#EDEDED', fontSize: 13,}}
+                  inputContainerStyle={{borderRadius: 5, width: '100%', height: 35, backgroundColor: '#EDEDED',}}
+                  containerStyle={{
+                    borderTopLeftRadius: 5,
+                    borderBottomLeftRadius: 5,
+                    backgroundColor: '#FFFFFF',
+                    shadowColor: '#00000021',
+                    elevation: 5,
+                    borderTopWidth: 0,
+                    borderBottomWidth: 0
+                  }}
                   placeholder="Buscar"
                   onChangeText={setSearch}
                   value={search}
                 />
               </View>
-              <View style={{ flexDirection: 'column', flex: 0.4, borderTopRightRadius: 5, borderBottomRightRadius: 5, backgroundColor: '#FFFFFF', shadowColor: '#00000021', elevation: 5, justifyContent: 'center', }}>
+              <View style={{
+                flexDirection: 'column',
+                flex: 0.4,
+                borderTopRightRadius: 5,
+                borderBottomRightRadius: 5,
+                backgroundColor: '#FFFFFF',
+                shadowColor: '#00000021',
+                elevation: 5,
+                justifyContent: 'center',
+              }}>
                 <Icon
                   name='options-outline'
                   type='ionicon'
                   size={29}
-                  iconStyle={{ alignSelf: 'center', }}
-                  containerStyle={{ alignSelf: 'center' }}
-                  onPress={() => { goToTop(); toggleFilter() }}
+                  iconStyle={{alignSelf: 'center',}}
+                  containerStyle={{alignSelf: 'center'}}
+                  onPress={() => {
+                    goToTop();
+                    toggleFilter()
+                  }}
                 />
               </View>
             </View>
 
             <View>
-              <Overlay isVisible={filter} onBackdropPress={() => { toggleFilter() }} overlayStyle={{ width: 194, height: 140, padding: 0, paddingTop: 8, paddingBottom: 10, position: 'absolute', transform: [{ translateX: (filterPosition.x + 80) }, { translateY: (filterPosition.y - 275) }] }}>
-                <View style={{ justifyContent: 'flex-start', height: 30, }}>
-                  <Text style={{ fontSize: 15, fontWeight: 'bold', marginLeft: 10, }}>Filtrar por:</Text>
+              <Overlay isVisible={filter} onBackdropPress={() => {
+                toggleFilter()
+              }} overlayStyle={{
+                width: 194,
+                height: 140,
+                padding: 0,
+                paddingTop: 8,
+                paddingBottom: 10,
+                position: 'absolute',
+                transform: [{translateX: (filterPosition.x + 80)}, {translateY: (filterPosition.y - 275)}]
+              }}>
+                <View style={{justifyContent: 'flex-start', height: 30,}}>
+                  <Text style={{fontSize: 15, fontWeight: 'bold', marginLeft: 10,}}>Filtrar por:</Text>
                 </View>
-                <Linea />
+                <Linea/>
                 <CheckBox
                   title='En Vivo'
                   checkedIcon='dot-circle-o'
@@ -220,11 +267,13 @@ const Dashboard = ({ navigation }) => {
                   iconRight={true}
                   size={20}
                   containerStyle={styles.checkContainer}
-                  wrapperStyle={{ justifyContent: 'space-between', }}
-                  onPress={() => { setOpenedCheck(!openedCheck) }}
+                  wrapperStyle={{justifyContent: 'space-between',}}
+                  onPress={() => {
+                    setOpenedCheck(!openedCheck)
+                  }}
                   checked={openedCheck}
                 />
-                <Linea />
+                <Linea/>
                 <CheckBox
                   title='Próximo'
                   checkedIcon='dot-circle-o'
@@ -232,11 +281,11 @@ const Dashboard = ({ navigation }) => {
                   iconRight={true}
                   size={20}
                   containerStyle={styles.checkContainer}
-                  wrapperStyle={{ justifyContent: 'space-between', }}
+                  wrapperStyle={{justifyContent: 'space-between',}}
                   onPress={() => setClosedCheck(!closedCheck)}
                   checked={closedCheck}
                 />
-                <Linea />
+                <Linea/>
               </Overlay>
             </View>
 
@@ -245,7 +294,7 @@ const Dashboard = ({ navigation }) => {
 
                 <View style={styles.auctionsContainer}>
                   {filteredAuctions.map((subasta, i) => (
-                    <AuctionCard key={i} {...subasta} navigation={navigation} />
+                    <AuctionCard key={i} {...subasta} navigation={navigation}/>
                   ))}
                 </View>
                 :
@@ -264,9 +313,16 @@ const Dashboard = ({ navigation }) => {
               <Button
                 title='Ingresar'
                 type='solid'
-                titleStyle={{ color: '#000000', fontFamily: 'CinzelDecorative_700Bold' }}
-                buttonStyle={{ backgroundColor: '#FFAE00', borderRadius: 10, height: 42, width: 125, borderColor: '#FFAE00' }}
-                containerStyle={{ width: 145, alignSelf: 'flex-end', }}
+                titleStyle={{color: '#000000', fontFamily: 'CinzelDecorative_700Bold'}}
+                buttonStyle={{
+                  backgroundColor: '#FFAE00',
+                  borderRadius: 10,
+                  height: 42,
+                  width: 125,
+                  borderColor: '#FFAE00'
+                }}
+                containerStyle={{width: 145, alignSelf: 'flex-end',}}
+                onPress={() => navigation.push('Login')}
               />
             </View>
             : null
@@ -355,7 +411,7 @@ const styles = StyleSheet.create({
     height: 73,
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 15,
+    marginTop: 30,
     marginBottom: 15,
   },
 
