@@ -140,7 +140,6 @@ const Dashboard = ({ navigation }) => {
                         color='#FFCD61'
                         size={22}
                         onPress={() => navigation.push('Perfil')} />
-
                       <Text style={{ fontSize: 12, textAlign: 'center' }}>Historial</Text>
 
                     </View>
