@@ -27,6 +27,7 @@ const NuevaCuentaBancaria = () => {
           },
           body: JSON.stringify(dataCB)
         });
+        console.log(await cuentaBDatos.json())
         return cuentaBDatos.status;
       } catch (e) {
         console.log('Estoy en el catch de createCB NuevaCuentaBancaria');
@@ -45,6 +46,7 @@ const NuevaCuentaBancaria = () => {
         }
         console.log(dataCB);
         const status = await createCB(dataCB);
+        console.log(status);
         if (status == 201) {
           console.log('Cuenta Bancaria creada con éxito')
         }

@@ -16,7 +16,7 @@ const NuevaTarjeta = () => {
   const createTarjetaCredito = async (dataTarjeta) => {
     console.log('Llegué a createTarjetaCredito NuevaTarjeta');
     try {
-      let tarjetaDatos = await fetch('http:localhost:3000/api/metodo-de-pago/new/tarjeta', {
+      let tarjetaDatos = await fetch('http:10.0.2.2t:3000/api/metodo-de-pago/new/tarjeta', {
         method: 'POST',
           mode: 'cors',
           headers: {

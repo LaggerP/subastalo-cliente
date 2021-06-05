@@ -11,35 +11,38 @@ import TarjetaCard from "../../Components/Subasta/TarjetaCard";
 const MetodosPago = ({navigation}) => {
 
     //Data form Metodo Pago Provider
-    // const {metodosDePago} = useContext(MetodoPagoContext);
-    // const {tarjetas, cuentasBancarias} = metodosDePago;
+    const {metodosDePago} = useContext(MetodoPagoContext);
+    const {tarjetas, cuentasBancarias} = metodosDePago;
 
     return (
         <View style={styles.container}>
             <View style={styles.containerAdd}>
-                <Pressable style={styles.btnAdd} onPress={() => navigation.push('NuevaTarjeta')}>
+                <Pressable style={styles.btnAdd} onPress={() => navigation.navigate('NuevaTarjeta')}>
                     <Text style={styles.btnAddText}>Agregar</Text>
                     <Text style={styles.btnAddText}>Tarjeta</Text>
                 </Pressable>
-                <Pressable style={styles.btnAdd} onPress={() => navigation.push('NuevaCuentaBancaria')}>
+                <Pressable style={styles.btnAdd} onPress={() => navigation.navigate('NuevaCuentaBancaria')}>
                     <Text style={styles.btnAddText}>Agregar</Text>
                     <Text style={styles.btnAddText}>Cuenta Bancaria</Text>
                 </Pressable>
             </View>
-            {/* <ScrollView vertical showsVerticalScrollIndicator={false} contentContainerStyle={{flexGrow: 1}}>
+            <ScrollView vertical showsVerticalScrollIndicator={false} contentContainerStyle={{flexGrow: 1}}>
                 <Text style={{fontSize: 20, fontWeight: 'bold', paddingVertical: 8, paddingLeft: 15}}>Mis tarjetas</Text>
                 {tarjetas.map((tarjeta, idx) => <TarjetaCard data={tarjeta} key={idx} navigation={navigation}/>)}
                 <Text style={{fontSize: 20, fontWeight: 'bold', paddingVertical: 25, paddingLeft: 15}}>Mis Cuentas
                     Bancarias</Text>
                 {cuentasBancarias.map((cuenta, idx) => <CuentaBancariaCard data={cuenta} key={idx} navigation={navigation}/>)}
-            </ScrollView> */}
+            </ScrollView>
         </View>
     )
 };
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
+        flex: 3,
+        flexDirection: 'column',
+
+        // flex: 1,
         backgroundColor: '#FFF',
         alignItems: 'center',
         justifyContent: 'center',
