@@ -8,6 +8,7 @@ import {
 } from '@expo-google-fonts/cinzel-decorative';
 import {Roboto_500Medium, Roboto_400Regular} from '@expo-google-fonts/roboto';
 import {Button} from "react-native-elements";
+import apiUrl from "../../api";
 import {DataContext} from '../../context/DataContext';
 
 const Login = ({navigation}) => {
@@ -29,7 +30,7 @@ const Login = ({navigation}) => {
 
   const login = async () => {
     try {
-      let loginDatos = await fetch('http://10.0.2.2:3000/api/user/login', {
+      let loginDatos = await fetch(`${apiUrl}/api/user/login`, {
         method: 'POST',
         headers: {
           'Accept': 'application/json',

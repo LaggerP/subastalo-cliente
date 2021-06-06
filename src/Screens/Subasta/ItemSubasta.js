@@ -1,17 +1,18 @@
 import React, {useEffect, useContext, useState} from 'react';
-import {StyleSheet, Text, View, ScrollView} from 'react-native';
-import {Button, Icon} from 'react-native-elements'
+import {StyleSheet, Text, View, ScrollView, AsyncStorage} from 'react-native';
+import {Avatar, Button} from 'react-native-elements'
 import CountDown from 'react-native-countdown-component';
+import apiUrl from "../../api";
 
 //Context
 import {PujasContext} from "../../context/PujasContext";
-
 // Components
 import SubastaCarousel from '../../Components/Subasta/SubastaCarousel';
 import {ModalSubasta} from "../../Components/Subasta/ModalSubasta";
 
+const ItemSubasta =  ({route, navigation}) => {
 
-const ItemSubasta = ({route, navigation}) => {
+
 
   const [showModal, setShowModal] = useState({
     visible: false,
@@ -21,25 +22,34 @@ const ItemSubasta = ({route, navigation}) => {
     icon: 'subastaError'
   });
 
+  const [downCountClock, setDownCountClock] = useState(60 * 50);
+
   // Pujas Context
   const {getPujas, setItem, item} = useContext(PujasContext);
 
   const getItemSubastandose = async (idSubasta) => {
     try {
-      let _item = await fetch(`http://10.0.2.2:3000/api/subastas/catalogo/${idSubasta}/item-catalogo`);
+      setItem(null)
+      let _item = await fetch(`${apiUrl}/api/subastas/catalogo/${idSubasta}/item-catalogo`);
       setItem(await _item.json())
     } catch (e) {
       setShowModal({...showModal, visible: true});
     }
   }
 
+
+
+
   useEffect(() => {
-    getItemSubastandose(route.params.idSubasta);
+    getItemSubastandose(route.params.idSubasta).then(r => r);
     if (item) {
-      let interval = setInterval(() => getPujas(), 8000)
+      let pujasInterval = setInterval(() => getPujas(), 8000);
       //destroy interval on unmount
-      return () => clearInterval(interval)
+      return () => {
+        clearInterval(pujasInterval);
+      }
     }
+
   }, [])
 
 
@@ -61,7 +71,7 @@ const ItemSubasta = ({route, navigation}) => {
       });
   }
 
-  if (item) {
+  if (item && downCountClock > 0) {
     return (
       <View style={styles.container}>
         <View style={styles.imagesContainer}>
@@ -89,7 +99,7 @@ const ItemSubasta = ({route, navigation}) => {
                 Tiempo restante
               </Text>
               <CountDown
-                until={60 * 10 + 20}
+                until={downCountClock}
                 onFinish={() => changeItemEstado()}
                 digitStyle={{backgroundColor: '#FFF', borderWidth: 2, borderColor: '#FC9905'}}
                 separatorStyle={{color: '#000'}}
@@ -109,7 +119,6 @@ const ItemSubasta = ({route, navigation}) => {
           <ScrollView vertical showsVerticalScrollIndicator={false}>
             {
               (item.pujas.length > 0) ? item.pujas.map((item, idx) => {
-
                   const numFormatter = (importe) => {
                     if (importe > 999 && importe < 1000000) return item.importe = (importe / 1000).toFixed(1) + 'K';
                     else if (importe > 1000000) return item.importe = (importe / 1000000).toFixed(1) + 'M';
@@ -120,15 +129,15 @@ const ItemSubasta = ({route, navigation}) => {
 
                   return (
                     <View style={styles.itemPuja} key={idx}>
-                      <Icon
-                        name='sc-telegram'
-                        type='evilicon'
-                        color='#517fa4'
-                        reverse
-                        size={18}
+                    <Avatar
+                        rounded
+                        size='medium'
+                        source={{
+                          uri:`${item.foto}`,
+                        }}
                       />
-                      <Text style={{fontSize: 15,}}>Realizó una oferta</Text>
-                      <Text style={{fontSize: 16, fontWeight: 'bold'}}>${item.importe}</Text>
+                      <Text style={{fontSize: 16}}>Se hizo una oferta por</Text>
+                      <Text style={{fontSize: 17, fontWeight: 'bold'}}>${item.importe}</Text>
                     </View>
                   )
                 })

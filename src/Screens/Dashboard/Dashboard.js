@@ -8,6 +8,7 @@ import {
 } from '@expo-google-fonts/cinzel-decorative';
 import {StyleSheet, Text, View, ScrollView,} from 'react-native';
 import {Icon, Avatar, SearchBar, Overlay, CheckBox, Button} from 'react-native-elements';
+import apiUrl from "../../api";
 
 //Provider
 import {DataContext} from "../../context/DataContext";
@@ -23,14 +24,14 @@ const Dashboard = ({route, navigation}) => {
 
   const getUserData = () => (route.params && route.params.userData)
   let userData = getUserData()
-  console.log(userData)
 
   //Data from context provider
   const {subastas, setSubastas} = useContext(DataContext);
 
 
   const getSubastas = async () => {
-    return await fetch('http://10.0.2.2:3000/api/subastas')
+    console.log(`${apiUrl}/api/subastas`)
+    return await fetch(`${apiUrl}/api/subastas`)
       .then((response) => response.json())
       .then((json) => {
         setSubastas(json.subastas);
@@ -67,11 +68,11 @@ const Dashboard = ({route, navigation}) => {
     (i.categoriaSubasta.toLowerCase()).includes(search.toLowerCase()) ||
     (i.nombreSubastador.toLowerCase()).includes(search.toLowerCase()))
     : openedCheck && closedCheck ?
-      subastas.filter((i) => (i.estadoSubasta == 'abierta' || 'cerrada'))
+      subastas.filter((i) => (i.estadoSubasta === 'abierta' || 'cerrada'))
       : openedCheck && !closedCheck ?
-        subastas.filter((i) => (i.estadoSubasta == 'abierta'))
+        subastas.filter((i) => (i.estadoSubasta === 'abierta'))
         : !openedCheck && closedCheck ?
-          subastas.filter((i) => (i.estadoSubasta == 'cerrada'))
+          subastas.filter((i) => (i.estadoSubasta === 'cerrada'))
           :
           subastas.sort((a, b) => a.estadoSubasta.localeCompare(b.estadoSubasta) || a.fechaSubasta.localeCompare(b.fechaSubasta));
 

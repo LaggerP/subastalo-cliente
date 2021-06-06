@@ -59,6 +59,9 @@ const NuevaPuja = ({navigation}) => {
   });
   const [spinnerLoading, setSpinnerLoading] = useState(false);
 
+  const [downCountClock, setDownCountClock] = useState(60 * 50);
+
+
   // data obtenida a través de la DB
   const minValue = 25000;
   const maxValue = 30000;
@@ -117,18 +120,17 @@ const NuevaPuja = ({navigation}) => {
           </View>
           <View style={styles.verticleLine}/>
           <View style={styles.itemTextPriceContainer}>
-            <Text style={{fontSize: 12, fontWeight:'bold'}}>
+            <Text style={{fontSize: 12, fontWeight: 'bold'}}>
               Precio Base
             </Text>
             <Text>
               {precioBase}
             </Text>
-            <Text style={{fontSize: 12, paddingBottom: 2, fontWeight:'bold'}}>
+            <Text style={{fontSize: 12, paddingBottom: 2, fontWeight: 'bold'}}>
               Tiempo restante
             </Text>
             <CountDown
-              until={60 * 10 + 20}
-              onFinish={() => changeItemEstado()}
+              until={downCountClock}
               digitStyle={{backgroundColor: '#FFF', borderWidth: 2, borderColor: '#FC9905'}}
               separatorStyle={{color: '#000'}}
               timeToShow={['M', 'S']}
