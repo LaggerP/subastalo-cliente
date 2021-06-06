@@ -30,7 +30,6 @@ const Dashboard = ({route, navigation}) => {
 
 
   const getSubastas = async () => {
-    console.log(`${apiUrl}/api/subastas`)
     return await fetch(`${apiUrl}/api/subastas`)
       .then((response) => response.json())
       .then((json) => {

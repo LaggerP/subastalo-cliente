@@ -41,9 +41,9 @@ const ItemSubasta =  ({route, navigation}) => {
 
 
   useEffect(() => {
-    getItemSubastandose(route.params.idSubasta).then(r => r);
+    getItemSubastandose(route.params.idSubasta);
     if (item) {
-      let pujasInterval = setInterval(() => getPujas(), 8000);
+      let pujasInterval = setInterval(() => getPujas(), 2000);
       //destroy interval on unmount
       return () => {
         clearInterval(pujasInterval);
