@@ -6,6 +6,7 @@ export const PujasContext = createContext(null);
 export const PujasProvider = ({children}) => {
 
   const [item, setItem] = useState(null);
+  const [downCountClock, setDownCountClock] = useState(60 * 50);
 
 
   const getPujas = async () => {
@@ -29,6 +30,7 @@ export const PujasProvider = ({children}) => {
         body: JSON.stringify(oferta)
       })
       await getPujas();
+      setDownCountClock(60*50)
     } catch (e) {
       console.error(error)
     }
@@ -37,7 +39,7 @@ export const PujasProvider = ({children}) => {
   return (
     <PujasContext.Provider value={
       {
-        getPujas, newPuja, item, setItem
+        getPujas, newPuja, item, setItem, downCountClock, setDownCountClock
       }
     }>
       {children}

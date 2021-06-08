@@ -41,11 +41,14 @@ const Login = ({navigation}) => {
       let user = await loginDatos.json();
       await setUserData(user.userData);
       if (loginDatos.status === 200) {
+        await AsyncStorage.multiSet([
+          ["email", loginInfo.email],
+          ["password", loginInfo.password]
+        ]);
         await AsyncStorage.setItem('sesionIniciada', 'true');
         const data = await AsyncStorage.getItem('sesionIniciada');
         navigation.navigate('DashboardScreen', {
-          screen: 'Dashboard',
-          params: {sesionIniciada: data === 'true', userData: user.userData},
+          screen: 'Dashboard'
         })
       }
     } catch (e) {

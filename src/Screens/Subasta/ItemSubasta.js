@@ -12,8 +12,6 @@ import {ModalSubasta} from "../../Components/Subasta/ModalSubasta";
 
 const ItemSubasta =  ({route, navigation}) => {
 
-
-
   const [showModal, setShowModal] = useState({
     visible: false,
     title: '¡Ups!',
@@ -22,13 +20,13 @@ const ItemSubasta =  ({route, navigation}) => {
     icon: 'subastaError'
   });
 
-  const [downCountClock, setDownCountClock] = useState(60 * 50);
 
   // Pujas Context
-  const {getPujas, setItem, item} = useContext(PujasContext);
+  const {getPujas, setItem, item, downCountClock} = useContext(PujasContext);
 
   const getItemSubastandose = async (idSubasta) => {
     try {
+      console.log(idSubasta)
       setItem(null)
       let _item = await fetch(`${apiUrl}/api/subastas/catalogo/${idSubasta}/item-catalogo`);
       setItem(await _item.json())
@@ -36,9 +34,6 @@ const ItemSubasta =  ({route, navigation}) => {
       setShowModal({...showModal, visible: true});
     }
   }
-
-
-
 
   useEffect(() => {
     getItemSubastandose(route.params.idSubasta);

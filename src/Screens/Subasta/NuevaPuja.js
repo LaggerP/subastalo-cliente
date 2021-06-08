@@ -41,7 +41,7 @@ const NuevaPuja = ({navigation}) => {
   //Data from Data Context
   const {userData} = useContext(DataContext);
   //Data from Pujas Context
-  const {item, newPuja} = useContext(PujasContext);
+  const {item, newPuja, downCountClock} = useContext(PujasContext);
   const {descripcionCompleta, precioBase, idItemCatalogo, idSubasta} = item
   //Data from Metodo Pago Context
   const {metodoPagoElegido} = useContext(MetodoPagoContext);
@@ -58,9 +58,6 @@ const NuevaPuja = ({navigation}) => {
     icon: ''
   });
   const [spinnerLoading, setSpinnerLoading] = useState(false);
-
-  const [downCountClock, setDownCountClock] = useState(60 * 50);
-
 
   // data obtenida a través de la DB
   const minValue = 25000;
