@@ -8,8 +8,6 @@ import masterCardIcon from '../../../assets/cardIcons/mastercard.png';
 import {MetodoPagoContext} from '../../context/MetodoPagoContext';
 
 const TarjetaCard = ({navigation, data}) => {
-  const {metodoPagoElegido, setMetodoPagoElegido} = useContext(MetodoPagoContext);
-
   const {entidad, idCliente, idTarjeta, lastNumbers, nombreTitular, numero, vencimiento} = data
 
   const financialCoIcon = {
@@ -22,7 +20,7 @@ const TarjetaCard = ({navigation, data}) => {
       <View style={{marginHorizontal: 15}}>
 
         <TouchableWithoutFeedback onPress={() => {
-          setMetodoPagoElegido(data)
+          console.log("me voy para atras")
           navigation.goBack();
         }}>
           <View style={styles.metodoDePagoCard}>
@@ -37,10 +35,7 @@ const TarjetaCard = ({navigation, data}) => {
               <Text style={{fontSize: 13, color: '#000', fontWeight: 'bold'}}>
                 Vencimiento: {vencimiento}
               </Text>
-              <Text style={{fontSize: 13, color: '#FC9905', fontWeight: 'bold'}}>
-                {(idTarjeta === metodoPagoElegido.idTarjeta) ? 'Seleccionada actualmente' : 'Elegir este método de' +
-                  ' pago'}
-              </Text>
+
             </View>
             <View style={{
               display: 'flex',
@@ -70,7 +65,7 @@ const TarjetaCard = ({navigation, data}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FAFAFA',
+    backgroundColor: '#fff',
   },
   metodoDePagoCard: {
     flexDirection: 'row',
@@ -78,7 +73,7 @@ const styles = StyleSheet.create({
     marginTop: 15,
     borderRadius: 10,
     height: 80,
-    backgroundColor: '#fafafa',
+    backgroundColor: '#fff',
     shadowColor: "#000",
     shadowOffset: {
       width: 0,

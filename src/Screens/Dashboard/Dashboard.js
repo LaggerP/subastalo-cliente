@@ -169,7 +169,8 @@ const Dashboard = ({ navigation }) => {
                         color='#FFCD61'
                         size={22}
                         onPress={() => navigation.navigate('MetodosPagoScreen', {
-                          screeb: 'MetodosPago'
+                          screen: 'MetodosPago',
+                          params:  {userData}
                         })} />
                       <Text style={{ fontSize: 12, textAlign: 'center' }}>Métodos de</Text>
                       <Text style={{ fontSize: 12, textAlign: 'center' }}>Pago</Text>

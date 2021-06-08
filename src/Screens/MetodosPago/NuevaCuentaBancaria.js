@@ -1,62 +1,83 @@
 import {StatusBar} from 'expo-status-bar';
 import React, {createRef, useContext} from 'react';
-import {StyleSheet, View, Button, TextInput, Pressable, Text} from 'react-native';
-import {CheckBox} from 'react-native-elements';
+import {StyleSheet, View, Button, TextInput, Pressable, Text, TouchableOpacity} from 'react-native';
+import {CheckBox, Icon} from 'react-native-elements';
 
 // Context
 import {DataContext} from "../../context/DataContext";
 
-const NuevaCuentaBancaria = () => {
-    const [entidad, onChangeEntidadB] = React.useState(null);
-    const [cbu_alias, onChangeCBU] = React.useState(null);
-    const [nombreTitular, onChangeNombre] = React.useState(null);
-    const [checked , toggleChecked] = React.useState(false);
+const NuevaCuentaBancaria = ({navigation}) => {
+  const [entidad, onChangeEntidadB] = React.useState(null);
+  const [cbu_alias, onChangeCBU] = React.useState(null);
+  const [nombreTitular, onChangeNombre] = React.useState(null);
+  const [checked, toggleChecked] = React.useState(false);
 
-    //Data form Data Context
-    const {userData} = useContext(DataContext);
+  //Data form Data Context
+  const {userData} = useContext(DataContext);
 
-    const createCB = async (dataCB) => {
-      console.log('Llegué a createCB NuevaCuentaBancaria');
-      try {
-        let cuentaBDatos = await fetch('http://10.0.2.2:3000/api/metodo-de-pago/new/cuenta-bancaria', {
-          method: 'POST',
-          mode: 'cors',
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(dataCB)
-        });
-        console.log(await cuentaBDatos.json())
-        return cuentaBDatos.status;
-      } catch (e) {
-        console.log('Estoy en el catch de createCB NuevaCuentaBancaria');
-        console.log(e);
+  const createCB = async (dataCB) => {
+    console.log('Llegué a createCB NuevaCuentaBancaria');
+    try {
+      let cuentaBDatos = await fetch('http://10.0.2.2:3000/api/metodo-de-pago/new/cuenta-bancaria', {
+        method: 'POST',
+        mode: 'cors',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(dataCB)
+      });
+      console.log(await cuentaBDatos.json())
+      return cuentaBDatos.status;
+    } catch (e) {
+      console.log('Estoy en el catch de createCB NuevaCuentaBancaria');
+      console.log(e);
+    }
+  };
+
+  const createCuenta = async () => {
+    if (checked) {
+      let dataCB = {
+        // idCliente: userData.idCliente,
+        idCliente: 2,
+        nombreTitular: nombreTitular,
+        entidad: entidad,
+        cbu_alias: cbu_alias,
       }
-    };
-    
-    const createCuenta = async () => {
-      if(checked){
-        let dataCB = {
-          // idCliente: userData.idCliente,
-          idCliente: 2,
-          nombreTitular: nombreTitular,
-          entidad: entidad,
-          cbu_alias: cbu_alias,
-        }
-        console.log(dataCB);
-        const status = await createCB(dataCB);
-        console.log(status);
-        if (status == 201) {
-          console.log('Cuenta Bancaria creada con éxito')
-        }
-      }else {
-        console.log('Debe aceptar los términos de pago para continuar')
+      console.log(dataCB);
+      const status = await createCB(dataCB);
+      console.log(status);
+      if (status == 201) {
+        console.log('Cuenta Bancaria creada con éxito')
       }
-      };
+    } else {
+      console.log('Debe aceptar los términos de pago para continuar')
+    }
+  };
 
-    return (
-    <View style={styles.container}>
+  return (
+    <>
+      <View style={{
+        flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-start', backgroundColor: '#fff',
+      }}>
+        <TouchableOpacity
+          style={{
+            justifyContent: 'flex-start',
+            marginTop: '15%',
+            paddingLeft: 20,
+            paddingBottom: 10,
+            paddingTop: 10
+          }}
+          onPress={() => navigation.goBack()}>
+          <Icon
+            name='arrow-back-outline'
+            type='ionicon'
+            color='#000'
+            size={25}
+          />
+        </TouchableOpacity>
+      </View>
+      <View style={styles.container}>
         <TextInput
           style={styles.input}
           onChangeText={onChangeEntidadB}
@@ -74,7 +95,7 @@ const NuevaCuentaBancaria = () => {
           onChangeText={onChangeNombre}
           value={nombreTitular}
           placeholder='Nombre completo'
-      />
+        />
         <CheckBox
           title='Acepto los términos de pago *'
           checked={checked}
@@ -83,7 +104,8 @@ const NuevaCuentaBancaria = () => {
         <Pressable style={styles.button} onPress={createCuenta}>
           <Text style={styles.buttonText}> Aceptar </Text>
         </Pressable>
-    </View>
+      </View>
+    </>
   )
 };
 
@@ -100,7 +122,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     width: 300,
     fontSize: 20,
-    padding:10,
+    padding: 10,
   },
   button: {
     alignItems: 'center',
@@ -108,8 +130,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#FC9905',
     borderRadius: 4,
     marginTop: 20,
-    height:50,
-    width:150
+    height: 50,
+    width: 150
   },
   buttonText: {
     fontSize: 20,
