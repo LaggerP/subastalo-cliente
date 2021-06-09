@@ -1,21 +1,29 @@
 import React, { useState, useContext } from "react";
-import {StyleSheet, TouchableOpacity, View} from "react-native";
+import {Picker, StyleSheet, TouchableOpacity, View} from "react-native";
 import { CreditCardInput } from "react-native-credit-card-input";
 import {Button, Icon} from 'react-native-elements';
 
 //Context
 import {DataContext} from "../../context/DataContext";
+import apiUrl from "../../api";
+import {MetodoPagoContext} from "../../context/MetodoPagoContext";
+import BBVALogo from "../../../assets/bankIcons/BBVA.png";
+import santanderLogo from "../../../assets/bankIcons/Santander.png";
+import galiciaLogo from "../../../assets/bankIcons/Galicia.png";
+import itauLogo from "../../../assets/bankIcons/Itau.png";
 
 const NuevaTarjeta = ({navigation}) => {
   
   const [cardData, setCardData] = useState(null);
-  
+  const [selectedBank, setSelectedBank] = useState();
+
   //Data form Data Context
   const {userData} = useContext(DataContext);
+  const {getMetodosDePago} = useContext(MetodoPagoContext);
 
   const createTarjetaCredito = async (dataTarjeta) => {
     try {
-      let tarjetaDatos = await fetch('http://10.0.2.2t:3000/api/metodo-de-pago/new/tarjeta', {
+      let tarjeta = await fetch(`${apiUrl}/api/metodo-de-pago/new/tarjeta`, {
         method: 'POST',
           mode: 'cors',
           headers: {
@@ -24,8 +32,8 @@ const NuevaTarjeta = ({navigation}) => {
           },
           body: JSON.stringify(dataTarjeta)
       });
-      console.log(await cuentaBDatos.json())
-      return tarjetaDatos.status;
+      tarjeta = await tarjeta.json()
+      return tarjeta;
     } catch (e) {
       console.log(e);
     }
@@ -35,22 +43,22 @@ const NuevaTarjeta = ({navigation}) => {
     let cardData2 = JSON.parse(cardData);
     let dataTarjeta = {
       nombreTitular: cardData2['values']['name'],
-      entidad: cardData2['values']['type'],
+      entidad: selectedBank,
       numero: cardData2['values']['number'],
       vencimiento: cardData2['values']['expiry'],
-      // idCliente: userData.idCliente,
-      idCliente: 2,
+      idCliente: userData.idCliente,
       codigo: cardData2['values']['cvc']
     }
-    console.log(dataTarjeta);
-    const status = await createTarjetaCredito(dataTarjeta);
-    if (status === 201) {
-      console.log('Tarjeta de crédito/débito cargada con éxito');
+    const nuevaTarjeta = await createTarjetaCredito(dataTarjeta);
+    if (nuevaTarjeta.status === 201) {
+      getMetodosDePago()
+      navigation.goBack();
     }
   };
 
   return (
     <View style={{backgroundColor: '#fff', height: '100%'}}>
+
 
       <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-start'}}>
         <TouchableOpacity
@@ -70,6 +78,7 @@ const NuevaTarjeta = ({navigation}) => {
           />
         </TouchableOpacity>
       </View>
+
       <View style={styles.containerCard}>
         <CreditCardInput
           autoFocus
@@ -82,6 +91,19 @@ const NuevaTarjeta = ({navigation}) => {
           placeholderColor={"darkgray"}
           onChange={(formData) => setCardData(JSON.stringify(formData))}
         />
+      </View>
+      <View style={{alignItems: 'center', justifyContent: 'center', backgroundColor:'#FC9905', marginBottom: 20, borderRadius: 8, marginHorizontal:30}}>
+        <Picker
+          selectedBank={selectedBank}
+          style={{ height: 50, width: 300, color:'#fff' }}
+          onValueChange={(itemValue, itemIndex) => setSelectedBank(itemValue)}
+        >
+          <Picker.Item label="Seleccione Banco" value="value" />
+          <Picker.Item label="Banco BBVA" value="bbva" />
+          <Picker.Item label="Banco Santander" value="santander" />
+          <Picker.Item label="Banco Galicia" value="galicia" />
+          <Picker.Item label="Banco Itau" value="itau" />
+        </Picker>
       </View>
       <View style={styles.containerButton}>
         <Button 
@@ -105,8 +127,8 @@ const NuevaTarjeta = ({navigation}) => {
 const styles = StyleSheet.create({
     containerCard: {
       backgroundColor: "#fff",
-      marginTop: 60,
-      marginVertical:60
+      marginTop: 20,
+      marginBottom:20
     },
     containerButton: {
       backgroundColor: "#fff",

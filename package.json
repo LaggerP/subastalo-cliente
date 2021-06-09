@@ -31,7 +31,7 @@
     "react-native-safe-area-context": "^3.2.0",
     "react-native-screens": "~3.0.0",
     "react-native-snap-carousel": "^3.9.1",
-    "rn-credit-card": "^1.0.1"
+    "rn-credit-card": "^1.0.1",
     "react-native-web": "^0.16.3"
   },
   "devDependencies": {

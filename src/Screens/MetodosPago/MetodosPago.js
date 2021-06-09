@@ -92,7 +92,7 @@ const styles = StyleSheet.create({
   btnAdd: {
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#FC9905',
+    backgroundColor: '#FFAE00',
     paddingVertical: 15,
     paddingHorizontal: 10,
     borderRadius: 4,
