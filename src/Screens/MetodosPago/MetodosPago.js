@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {StyleSheet, Text, View, ScrollView, Pressable, TouchableOpacity} from 'react-native';
+import {StyleSheet, Text, View, ScrollView, Pressable, TouchableOpacity, Image} from 'react-native';
 
 // Provider
 import {MetodoPagoContext} from "../../context/MetodoPagoContext";
@@ -8,6 +8,11 @@ import {MetodoPagoContext} from "../../context/MetodoPagoContext";
 import CuentaBancariaCard from "../../Components/MetodoDePago/CuentaBancariaCard";
 import TarjetaCard from "../../Components/MetodoDePago/TarjetaCard";
 import {Icon} from "react-native-elements";
+
+// Logos
+import visaIcon from '../../../assets/cardIcons/visa.png';
+import masterCardIcon from '../../../assets/cardIcons/mastercard.png';
+import bankIcon from '../../../assets/bankIcons/bank.png';
 
 const MetodosPago = ({route, navigation}) => {
   const {metodosDePago, getMetodosDePago} = useContext(MetodoPagoContext);
@@ -37,11 +42,23 @@ const MetodosPago = ({route, navigation}) => {
       <View style={styles.containerAdd}>
         <Pressable style={styles.btnAdd} onPress={() => navigation.navigate('NuevaTarjeta')}>
           <Text style={styles.btnAddText}>Agregar</Text>
-          <Text style={styles.btnAddText}>Tarjeta</Text>
+          <View style={styles.containerAdd}>
+            <Image  
+            style={styles.icons}
+            source={visaIcon}
+            />
+            <Image 
+            style={styles.icons}
+            source={masterCardIcon}
+            />
+          </View>
         </Pressable>
         <Pressable style={styles.btnAdd} onPress={() => navigation.navigate('NuevaCuentaBancaria')}>
           <Text style={styles.btnAddText}>Agregar</Text>
-          <Text style={styles.btnAddText}>Cuenta Bancaria</Text>
+          <Image  
+            style={styles.icons}
+            source={bankIcon}
+            />
         </Pressable>
       </View>
       {
@@ -111,7 +128,12 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color: '#FAFAFA',
     marginVertical: 5,
-  }
+  },
+  icons: {
+    width: 50, 
+    height: 50,
+    marginHorizontal:10,
+  },
 })
 
 export default MetodosPago

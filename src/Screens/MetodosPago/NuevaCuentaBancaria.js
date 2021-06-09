@@ -16,7 +16,6 @@ const NuevaCuentaBancaria = ({navigation}) => {
   const {userData} = useContext(DataContext);
 
   const createCB = async (dataCB) => {
-    console.log('Llegué a createCB NuevaCuentaBancaria');
     try {
       let cuentaBDatos = await fetch('http://10.0.2.2:3000/api/metodo-de-pago/new/cuenta-bancaria', {
         method: 'POST',
@@ -30,7 +29,6 @@ const NuevaCuentaBancaria = ({navigation}) => {
       console.log(await cuentaBDatos.json())
       return cuentaBDatos.status;
     } catch (e) {
-      console.log('Estoy en el catch de createCB NuevaCuentaBancaria');
       console.log(e);
     }
   };
@@ -47,7 +45,7 @@ const NuevaCuentaBancaria = ({navigation}) => {
       console.log(dataCB);
       const status = await createCB(dataCB);
       console.log(status);
-      if (status == 201) {
+      if (status === 201) {
         console.log('Cuenta Bancaria creada con éxito')
       }
     } else {

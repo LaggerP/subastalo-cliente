@@ -14,7 +14,6 @@ const NuevaTarjeta = ({navigation}) => {
   const {userData} = useContext(DataContext);
 
   const createTarjetaCredito = async (dataTarjeta) => {
-    console.log('Llegué a createTarjetaCredito NuevaTarjeta');
     try {
       let tarjetaDatos = await fetch('http://10.0.2.2t:3000/api/metodo-de-pago/new/tarjeta', {
         method: 'POST',
@@ -25,9 +24,9 @@ const NuevaTarjeta = ({navigation}) => {
           },
           body: JSON.stringify(dataTarjeta)
       });
+      console.log(await cuentaBDatos.json())
       return tarjetaDatos.status;
     } catch (e) {
-      console.log('Estoy en el catch de createTarjetaCredito NuevaTarjeta');
       console.log(e);
     }
   }
