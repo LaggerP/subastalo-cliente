@@ -125,7 +125,6 @@ const Dashboard = ({route, navigation}) => {
                 </View>
               </View>
 
-
               <View style={styles.buttonsSection}>
                 <View style={styles.btn}>
                   <Icon
