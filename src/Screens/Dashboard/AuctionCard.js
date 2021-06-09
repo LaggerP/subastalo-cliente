@@ -92,6 +92,7 @@ const AuctionCard = ({idSubasta,fechaSubasta,horaSubasta,categoriaSubasta,nombre
             buttonStyle={{borderRadius: 5, borderWidth: 1.7, borderColor: '#FC9905', height: 35}}
             titleStyle={{color: '#FC9905'}}
             containerStyle={{width: 165, alignSelf: 'flex-end'}}
+            onPress={()=> navigation.navigate('Catalogo', {idSubasta: idSubasta})}
 
           />
         </View>

@@ -17,6 +17,7 @@ import RegistroExito from "./src/Screens/Registro/RegistroExito";
 
 // Providers
 import { DataProvider } from "./src/context/DataContext";
+import Catalogo from "./src/Screens/Catalogo/Catalogo";
 
 const AuthStack = createStackNavigator();
 
@@ -28,6 +29,7 @@ export default function App() {
           <AuthStack.Screen name='DashboardScreen' component={DashboardScreen} options={{ title: '', headerShown: false }} />
           <AuthStack.Screen name='SubastaScreen' component={SubastaScreen} options={{ title: 'SubastaScreen', headerShown: false }} />
           <AuthStack.Screen name='MetodosPagoScreen' component={MetodosPagoScreen} options={{ title: 'MetodosPagoScreen', headerShown: false }} />
+          <AuthStack.Screen name='Catalogo' component={Catalogo} options={{ title: 'Catalogo', headerShown: false }} />
           <AuthStack.Screen name='Login' component={Login} options={{title: '', headerLeft: null, headerTransparent: true}}/>
           <AuthStack.Screen name='RestablecerPrimer' component={RestablecerPrimer} options={{title: '', headerLeft: null, headerTransparent: true}}/>
           <AuthStack.Screen name='RestablecerSegundo' component={RestablecerSegundo} options={{title: '', headerLeft: null, headerTransparent: true}}/>

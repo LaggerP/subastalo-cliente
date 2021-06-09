@@ -77,7 +77,7 @@ const ItemSubasta = ({route, navigation}) => {
     return (
       <View style={styles.container}>
         <View style={styles.imagesContainer}>
-          <SubastaCarousel navigation={navigation} fotos={item.fotos} setIntervalStatus={setIntervalStatus}/>
+          <SubastaCarousel navigation={navigation} fotos={item.fotos} setIntervalStatus={setIntervalStatus} idSubasta={route.params.idSubasta}/>
         </View>
         <View style={styles.itemDescriptionContainer}>
           <Text style={styles.itemTitle}>
