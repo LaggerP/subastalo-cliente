@@ -8,6 +8,7 @@ import {
 } from '@expo-google-fonts/cinzel-decorative';
 import {Roboto_500Medium, Roboto_400Regular} from '@expo-google-fonts/roboto';
 import {Button} from "react-native-elements";
+import apiUrl from "../../api";
 import {DataContext} from '../../context/DataContext';
 
 const Login = ({navigation}) => {
@@ -17,7 +18,7 @@ const Login = ({navigation}) => {
     password: ''
   });
 
-  const {setUserData} = useContext(DataContext);
+  const {setUserData, setSesionIniciada} = useContext(DataContext);
 
   let [fontsLoaded] = useFonts({
     CinzelDecorative_400Regular,
@@ -29,7 +30,7 @@ const Login = ({navigation}) => {
 
   const login = async () => {
     try {
-      let loginDatos = await fetch('http://10.0.2.2:3000/api/user/login', {
+      let loginDatos = await fetch(`${apiUrl}/api/user/login`, {
         method: 'POST',
         headers: {
           'Accept': 'application/json',
@@ -40,11 +41,15 @@ const Login = ({navigation}) => {
       let user = await loginDatos.json();
       await setUserData(user.userData);
       if (loginDatos.status === 200) {
+        await AsyncStorage.multiSet([
+          ["email", loginInfo.email],
+          ["password", loginInfo.password]
+        ]);
         await AsyncStorage.setItem('sesionIniciada', 'true');
         const data = await AsyncStorage.getItem('sesionIniciada');
+        setSesionIniciada(data)
         navigation.navigate('DashboardScreen', {
-          screen: 'Dashboard',
-          params: {sesionIniciada: data === 'true', userData: user.userData},
+          screen: 'Dashboard'
         })
       }
     } catch (e) {

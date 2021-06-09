@@ -6,8 +6,9 @@ import {
   CinzelDecorative_700Bold,
   CinzelDecorative_900Black,
 } from '@expo-google-fonts/cinzel-decorative';
-import {StyleSheet, Text, View, ScrollView,} from 'react-native';
+import {StyleSheet, Text, View, ScrollView, AsyncStorage,} from 'react-native';
 import {Icon, Avatar, SearchBar, Overlay, CheckBox, Button} from 'react-native-elements';
+import apiUrl from "../../api";
 
 //Provider
 import {DataContext} from "../../context/DataContext";
@@ -18,19 +19,16 @@ import ErrorModal from './ErrorModal';
 
 const Dashboard = ({route, navigation}) => {
 
-  const getSesionIniciada = () => (route.params && route.params.sesionIniciada)
-  let sesionIniciada = getSesionIniciada()
-
-  const getUserData = () => (route.params && route.params.userData)
-  let userData = getUserData()
-  console.log(userData)
+  const getSesionIniciada = async () => {
+    const data = await AsyncStorage.getItem('sesionIniciada');
+    setSesionIniciada(data === 'true')
+  }
 
   //Data from context provider
-  const {subastas, setSubastas} = useContext(DataContext);
-
+  const {subastas, setSubastas, userData, sesionIniciada, setSesionIniciada} = useContext(DataContext);
 
   const getSubastas = async () => {
-    return await fetch('http://10.0.2.2:3000/api/subastas')
+    return await fetch(`${apiUrl}/api/subastas`)
       .then((response) => response.json())
       .then((json) => {
         setSubastas(json.subastas);
@@ -42,6 +40,7 @@ const Dashboard = ({route, navigation}) => {
   }
 
   useEffect(() => {
+    getSesionIniciada();
     getSubastas();
   }, [])
 
@@ -67,11 +66,11 @@ const Dashboard = ({route, navigation}) => {
     (i.categoriaSubasta.toLowerCase()).includes(search.toLowerCase()) ||
     (i.nombreSubastador.toLowerCase()).includes(search.toLowerCase()))
     : openedCheck && closedCheck ?
-      subastas.filter((i) => (i.estadoSubasta == 'abierta' || 'cerrada'))
+      subastas.filter((i) => (i.estadoSubasta === 'abierta' || 'cerrada'))
       : openedCheck && !closedCheck ?
-        subastas.filter((i) => (i.estadoSubasta == 'abierta'))
+        subastas.filter((i) => (i.estadoSubasta === 'abierta'))
         : !openedCheck && closedCheck ?
-          subastas.filter((i) => (i.estadoSubasta == 'cerrada'))
+          subastas.filter((i) => (i.estadoSubasta === 'cerrada'))
           :
           subastas.sort((a, b) => a.estadoSubasta.localeCompare(b.estadoSubasta) || a.fechaSubasta.localeCompare(b.fechaSubasta));
 
@@ -98,7 +97,7 @@ const Dashboard = ({route, navigation}) => {
 
   if (!fontsLoaded) {
     return <Text>Loading</Text>;
-  } else {
+  } else if (sesionIniciada && userData) {
     return (
       <View style={{flex: 1}}>
         <ScrollView vertical showsVerticalScrollIndicator={false} ref={(c) => {
@@ -106,95 +105,85 @@ const Dashboard = ({route, navigation}) => {
         }}>
           <View style={styles.container}>
 
-            {
-              sesionIniciada ?
-                <View style={styles.userCard}>
+            <View style={styles.userCard}>
 
-                  <View style={styles.userSection}>
-                    <View style={{flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
-                      <Avatar
-                        size='large'
-                        rounded
-                        source={{
-                          uri:
-                          userData.foto,
-                        }}
-                      />
-                      <Text style={{
-                        fontSize: 16,
-                        textAlign: 'center',
-                        fontFamily: 'Roboto_500Medium'
-                      }}>{userData.nombreCompleto}</Text>
-                    </View>
-                  </View>
+              <View style={styles.userSection}>
+                <View style={{flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
+                  <Avatar
+                    size='large'
+                    rounded
+                    source={{
+                      uri:
+                      userData.foto,
+                    }}
+                  />
+                  <Text style={{
+                    fontSize: 16,
+                    textAlign: 'center',
+                    fontFamily: 'Roboto_500Medium'
+                  }}>{userData.nombreCompleto}</Text>
+                </View>
+              </View>
 
 
-                  <View style={styles.buttonsSection}>
-                    <View style={styles.btn}>
-                      <Icon
-                        raised
-                        reverse
-                        name='person-outline'
-                        type='ionicon'
-                        reverseColor='#000000'
-                        color='#FFCD61'
-                        size={22}
-                        onPress={() => navigation.push('Perfil')}/>
-                      <Text textBreakStrategy='simple' style={{fontSize: 12, textAlign: 'center'}}>Mi Perfil</Text>
-                    </View>
+              <View style={styles.buttonsSection}>
+                <View style={styles.btn}>
+                  <Icon
+                    raised
+                    reverse
+                    name='person-outline'
+                    type='ionicon'
+                    reverseColor='#000000'
+                    color='#FFCD61'
+                    size={22}
+                    onPress={() => navigation.push('Perfil')}/>
+                  <Text textBreakStrategy='simple' style={{fontSize: 12, textAlign: 'center'}}>Mi Perfil</Text>
+                </View>
 
-                    <View style={styles.btn}>
-                      <Icon
-                        raised
-                        reverse
-                        name='time-outline'
-                        type='ionicon'
-                        reverseColor='#000000'
-                        color='#FFCD61'
-                        size={22}
-                        onPress={() => navigation.push('Perfil')}/>
-                      <Text style={{fontSize: 12, textAlign: 'center'}}>Historial</Text>
-
-                    </View>
-
-                    <View style={styles.btn}>
-                      <Icon
-                        raised
-                        reverse
-                        name='archive-outline'
-                        type='ionicon'
-                        reverseColor='#000000'
-                        color='#FFCD61'
-                        size={22}
-                        onPress={() => navigation.push('Perfil')}/>
-                      <Text style={{fontSize: 12, textAlign: 'center'}}>Mis</Text>
-                      <Text style={{fontSize: 12, textAlign: 'center'}}>Productos</Text>
-                    </View>
-
-                    <View style={styles.btn}>
-                      <Icon
-                        raised
-                        reverse
-                        name='wallet-outline'
-                        type='ionicon'
-                        reverseColor='#000000'
-                        color='#FFCD61'
-                        size={22}
-                        onPress={() => navigation.push('Perfil')}/>
-                      <Text style={{fontSize: 12, textAlign: 'center'}}>Métodos de</Text>
-                      <Text style={{fontSize: 12, textAlign: 'center'}}>Pago</Text>
-                    </View>
-                  </View>
+                <View style={styles.btn}>
+                  <Icon
+                    raised
+                    reverse
+                    name='time-outline'
+                    type='ionicon'
+                    reverseColor='#000000'
+                    color='#FFCD61'
+                    size={22}
+                    onPress={() => navigation.push('Perfil')}/>
+                  <Text style={{fontSize: 12, textAlign: 'center'}}>Historial</Text>
 
                 </View>
 
-                :
-
-                <View style={styles.bannerApp}>
-                  <Text
-                    style={{fontSize: 40, color: '#FC9905', fontFamily: 'CinzelDecorative_400Regular'}}>Subastalo</Text>
+                <View style={styles.btn}>
+                  <Icon
+                    raised
+                    reverse
+                    name='archive-outline'
+                    type='ionicon'
+                    reverseColor='#000000'
+                    color='#FFCD61'
+                    size={22}
+                    onPress={() => navigation.push('Perfil')}/>
+                  <Text style={{fontSize: 12, textAlign: 'center'}}>Mis</Text>
+                  <Text style={{fontSize: 12, textAlign: 'center'}}>Productos</Text>
                 </View>
-            }
+
+                <View style={styles.btn}>
+                  <Icon
+                    raised
+                    reverse
+                    name='wallet-outline'
+                    type='ionicon'
+                    reverseColor='#000000'
+                    color='#FFCD61'
+                    size={22}
+                    onPress={() => navigation.push('Perfil')}/>
+                  <Text style={{fontSize: 12, textAlign: 'center'}}>Métodos de</Text>
+                  <Text style={{fontSize: 12, textAlign: 'center'}}>Pago</Text>
+                </View>
+              </View>
+
+            </View>
 
             <View style={styles.searchBarContainer} onLayout={e => {
               const layout = e.nativeEvent.layout;
@@ -218,7 +207,133 @@ const Dashboard = ({route, navigation}) => {
                   placeholder="Buscar"
                   onChangeText={setSearch}
                   value={search}
+                  platform="default"/>
+              </View>
+              <View style={{
+                flexDirection: 'column',
+                flex: 0.4,
+                borderTopRightRadius: 5,
+                borderBottomRightRadius: 5,
+                backgroundColor: '#FFFFFF',
+                shadowColor: '#00000021',
+                elevation: 5,
+                justifyContent: 'center',
+              }}>
+                <Icon
+                  name='options-outline'
+                  type='ionicon'
+                  size={29}
+                  iconStyle={{alignSelf: 'center',}}
+                  containerStyle={{alignSelf: 'center'}}
+                  onPress={() => {
+                    goToTop();
+                    toggleFilter()
+                  }}
                 />
+              </View>
+            </View>
+
+            <View>
+              <Overlay isVisible={filter} onBackdropPress={() => {
+                toggleFilter()
+              }} overlayStyle={{
+                width: 194,
+                height: 140,
+                padding: 0,
+                paddingTop: 8,
+                paddingBottom: 10,
+                position: 'absolute',
+                transform: [{translateX: (filterPosition.x + 80)}, {translateY: (filterPosition.y - 275)}]
+              }}>
+                <View style={{justifyContent: 'flex-start', height: 30,}}>
+                  <Text style={{fontSize: 15, fontWeight: 'bold', marginLeft: 10,}}>Filtrar por:</Text>
+                </View>
+                <Linea/>
+                <CheckBox
+                  title='En Vivo'
+                  checkedIcon='dot-circle-o'
+                  uncheckedIcon='circle-o'
+                  iconRight={true}
+                  size={20}
+                  containerStyle={styles.checkContainer}
+                  wrapperStyle={{justifyContent: 'space-between',}}
+                  onPress={() => {
+                    setOpenedCheck(!openedCheck)
+                  }}
+                  checked={openedCheck}
+                />
+                <Linea/>
+                <CheckBox
+                  title='Próximo'
+                  checkedIcon='dot-circle-o'
+                  uncheckedIcon='circle-o'
+                  iconRight={true}
+                  size={20}
+                  containerStyle={styles.checkContainer}
+                  wrapperStyle={{justifyContent: 'space-between',}}
+                  onPress={() => setClosedCheck(!closedCheck)}
+                  checked={closedCheck}
+                />
+                <Linea/>
+              </Overlay>
+            </View>
+
+            {
+              Object.keys(filteredAuctions).length > 0 ?
+
+                <View style={styles.auctionsContainer}>
+                  {filteredAuctions.map((subasta, i) => (
+                    <AuctionCard key={i} {...subasta} navigation={navigation}/>
+                  ))}
+                </View>
+                :
+                <ErrorModal
+                  toggleOverlay={toggleOverlay}
+                  isVisible={visible}
+                />
+            }
+          </View>
+        </ScrollView>
+      </View>
+    )
+  } else {
+    return (
+      <View style={{flex: 1}}>
+        <ScrollView vertical showsVerticalScrollIndicator={false} ref={(c) => {
+          scroll = c
+        }}>
+          <View style={styles.container}>
+
+
+            <View style={styles.bannerApp}>
+              <Text
+                style={{fontSize: 40, color: '#FC9905', fontFamily: 'CinzelDecorative_400Regular'}}>Subastalo</Text>
+            </View>
+
+
+            <View style={styles.searchBarContainer} onLayout={e => {
+              const layout = e.nativeEvent.layout;
+              setFilterPosition({x: layout.x, y: layout.y})
+            }}>
+              <View style={{flexDirection: 'column', flex: 2,}}>
+                <SearchBar
+                  lightTheme={true}
+                  searchIcon={{size: 26}}
+                  inputStyle={{backgroundColor: '#EDEDED', fontSize: 13,}}
+                  inputContainerStyle={{borderRadius: 5, width: '100%', height: 35, backgroundColor: '#EDEDED',}}
+                  containerStyle={{
+                    borderTopLeftRadius: 5,
+                    borderBottomLeftRadius: 5,
+                    backgroundColor: '#FFFFFF',
+                    shadowColor: '#00000021',
+                    elevation: 5,
+                    borderTopWidth: 0,
+                    borderBottomWidth: 0
+                  }}
+                  placeholder="Buscar"
+                  onChangeText={setSearch}
+                  value={search}
+                  platform="default"/>
               </View>
               <View style={{
                 flexDirection: 'column',
@@ -307,26 +422,22 @@ const Dashboard = ({route, navigation}) => {
           </View>
 
         </ScrollView>
-        {
-          !sesionIniciada ?
-            <View style={styles.footerApp}>
-              <Button
-                title='Ingresar'
-                type='solid'
-                titleStyle={{color: '#000000', fontFamily: 'CinzelDecorative_700Bold'}}
-                buttonStyle={{
-                  backgroundColor: '#FFAE00',
-                  borderRadius: 10,
-                  height: 42,
-                  width: 125,
-                  borderColor: '#FFAE00'
-                }}
-                containerStyle={{width: 145, alignSelf: 'flex-end',}}
-                onPress={() => navigation.push('Login')}
-              />
-            </View>
-            : null
-        }
+        <View style={styles.footerApp}>
+          <Button
+            title='Ingresar'
+            type='solid'
+            titleStyle={{color: '#000000', fontFamily: 'CinzelDecorative_700Bold'}}
+            buttonStyle={{
+              backgroundColor: '#FFAE00',
+              borderRadius: 10,
+              height: 42,
+              width: 125,
+              borderColor: '#FFAE00'
+            }}
+            containerStyle={{width: 145, alignSelf: 'flex-end',}}
+            onPress={() => navigation.push('Login')}
+          />
+        </View>
 
       </View>
     )

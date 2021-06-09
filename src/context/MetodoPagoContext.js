@@ -1,5 +1,6 @@
 import React, {createContext, useContext, useEffect, useState} from 'react';
 import {DataContext} from "./DataContext";
+import apiUrl from "../api";
 
 
 export const MetodoPagoContext = createContext(null);
@@ -14,7 +15,7 @@ export const MetodoPagoProvider = ({children}) => {
 
 
   const getMetodosDePago = async () => {
-    return await fetch(`http://10.0.2.2:3000/api/metodo-de-pago/user/${userData.idCliente}`)
+    return await fetch(`${apiUrl}/api/metodo-de-pago/user/${userData.idCliente}`)
       .then((response) => response.json())
       .then((_metodos) => {
         setMetodosDePago(_metodos[0])

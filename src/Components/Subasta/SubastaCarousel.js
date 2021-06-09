@@ -12,7 +12,7 @@ import {Icon} from 'react-native-elements'
 
 const {width: screenWidth} = Dimensions.get('window');
 
-const SubastaCarousel = ({ navigation: { goBack }, fotos }) => {
+const SubastaCarousel = ({ navigation: { goBack }, fotos, setIntervalStatus }) => {
   const [entries, setEntries] = useState([]);
   const carouselRef = useRef(null);
 
@@ -49,7 +49,10 @@ const SubastaCarousel = ({ navigation: { goBack }, fotos }) => {
             paddingBottom: 10,
             paddingTop: 10
           }}
-          onPress={() => goBack()}>
+          onPress={() => {
+            goBack()
+            setIntervalStatus(false)
+          }}>
           <Icon
             name='arrow-back-outline'
             type='ionicon'

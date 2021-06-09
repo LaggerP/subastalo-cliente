@@ -41,7 +41,7 @@ const NuevaPuja = ({navigation}) => {
   //Data from Data Context
   const {userData} = useContext(DataContext);
   //Data from Pujas Context
-  const {item, newPuja} = useContext(PujasContext);
+  const {item, newPuja, downCountClock} = useContext(PujasContext);
   const {descripcionCompleta, precioBase, idItemCatalogo, idSubasta} = item
   //Data from Metodo Pago Context
   const {metodoPagoElegido} = useContext(MetodoPagoContext);
@@ -117,18 +117,17 @@ const NuevaPuja = ({navigation}) => {
           </View>
           <View style={styles.verticleLine}/>
           <View style={styles.itemTextPriceContainer}>
-            <Text style={{fontSize: 12, fontWeight:'bold'}}>
+            <Text style={{fontSize: 12, fontWeight: 'bold'}}>
               Precio Base
             </Text>
             <Text>
               {precioBase}
             </Text>
-            <Text style={{fontSize: 12, paddingBottom: 2, fontWeight:'bold'}}>
+            <Text style={{fontSize: 12, paddingBottom: 2, fontWeight: 'bold'}}>
               Tiempo restante
             </Text>
             <CountDown
-              until={60 * 10 + 20}
-              onFinish={() => changeItemEstado()}
+              until={downCountClock}
               digitStyle={{backgroundColor: '#FFF', borderWidth: 2, borderColor: '#FC9905'}}
               separatorStyle={{color: '#000'}}
               timeToShow={['M', 'S']}
