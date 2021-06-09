@@ -12,7 +12,7 @@ import {Icon} from 'react-native-elements'
 
 const {width: screenWidth} = Dimensions.get('window');
 
-const SubastaCarousel = ({ navigation: { goBack }, fotos }) => {
+const SubastaCarousel = ({ navigation: { goBack }, fotos, setIntervalStatus }) => {
   const [entries, setEntries] = useState([]);
   const carouselRef = useRef(null);
 
@@ -44,12 +44,15 @@ const SubastaCarousel = ({ navigation: { goBack }, fotos }) => {
         <TouchableOpacity
           style={{
             justifyContent: 'flex-start',
-            marginTop: '15%',
+            marginTop: '12%',
             paddingLeft: 20,
             paddingBottom: 10,
             paddingTop: 10
           }}
-          onPress={() => goBack()}>
+          onPress={() => {
+            goBack()
+            setIntervalStatus(false)
+          }}>
           <Icon
             name='arrow-back-outline'
             type='ionicon'
@@ -63,7 +66,7 @@ const SubastaCarousel = ({ navigation: { goBack }, fotos }) => {
             flex: 1,
             flexDirection: 'row',
             justifyContent: 'flex-end',
-            marginTop: '15%',
+            marginTop: '12%',
             paddingRight: 20,
             paddingBottom: 10,
             paddingTop: 10

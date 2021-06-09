@@ -46,7 +46,7 @@ const AuctionCard = ({ idSubasta, fechaSubasta, horaSubasta, categoriaSubasta, n
             <View style={{ flex: 1.5, flexDirection: 'row' }}>
                 <View style={{ flex: 1, flexDirection: 'column' }}>
                     <Text style={{ fontSize: 13, marginBottom: 1, }}><Strong>Fecha:</Strong> {Moment(fechaSubasta).format('DD/MM/YYYY')} </Text>
-                    <Text style={{ fontSize: 13, marginBottom: 1, }}><Strong>Hora:</Strong> {Moment(horaSubasta).format('HH:MM')} </Text>
+                    <Text style={{ fontSize: 13, marginBottom: 1, }}><Strong>Hora:</Strong> {Moment(horaSubasta).format('HH:mm')} </Text>
                     <Text style={{ fontSize: 13, marginBottom: 1, }}><Strong>Rematador:</Strong> {nombreSubastador}</Text>
                 </View>
             </View>
@@ -69,7 +69,7 @@ const AuctionCard = ({ idSubasta, fechaSubasta, horaSubasta, categoriaSubasta, n
                         containerStyle={{ width: 165, alignSelf: 'flex-start' }}
                         onPress={() => navigation.navigate('SubastaScreen', {
                             screen: 'ItemSubasta',
-                            params: { idSubasta },
+                            params: { idSubasta, categoriaSubasta },
                         })}
                     />
                 </View>

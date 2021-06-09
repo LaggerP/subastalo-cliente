@@ -1,34 +1,65 @@
-import React, {createContext, useState} from 'react'
+import React, {createContext, useEffect, useState} from 'react'
+import {AsyncStorage} from "react-native";
+import apiUrl from "../api";
 
 export const DataContext = createContext(null);
 
 export const DataProvider = ({children}) => {
 
-  const initialUserData = {
-    idPersona: 2, //cambiar este valor, no debería se el inicial. ESTA PARA HACER TEST
-    idCliente: 2,//cambiar este valor, no debería se el inicial. ESTA PARA HACER TEST
-    documento: '',
-    nombreCompleto: 'Claudio Godio', //TEST
-    primerInicio: false,//cambiar este valor, no debería se el inicial. ESTA PARA HACER TEST
-    direccion: '',
-    estado: '',
-    clienteAdmitido: true,//cambiar este valor, no debería se el inicial. ESTA PARA HACER TEST
-    categoria: '',
-    nombrePais: '',
-    nacionalidad: '',
-    capital: '',
-    token: ''
+  const [userData, setUserData] = useState();
+  const [subastas, setSubastas] = useState([]);
+  const [sesionIniciada, setSesionIniciada] = useState();
+
+  const autoLogin = async (loginData) => {
+    try {
+      let loginDatos = await fetch(`${apiUrl}/api/user/login`, {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(loginData)
+      });
+      let user = await loginDatos.json();
+      setUserData(user.userData);
+      if (loginDatos.status === 200) {
+        await AsyncStorage.setItem('sesionIniciada', 'true');
+        const data = await AsyncStorage.getItem('sesionIniciada');
+      }
+    } catch (e) {
+      console.log(e);
+    }
   }
 
-  const [userData, setUserData] = useState(initialUserData);
-  const [subastas, setSubastas] = useState([])
+
+  useEffect(() => {
+    const isLogged = async () => {
+      AsyncStorage.multiGet(['email', 'password']).then(async (data) => {
+        let loginData = {
+          email: data[0][1],
+          password: data[1][1],
+        }
+        if (loginData.email !== null && loginData.password !== null) {
+          autoLogin(loginData)
+        } else {
+          await AsyncStorage.setItem('sesionIniciada', 'false');
+        }
+      });
+    }
+    isLogged();
+
+  }, [])
 
   return (
     <DataContext.Provider value={
       {
         userData,
+        setUserData,
         subastas,
-        setSubastas
+        setSubastas,
+        autoLogin,
+        sesionIniciada,
+        setSesionIniciada
       }
     }>
       {children}
