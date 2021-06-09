@@ -28,6 +28,7 @@ export const MetodoPagoProvider = ({children}) => {
     }
   }
 
+
   useEffect(() => {
     getMetodosDePago();
   }, []);
@@ -35,7 +36,7 @@ export const MetodoPagoProvider = ({children}) => {
   return (
     <MetodoPagoContext.Provider value={
       {
-        metodosDePago, metodoPagoElegido, setMetodoPagoElegido
+        metodosDePago, metodoPagoElegido, setMetodoPagoElegido, getMetodosDePago
       }
     }>
       {children}

@@ -4,12 +4,13 @@ import {StyleSheet, Text, View, Button, AsyncStorage} from 'react-native';
 import {DataContext} from "../../context/DataContext";
 
 const Perfil = ({navigation}) => {
-  const {setUserData} = useContext(DataContext);
+  const {setUserData, setSesionIniciada} = useContext(DataContext);
 
   const logOut = async () => {
     let keys = ['email', 'password', 'sesionIniciada'];
     await AsyncStorage.multiRemove(keys, (err) => {
       setUserData(null)
+      setSesionIniciada(false)
       console.log('Storage eliminada');
       navigation.pop()
     });

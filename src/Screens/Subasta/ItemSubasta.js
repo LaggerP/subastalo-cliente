@@ -139,7 +139,7 @@ const ItemSubasta = ({route, navigation}) => {
                           uri: `${item.foto}`,
                         }}
                       />
-                      {(userData.nombreCompleto === item.nombrePujador) ?
+                      {(userData && userData.nombreCompleto === item.nombrePujador) ?
                         <>
                           <Text style={{fontSize: 16, fontWeight: 'bold'}}>Hiciste una oferta por</Text>
                           <Text style={{
@@ -148,8 +148,8 @@ const ItemSubasta = ({route, navigation}) => {
                             color: '#fff',
                             backgroundColor: '#FC9905',
                             padding: 5,
-                            borderRadius: 5
-                          }}>{userData ? item.importeToShow : '$***'}</Text>
+                            borderRadius: 5,
+                          }}>{item.importeToShow}</Text>
                         </>
                         :
                         <>
@@ -161,7 +161,7 @@ const ItemSubasta = ({route, navigation}) => {
                             padding: 5,
                             borderRadius: 5,
                             color:'black'
-                          }}>{userData ? item.importeToShow : '$***'}</Text>
+                          }}>{item.importeToShow}</Text>
                         </>
                       }
                     </View>

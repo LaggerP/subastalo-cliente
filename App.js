@@ -7,6 +7,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 // Screens
 import DashboardScreen from "./src/Screens/Dashboard/DashboardScreen";
 import SubastaScreen from "./src/Screens/Subasta/SubastaScreen";
+import MetodosPagoScreen from "./src/Screens/MetodosPago/MetodosPagoScreen";
 import Login from "./src/Screens/Login/Login";
 import RestablecerPrimer from "./src/Screens/Login/RestablecerPrimer";
 import RestablecerSegundo from "./src/Screens/Login/RestablecerSegundo";
@@ -26,6 +27,7 @@ export default function App() {
         <AuthStack.Navigator>
           <AuthStack.Screen name='DashboardScreen' component={DashboardScreen} options={{ title: '', headerShown: false }} />
           <AuthStack.Screen name='SubastaScreen' component={SubastaScreen} options={{ title: 'SubastaScreen', headerShown: false }} />
+          <AuthStack.Screen name='MetodosPagoScreen' component={MetodosPagoScreen} options={{ title: 'MetodosPagoScreen', headerShown: false }} />
           <AuthStack.Screen name='Login' component={Login} options={{title: '', headerLeft: null, headerTransparent: true}}/>
           <AuthStack.Screen name='RestablecerPrimer' component={RestablecerPrimer} options={{title: '', headerLeft: null, headerTransparent: true}}/>
           <AuthStack.Screen name='RestablecerSegundo' component={RestablecerSegundo} options={{title: '', headerLeft: null, headerTransparent: true}}/>

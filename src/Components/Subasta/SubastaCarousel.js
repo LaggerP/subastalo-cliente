@@ -40,7 +40,7 @@ const SubastaCarousel = ({ navigation: { goBack }, fotos, setIntervalStatus }) =
 
   return (
     <>
-      <View style={{ flexDirection:'row', alignItems: 'center', justifyContent:'center'}}>
+      <View style={{ flexDirection:'row', alignItems: 'flex-start', justifyContent:'flex-start'}}>
         <TouchableOpacity
           style={{
             justifyContent: 'flex-start',
