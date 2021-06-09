@@ -44,7 +44,7 @@ const SubastaCarousel = ({ navigation: { goBack }, fotos, setIntervalStatus }) =
         <TouchableOpacity
           style={{
             justifyContent: 'flex-start',
-            marginTop: '15%',
+            marginTop: '12%',
             paddingLeft: 20,
             paddingBottom: 10,
             paddingTop: 10
@@ -66,7 +66,7 @@ const SubastaCarousel = ({ navigation: { goBack }, fotos, setIntervalStatus }) =
             flex: 1,
             flexDirection: 'row',
             justifyContent: 'flex-end',
-            marginTop: '15%',
+            marginTop: '12%',
             paddingRight: 20,
             paddingBottom: 10,
             paddingTop: 10

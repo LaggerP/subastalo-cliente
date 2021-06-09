@@ -37,12 +37,13 @@ const bankCoIcon = {
   'galicia': galiciaLogo,
 }
 
-const NuevaPuja = ({navigation}) => {
+const NuevaPuja = ({route, navigation}) => {
+
   //Data from Data Context
   const {userData} = useContext(DataContext);
   //Data from Pujas Context
   const {item, newPuja, downCountClock} = useContext(PujasContext);
-  const {descripcionCompleta, precioBase, idItemCatalogo, idSubasta} = item
+  const {descripcionCompleta, precioBase, idItemCatalogo, idSubasta, pujas} = item
   //Data from Metodo Pago Context
   const {metodoPagoElegido} = useContext(MetodoPagoContext);
   const {idTarjeta, numero, entidad, lastNumbers, cbu_alias} = metodoPagoElegido
@@ -59,11 +60,16 @@ const NuevaPuja = ({navigation}) => {
   });
   const [spinnerLoading, setSpinnerLoading] = useState(false);
 
-  // data obtenida a través de la DB
-  const minValue = 25000;
-  const maxValue = 30000;
+  /**
+   * El monto de la puja nunca puede ser menor al 1% del valor del valor base del bien,
+   * y excepto en las subastas del categorías oro y platino, el valor del pujo no puede
+   * exceder el 20% del valor actual (el del último pujo).
+   */
+  let precioActual = pujas.length > 0 ? pujas[0].importe : precioBase
+  let minValue = route.params.categoriaSubasta !== 'Platino' || route.params.categoriaSubasta !== 'Oro' ? (precioActual + precioActual * 1 / 100) : precioActual;
+  let maxValue = precioActual + precioActual * 20 / 100;
 
-  const checkOferta = (_oferta) => {
+  const checkOferta = async (_oferta) => {
     setOferta(_oferta);
     if (_oferta >= minValue && _oferta <= maxValue) {
       setOfertaMinima(false);
@@ -73,6 +79,7 @@ const NuevaPuja = ({navigation}) => {
       setOfertaMaxima(true);
       setOfertaMinima(false);
       setAllowOferta(false);
+
     } else if (_oferta < minValue) {
       setOfertaMaxima(false);
       setOfertaMinima(true);
@@ -91,14 +98,24 @@ const NuevaPuja = ({navigation}) => {
       importe: parseInt(_oferta, 10),
       idItem: idItemCatalogo,
     }
-    await newPuja(oferta);
-    setShowModal({
-      visible: true,
-      title: '¡Oferta exitosa!',
-      msg: 'Podrá visualizar su oferta en la lista. Recuerde que el artículo no será suyo hasta ser la oferta más alta' +
-        ' al finalizar el tiempo.',
-      icon: 'nuevaOferta'
-    })
+    const puja = await newPuja(oferta);
+    if (puja.status === 201) {
+      setShowModal({
+        visible: true,
+        title: '¡Oferta exitosa!',
+        msg: 'Podrá visualizar su oferta en la lista. Recuerde que el artículo no será suyo hasta ser la oferta más alta' +
+          ' al finalizar el tiempo.',
+        icon: 'nuevaOferta'
+      })
+    } else {
+      setShowModal({
+        visible: true,
+        title: '¡Oferta existente!',
+        msg: 'La oferta que usted realizó ya existe, por favor pruebe con otro importe mayor!',
+        icon: 'subastaError'
+      })
+    }
+
     setSpinnerLoading(false)
   }
 
@@ -221,7 +238,6 @@ const NuevaPuja = ({navigation}) => {
             ofertaMaxima ? <Text style={{color: '#FF0000'}}> Oferta máxima ${maxValue}</Text>
               : null
           }
-
 
         </View>
         <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>

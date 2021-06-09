@@ -69,7 +69,7 @@ const AuctionCard = ({ idSubasta, fechaSubasta, horaSubasta, categoriaSubasta, n
                         containerStyle={{ width: 165, alignSelf: 'flex-start' }}
                         onPress={() => navigation.navigate('SubastaScreen', {
                             screen: 'ItemSubasta',
-                            params: { idSubasta },
+                            params: { idSubasta, categoriaSubasta },
                         })}
                     />
                 </View>

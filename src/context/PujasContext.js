@@ -19,20 +19,28 @@ export const PujasProvider = ({children}) => {
   }
 
   const newPuja = async (oferta) => {
-    try {
-      let puja = await fetch(`${apiUrl}/api/pujas/new-puja/`, {
-        method: 'POST',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(oferta)
-      })
+    const exist = item.pujas.find(element => element.importe === oferta.importe)
+    if (!exist) {
+      try {
+        let puja = await fetch(`${apiUrl}/api/pujas/new-puja/`, {
+          method: 'POST',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(oferta)
+        })
+        await getPujas();
+        setDownCountClock(60 * 50)
+        return await puja.json()
+      } catch (e) {
+        console.error(error)
+      }
+    } else {
       await getPujas();
-      setDownCountClock(60*50)
-    } catch (e) {
-      console.error(error)
+      return false
     }
+
   }
 
   return (

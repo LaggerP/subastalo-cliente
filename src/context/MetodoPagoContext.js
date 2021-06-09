@@ -15,15 +15,17 @@ export const MetodoPagoProvider = ({children}) => {
 
 
   const getMetodosDePago = async () => {
-    return await fetch(`${apiUrl}/api/metodo-de-pago/user/${userData.idCliente}`)
-      .then((response) => response.json())
-      .then((_metodos) => {
-        setMetodosDePago(_metodos[0])
-        setMetodoPagoElegido(_metodos[0].tarjetas[0])
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+    if (userData){
+      return await fetch(`${apiUrl}/api/metodo-de-pago/user/${userData.idCliente}`)
+        .then((response) => response.json())
+        .then((_metodos) => {
+          setMetodosDePago(_metodos[0])
+          setMetodoPagoElegido(_metodos[0].tarjetas[0])
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
   }
 
   useEffect(() => {

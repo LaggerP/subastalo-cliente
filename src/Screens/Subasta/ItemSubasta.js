@@ -9,10 +9,12 @@ import {PujasContext} from "../../context/PujasContext";
 // Components
 import SubastaCarousel from '../../Components/Subasta/SubastaCarousel';
 import {ModalSubasta} from "../../Components/Subasta/ModalSubasta";
+import {DataContext} from "../../context/DataContext";
 
-const ItemSubasta =  ({route, navigation}) => {
+const ItemSubasta = ({route, navigation}) => {
 
   const [intervalStatus, setIntervalStatus] = useState(true);
+  const [didMount, setDidMount] = useState(false);
   const [showModal, setShowModal] = useState({
     visible: false,
     title: '¡Ups!',
@@ -23,11 +25,13 @@ const ItemSubasta =  ({route, navigation}) => {
 
   // Pujas Context
   const {getPujas, setItem, item, downCountClock} = useContext(PujasContext);
+  const {userData} = useContext(DataContext);
+
 
   const updatePujas = async () => {
     let pujasInterval
-    if (item && intervalStatus){
-      pujasInterval = setInterval(() => getPujas(), 8000);
+    if (item && intervalStatus) {
+      pujasInterval = setInterval(async () => await getPujas(), 8000);
     } else {
       clearInterval(pujasInterval)
     }
@@ -46,6 +50,8 @@ const ItemSubasta =  ({route, navigation}) => {
 
   useEffect(() => {
     getItemSubastandose(route.params.idSubasta);
+    setDidMount(true);
+    return () => setDidMount(false);
   }, []);
 
 
@@ -115,9 +121,10 @@ const ItemSubasta =  ({route, navigation}) => {
           <ScrollView vertical showsVerticalScrollIndicator={false}>
             {
               (item.pujas.length > 0) ? item.pujas.map((item, idx) => {
+                  let importeToShow = 0
                   const numFormatter = (importe) => {
-                    if (importe > 999 && importe < 1000000) return item.importe = (importe / 1000).toFixed(1) + 'K';
-                    else if (importe > 1000000) return item.importe = (importe / 1000000).toFixed(1) + 'M';
+                    if (importe > 999 && importe < 1000000) return item.importeToShow = (importe / 1000).toFixed(1) + 'K';
+                    else if (importe > 1000000) return item.importeToShow = (importe / 1000000).toFixed(1) + 'M';
                     else if (importe < 900) return importe;
                   }
 
@@ -125,15 +132,38 @@ const ItemSubasta =  ({route, navigation}) => {
 
                   return (
                     <View style={styles.itemPuja} key={idx}>
-                    <Avatar
+                      <Avatar
                         rounded
                         size='medium'
                         source={{
-                          uri:`${item.foto}`,
+                          uri: `${item.foto}`,
                         }}
                       />
-                      <Text style={{fontSize: 16}}>Se hizo una oferta por</Text>
-                      <Text style={{fontSize: 17, fontWeight: 'bold'}}>${item.importe}</Text>
+                      {(userData.nombreCompleto === item.nombrePujador) ?
+                        <>
+                          <Text style={{fontSize: 16, fontWeight: 'bold'}}>Hiciste una oferta por</Text>
+                          <Text style={{
+                            fontSize: 17,
+                            fontWeight: 'bold',
+                            color: '#fff',
+                            backgroundColor: '#FC9905',
+                            padding: 5,
+                            borderRadius: 5
+                          }}>{userData ? item.importeToShow : '$***'}</Text>
+                        </>
+                        :
+                        <>
+                          <Text style={{fontSize: 16, fontWeight: 'bold', }}>Realizó una oferta por</Text>
+                          <Text style={{
+                            fontSize: 17,
+                            fontWeight: 'bold',
+                            backgroundColor: '#eaeaea',
+                            padding: 5,
+                            borderRadius: 5,
+                            color:'black'
+                          }}>{userData ? item.importeToShow : '$***'}</Text>
+                        </>
+                      }
                     </View>
                   )
                 })
@@ -151,23 +181,42 @@ const ItemSubasta =  ({route, navigation}) => {
             }
 
           </ScrollView>
-          <View style={{marginBottom: 8}}>
-            <Button
-              onPress={() => {
-                navigation.navigate('NuevaPuja')
-              }}
-              title='Nueva Oferta'
-              type='solid'
-              titleStyle={{fontWeight: '100', color: '#fafafa', paddingLeft: 8}}
-              buttonStyle={{
-                backgroundColor: '#FC9905',
-                borderRadius: 5,
-                width: 350,
-                borderWidth: 1.7,
-                borderColor: '#FC9905',
-                marginHorizontal: 5
-              }}
-            />
+          <View style={{marginVertical: 8}}>
+            {
+              userData ? <Button
+                  onPress={() => {
+                    navigation.navigate('NuevaPuja', {categoriaSubasta: route.params.categoriaSubasta})
+                  }}
+                  title='Nueva Oferta'
+                  type='solid'
+                  titleStyle={{fontWeight: '100', color: '#fafafa', paddingLeft: 8}}
+                  buttonStyle={{
+                    backgroundColor: '#FC9905',
+                    borderRadius: 5,
+                    width: 350,
+                    borderWidth: 1.7,
+                    borderColor: '#FC9905',
+                    marginHorizontal: 5
+                  }}
+                /> :
+                <Button
+                  onPress={() => {
+                    navigation.navigate('Login')
+                  }}
+                  title='Iniciar sesión para ofertar'
+                  type='solid'
+                  titleStyle={{fontWeight: '100', color: '#fafafa', paddingLeft: 8}}
+                  buttonStyle={{
+                    backgroundColor: '#FC9905',
+                    borderRadius: 5,
+                    width: 350,
+                    borderWidth: 1.7,
+                    borderColor: '#FC9905',
+                    marginHorizontal: 5
+                  }}
+                />
+            }
+
           </View>
         </View>
       </View>
@@ -200,7 +249,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     backgroundColor: '#000',
     minWidth: '100%',
-    height: '54%',
+    height: '55%',
     borderTopRightRadius: 32,
     borderTopLeftRadius: 32
   },
@@ -243,7 +292,7 @@ const styles = StyleSheet.create({
 
   pujasListContainer: {
     minWidth: '100%',
-    height: '35%',
+    height: '36%',
     backgroundColor: '#FAFAFA',
     position: 'absolute',
     borderTopRightRadius: 15,
