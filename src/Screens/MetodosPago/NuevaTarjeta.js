@@ -3,19 +3,24 @@ import {Picker, StyleSheet, TouchableOpacity, View} from "react-native";
 import { CreditCardInput } from "react-native-credit-card-input";
 import {Button, Icon} from 'react-native-elements';
 
+// Components
+import {ModalMetodosPago} from '../../Components/MetodoDePago/ModalMetodosPago';
+
 //Context
 import {DataContext} from "../../context/DataContext";
 import apiUrl from "../../api";
 import {MetodoPagoContext} from "../../context/MetodoPagoContext";
-import BBVALogo from "../../../assets/bankIcons/BBVA.png";
-import santanderLogo from "../../../assets/bankIcons/Santander.png";
-import galiciaLogo from "../../../assets/bankIcons/Galicia.png";
-import itauLogo from "../../../assets/bankIcons/Itau.png";
 
 const NuevaTarjeta = ({navigation}) => {
   
   const [cardData, setCardData] = useState(null);
-  const [selectedBank, setSelectedBank] = useState();
+  const [selectedBank, setSelectedBank] = useState('noBank');
+  const [showModal, setShowModal] = useState({
+    visible: false,
+    title: '',
+    msg: '',
+    icon: ''
+  });
 
   //Data form Data Context
   const {userData} = useContext(DataContext);
@@ -41,24 +46,39 @@ const NuevaTarjeta = ({navigation}) => {
 
   const createTarjeta = async () => {
     let cardData2 = JSON.parse(cardData);
-    let dataTarjeta = {
-      nombreTitular: cardData2['values']['name'],
-      entidad: selectedBank,
-      numero: cardData2['values']['number'],
-      vencimiento: cardData2['values']['expiry'],
-      idCliente: userData.idCliente,
-      codigo: cardData2['values']['cvc']
+    if(cardData2!=null && cardData2['values']['name']!="" && cardData2['values']['number']!="" && cardData2['values']['expiry']!="" && cardData2['values']['cvc']!="" && selectedBank!='noBank'){
+      let dataTarjeta = {
+        nombreTitular: cardData2['values']['name'],
+        entidad: selectedBank,
+        numero: cardData2['values']['number'],
+        vencimiento: cardData2['values']['expiry'],
+        idCliente: userData.idCliente,
+        codigo: cardData2['values']['cvc']
+      }
+      const nuevaTarjeta = await createTarjetaCredito(dataTarjeta);
+      if (nuevaTarjeta.status === 201) {
+        getMetodosDePago()
+        setShowModal({
+          visible: true,
+          title: '¡Tarjeta creada correctamente!',
+          msg: 'Recuerde que su tarjeta debe ser revisada y autorizada antes de utilizarla. Este proceso puede demorar hasta 24hs',
+          icon: 'newMP'
+        })
+      }
+    } else {
+      setShowModal({
+        visible: true,
+        title: 'Datos inválidos',
+        msg: 'Para continuar debe completar todos los campos',
+        icon: 'warning'
+      })
     }
-    const nuevaTarjeta = await createTarjetaCredito(dataTarjeta);
-    if (nuevaTarjeta.status === 201) {
-      getMetodosDePago()
-      navigation.goBack();
-    }
+    
   };
 
   return (
     <View style={{backgroundColor: '#fff', height: '100%'}}>
-
+      <ModalMetodosPago modalData={showModal} setShowModal={setShowModal} navigation={navigation}/>
 
       <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-start'}}>
         <TouchableOpacity
@@ -98,7 +118,7 @@ const NuevaTarjeta = ({navigation}) => {
           style={{ height: 50, width: 300, color:'#fff' }}
           onValueChange={(itemValue, itemIndex) => setSelectedBank(itemValue)}
         >
-          <Picker.Item label="Seleccione Banco" value="value" />
+          <Picker.Item label="Seleccione Banco" value="noBank" />
           <Picker.Item label="Banco BBVA" value="bbva" />
           <Picker.Item label="Banco Santander" value="santander" />
           <Picker.Item label="Banco Galicia" value="galicia" />

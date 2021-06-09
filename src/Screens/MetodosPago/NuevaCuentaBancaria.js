@@ -3,6 +3,9 @@ import React, {createRef, useContext} from 'react';
 import {StyleSheet, View, Button, TextInput, Pressable, Text, TouchableOpacity} from 'react-native';
 import {CheckBox, Icon} from 'react-native-elements';
 
+// Components
+import {ModalMetodosPago} from '../../Components/MetodoDePago/ModalMetodosPago';
+
 // Context
 import {DataContext} from "../../context/DataContext";
 import apiUrl from "../../api";
@@ -13,6 +16,12 @@ const NuevaCuentaBancaria = ({navigation}) => {
   const [cbu_alias, onChangeCBU] = React.useState(null);
   const [nombreTitular, onChangeNombre] = React.useState(null);
   const [checked, toggleChecked] = React.useState(false);
+  const [showModal, setShowModal] = React.useState({
+    visible: false,
+    title: '',
+    msg: '',
+    icon: ''
+  });
 
   //Data form Data Context
   const {userData} = useContext(DataContext);
@@ -38,25 +47,46 @@ const NuevaCuentaBancaria = ({navigation}) => {
   };
 
   const createCuenta = async () => {
-    if (checked) {
-      let dataCB = {
-        idCliente: userData.idCliente,
-        nombreTitular: nombreTitular,
-        entidad: entidad,
-        cbu_alias: cbu_alias,
-      }
-      const nuevaCuentaBancaria = await createCB(dataCB);
-      if (nuevaCuentaBancaria.status === 201) {
-        getMetodosDePago()
-        navigation.goBack();
+    if (nombreTitular!=null && entidad!=null && cbu_alias!=null){
+      if (checked) {
+        let dataCB = {
+          idCliente: userData.idCliente,
+          nombreTitular: nombreTitular,
+          entidad: entidad,
+          cbu_alias: cbu_alias,
+        }
+        const nuevaCuentaBancaria = await createCB(dataCB);
+        if (nuevaCuentaBancaria.status === 201) {
+          getMetodosDePago()
+          setShowModal({
+            visible: true,
+            title: '¡Cuenta Bancaria creada correctamente!',
+            msg: 'Recuerde que su cuenta bancaria debe ser revisada y autorizada antes de utilizarla. Este proceso puede demorar hasta 24hs',
+            icon: 'newMP'
+          })
+        }
+      } else {
+        setShowModal({
+          visible: true,
+          title: 'Términos de Pago',
+          msg: 'Para continuar debe aceptar los términos de pago',
+          icon: 'warning'
+        })
       }
     } else {
-      console.log('Debe aceptar los términos de pago para continuar')
+      setShowModal({
+        visible: true,
+        title: 'Datos inválidos',
+        msg: 'Para continuar debe completar todos los campos',
+        icon: 'warning'
+      })
     }
+    
   };
 
   return (
     <>
+    <ModalMetodosPago modalData={showModal} setShowModal={setShowModal} navigation={navigation}/>
       <View style={{
         flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-start', backgroundColor: '#fff',
       }}>
