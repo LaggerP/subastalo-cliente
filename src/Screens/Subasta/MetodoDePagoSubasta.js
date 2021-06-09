@@ -45,7 +45,9 @@ const MetodosDePagoSubasta = ({navigation}) => {
 
       <View style={styles.nuevoMetodoContainer}>
         <Button
-          onPress={() => navigation.goBack()}
+          onPress={() => navigation.navigate('MetodosPagoScreen', {
+            screen: 'MetodosPago'
+          })}
           title='Agregar nuevo método de pago'
           type='solid'
           titleStyle={{fontWeight: '100', color: '#fafafa', paddingLeft: 8}}

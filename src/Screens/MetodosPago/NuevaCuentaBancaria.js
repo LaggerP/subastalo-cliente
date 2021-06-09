@@ -5,6 +5,8 @@ import {CheckBox, Icon} from 'react-native-elements';
 
 // Context
 import {DataContext} from "../../context/DataContext";
+import apiUrl from "../../api";
+import {MetodoPagoContext} from "../../context/MetodoPagoContext";
 
 const NuevaCuentaBancaria = ({navigation}) => {
   const [entidad, onChangeEntidadB] = React.useState(null);
@@ -14,10 +16,12 @@ const NuevaCuentaBancaria = ({navigation}) => {
 
   //Data form Data Context
   const {userData} = useContext(DataContext);
+  const {getMetodosDePago} = useContext(MetodoPagoContext);
+
 
   const createCB = async (dataCB) => {
     try {
-      let cuentaBDatos = await fetch('http://10.0.2.2:3000/api/metodo-de-pago/new/cuenta-bancaria', {
+      let cuentaBancaria = await fetch(`${apiUrl}/api/metodo-de-pago/new/cuenta-bancaria`, {
         method: 'POST',
         mode: 'cors',
         headers: {
@@ -26,8 +30,8 @@ const NuevaCuentaBancaria = ({navigation}) => {
         },
         body: JSON.stringify(dataCB)
       });
-      console.log(await cuentaBDatos.json())
-      return cuentaBDatos.status;
+      cuentaBancaria = await cuentaBancaria.json()
+      return cuentaBancaria;
     } catch (e) {
       console.log(e);
     }
@@ -36,17 +40,15 @@ const NuevaCuentaBancaria = ({navigation}) => {
   const createCuenta = async () => {
     if (checked) {
       let dataCB = {
-        // idCliente: userData.idCliente,
-        idCliente: 2,
+        idCliente: userData.idCliente,
         nombreTitular: nombreTitular,
         entidad: entidad,
         cbu_alias: cbu_alias,
       }
-      console.log(dataCB);
-      const status = await createCB(dataCB);
-      console.log(status);
-      if (status === 201) {
-        console.log('Cuenta Bancaria creada con éxito')
+      const nuevaCuentaBancaria = await createCB(dataCB);
+      if (nuevaCuentaBancaria.status === 201) {
+        getMetodosDePago()
+        navigation.goBack();
       }
     } else {
       console.log('Debe aceptar los términos de pago para continuar')
