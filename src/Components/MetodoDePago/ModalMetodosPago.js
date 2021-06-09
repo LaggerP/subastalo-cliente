@@ -20,8 +20,8 @@ export const ModalMetodosPago = ({modalData, setShowModal, navigation}) => {
 
   const toggleOverlay = () => {
     setShowModal({...modalData, visible: !visible});
-    if(modalData.icon=='newMP'){
-        navigation.goBack();
+    if (modalData.icon === 'newMP') {
+      navigation.goBack();
     }
   };
 
@@ -36,10 +36,10 @@ export const ModalMetodosPago = ({modalData, setShowModal, navigation}) => {
                  width: 350,
                  borderRadius: 10
                }}>
-        <Text h4 style={{marginTop: 20}}>{title}</Text>
+        <Text h4 style={{marginTop: 20, textAlign:'center'}}>{title}</Text>
         <Text style={{marginHorizontal: 18, marginTop: 20, textAlign: 'center'}}>{msg}</Text>
         <Image
-          style={{width: 130, height: 130, marginVertical:30}}
+          style={{width: 130, height: 130, marginVertical: 30}}
           source={iconToShow[icon]}
         />
         <Button
