@@ -12,6 +12,7 @@ import {ModalSubasta} from "../../Components/Subasta/ModalSubasta";
 
 const ItemSubasta =  ({route, navigation}) => {
 
+  const [intervalStatus, setIntervalStatus] = useState(true);
   const [showModal, setShowModal] = useState({
     visible: false,
     title: '¡Ups!',
@@ -20,13 +21,21 @@ const ItemSubasta =  ({route, navigation}) => {
     icon: 'subastaError'
   });
 
-
   // Pujas Context
   const {getPujas, setItem, item, downCountClock} = useContext(PujasContext);
 
+  const updatePujas = async () => {
+    let pujasInterval
+    if (item && intervalStatus){
+      pujasInterval = setInterval(() => getPujas(), 8000);
+    } else {
+      clearInterval(pujasInterval)
+    }
+  }
+  updatePujas();
+
   const getItemSubastandose = async (idSubasta) => {
     try {
-      console.log(idSubasta)
       setItem(null)
       let _item = await fetch(`${apiUrl}/api/subastas/catalogo/${idSubasta}/item-catalogo`);
       setItem(await _item.json())
@@ -37,19 +46,11 @@ const ItemSubasta =  ({route, navigation}) => {
 
   useEffect(() => {
     getItemSubastandose(route.params.idSubasta);
-    if (item) {
-      let pujasInterval = setInterval(() => getPujas(), 2000);
-      //destroy interval on unmount
-      return () => {
-        clearInterval(pujasInterval);
-      }
-    }
-
-  }, [])
+  }, []);
 
 
   const changeItemEstado = async () => {
-    return await fetch(`http://10.0.2.2:3000/api/subastas/catalogo/change-item-estado`, {
+    return await fetch(`${apiUrl}/api/subastas/catalogo/change-item-estado`, {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -70,7 +71,7 @@ const ItemSubasta =  ({route, navigation}) => {
     return (
       <View style={styles.container}>
         <View style={styles.imagesContainer}>
-          <SubastaCarousel navigation={navigation} fotos={item.fotos}/>
+          <SubastaCarousel navigation={navigation} fotos={item.fotos} setIntervalStatus={setIntervalStatus}/>
         </View>
         <View style={styles.itemDescriptionContainer}>
           <Text style={styles.itemTitle}>

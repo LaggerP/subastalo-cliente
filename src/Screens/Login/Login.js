@@ -40,7 +40,6 @@ const Login = ({navigation}) => {
       });
       let user = await loginDatos.json();
       await setUserData(user.userData);
-      console.log('USERDATA EN LOGIN: ' + user.userData)
       if (loginDatos.status === 200) {
         await AsyncStorage.multiSet([
           ["email", loginInfo.email],

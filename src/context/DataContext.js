@@ -21,7 +21,7 @@ export const DataProvider = ({children}) => {
         body: JSON.stringify(loginData)
       });
       let user = await loginDatos.json();
-      await setUserData(user.userData);
+      setUserData(user.userData);
       if (loginDatos.status === 200) {
         await AsyncStorage.setItem('sesionIniciada', 'true');
         const data = await AsyncStorage.getItem('sesionIniciada');

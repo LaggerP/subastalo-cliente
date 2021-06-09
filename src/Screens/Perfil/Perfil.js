@@ -10,7 +10,7 @@ const Perfil = ({navigation}) => {
     let keys = ['email', 'password', 'sesionIniciada'];
     await AsyncStorage.multiRemove(keys, (err) => {
       setUserData(null)
-      console.log('Local storage ');
+      console.log('Storage eliminada');
       navigation.pop()
     });
   }

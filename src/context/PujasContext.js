@@ -13,7 +13,6 @@ export const PujasProvider = ({children}) => {
     try {
       let pujas = await fetch(`${apiUrl}/api/pujas/catalogo/${item.idItemCatalogo}/`);
       setItem({...item, pujas: await pujas.json()})
-      console.log(item.pujas)
     } catch (e) {
       console.error(error);
     }
