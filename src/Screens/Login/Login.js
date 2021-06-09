@@ -18,7 +18,7 @@ const Login = ({navigation}) => {
     password: ''
   });
 
-  const {setUserData} = useContext(DataContext);
+  const {setUserData, setSesionIniciada} = useContext(DataContext);
 
   let [fontsLoaded] = useFonts({
     CinzelDecorative_400Regular,
@@ -40,6 +40,7 @@ const Login = ({navigation}) => {
       });
       let user = await loginDatos.json();
       await setUserData(user.userData);
+      console.log('USERDATA EN LOGIN: ' + user.userData)
       if (loginDatos.status === 200) {
         await AsyncStorage.multiSet([
           ["email", loginInfo.email],
@@ -47,6 +48,7 @@ const Login = ({navigation}) => {
         ]);
         await AsyncStorage.setItem('sesionIniciada', 'true');
         const data = await AsyncStorage.getItem('sesionIniciada');
+        setSesionIniciada(data)
         navigation.navigate('DashboardScreen', {
           screen: 'Dashboard'
         })
