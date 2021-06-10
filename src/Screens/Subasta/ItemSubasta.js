@@ -176,7 +176,7 @@ const ItemSubasta = ({route, navigation}) => {
                   textAlign: 'center',
                   fontSize: 20,
                   fontWeight: 'bold'
-                }}>¡Se la primera persona en ofertar!</Text>
+                }}>¡Sé la primera persona en ofertar!</Text>
 
             }
 

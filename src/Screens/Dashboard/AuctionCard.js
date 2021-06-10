@@ -1,14 +1,14 @@
-import React, {useContext} from 'react';
-import {StyleSheet, Text, View,} from 'react-native';
-import {Button, Badge} from 'react-native-elements'
+import React, { useContext, useState } from 'react';
+import { StyleSheet, Text, View, } from 'react-native';
+import { Button, Badge, Overlay } from 'react-native-elements'
 import Moment from 'moment';
-import {DataContext} from "../../context/DataContext";
+import { DataContext } from "../../context/DataContext";
 
 
-const AuctionCard = ({idSubasta,fechaSubasta,horaSubasta,categoriaSubasta,nombreSubastador,estadoSubasta,navigation}) => {
-  const {sesionIniciada} = useContext(DataContext);
+const AuctionCard = ({ idSubasta, fechaSubasta, horaSubasta, categoriaSubasta, nombreSubastador, estadoSubasta, navigation }) => {
+  const { sesionIniciada, userData } = useContext(DataContext);
 
-  const Strong = (props) => <Text style={{fontWeight: 'bold'}}>{props.children}</Text>
+  const Strong = (props) => <Text style={{ fontWeight: 'bold' }}>{props.children}</Text>
   const AuctionState = () => {
     let color;
     if (estadoSubasta === 'abierta') {
@@ -21,20 +21,49 @@ const AuctionCard = ({idSubasta,fechaSubasta,horaSubasta,categoriaSubasta,nombre
     return color;
   }
 
+  const puedeParticipar = () => {
+    let participa;
+    if (userData.categoria.toLowerCase() == 'platino') {
+      participa = true;
+    }
+    else if (userData.categoria.toLowerCase() === 'oro' && categoriaSubasta.toLowerCase() === ('oro' || 'plata' || 'especial' || 'comun')) {
+      participa = true;
+    }
+    else if (userData.categoria.toLowerCase() === 'plata' && categoriaSubasta.toLowerCase() === ('plata' || 'especial' || 'comun')) {
+      participa = true;
+    }
+    else if (userData.categoria.toLowerCase() === 'especial' && categoriaSubasta.toLowerCase() === ('especial' || 'comun')) {
+      participa = true;
+    }
+    else if (userData.categoria.toLowerCase() === 'comun' && categoriaSubasta.toLowerCase() === ('comun')) {
+      participa = true;
+    }
+    else{
+      participa = false
+    }
+    return participa;
+  }
+
+  //Error categoria modal
+  const [visible, setVisible] = useState(false);
+  const toggleOverlay = () => {
+    setVisible(!visible);
+  };
+
   return (
 
     <View style={styles.auctionCard}>
 
-      <View style={{flex: 0.8, flexDirection: 'row', alignItems: 'flex-start'}}>
-        <View style={{flex: 2, flexDirection: 'column'}}>
-          <View style={{flexDirection: 'row',}}>
-            <Text style={{fontSize: 20}}>Categoría</Text>
-            <Badge containerStyle={{alignSelf: 'center', marginLeft: 10, marginRight: 10}} status="warning"/>
-            <Text style={{fontSize: 20}}>{categoriaSubasta}</Text>
+      <View style={{ flex: 0.8, flexDirection: 'row', alignItems: 'flex-start' }}>
+        <View style={{ flex: 2, flexDirection: 'column' }}>
+          <View style={{ flexDirection: 'row', }}>
+            <Text style={{ fontSize: 20 }}>Categoría</Text>
+            <Badge containerStyle={{ alignSelf: 'center', marginLeft: 10, marginRight: 10 }} status="warning" />
+            <Text style={{ fontSize: 20 }}>{categoriaSubasta}</Text>
           </View>
         </View>
 
-        <View style={{flex: 1, flexDirection: 'column'}}>
+        <View style={{ flex: 1, flexDirection: 'column' }}>
           <Text style={{
             color: AuctionState(),
             textAlign: 'right',
@@ -46,25 +75,25 @@ const AuctionCard = ({idSubasta,fechaSubasta,horaSubasta,categoriaSubasta,nombre
         </View>
       </View>
 
-      <View style={{flex: 1.5, flexDirection: 'row'}}>
-        <View style={{flex: 1, flexDirection: 'column'}}>
+      <View style={{ flex: 1.5, flexDirection: 'row' }}>
+        <View style={{ flex: 1, flexDirection: 'column' }}>
           <Text
-            style={{fontSize: 13, marginBottom: 1,}}><Strong>Fecha:</Strong> {Moment(fechaSubasta).format('DD/MM/YYYY')}
+            style={{ fontSize: 13, marginBottom: 1, }}><Strong>Fecha:</Strong> {Moment(fechaSubasta).format('DD/MM/YYYY')}
           </Text>
-          <Text style={{fontSize: 13, marginBottom: 1,}}><Strong>Hora:</Strong> {Moment(horaSubasta).format('HH:mm')}
+          <Text style={{ fontSize: 13, marginBottom: 1, }}><Strong>Hora:</Strong> {Moment(horaSubasta).format('HH:mm')}
           </Text>
-          <Text style={{fontSize: 13, marginBottom: 1,}}><Strong>Rematador:</Strong> {nombreSubastador}</Text>
+          <Text style={{ fontSize: 13, marginBottom: 1, }}><Strong>Rematador:</Strong> {nombreSubastador}</Text>
         </View>
       </View>
 
-      <View style={{flex: 1, flexDirection: 'row',}}>
-        <View style={{flex: 1, flexDirection: 'column', justifyContent: 'flex-end',}}>
+      <View style={{ flex: 1, flexDirection: 'row', }}>
+        <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'flex-end', }}>
           <Button
             disabled={estadoSubasta !== 'En vivo'}
-            disabledStyle={{borderColor: '#C4C4C4'}}
+            disabledStyle={{ borderColor: '#C4C4C4' }}
             title='Ingresar'
             type='solid'
-            titleStyle={{fontWeight: '100'}}
+            titleStyle={{ fontWeight: '100' }}
             buttonStyle={{
               backgroundColor: '#FC9905',
               borderRadius: 5,
@@ -72,20 +101,42 @@ const AuctionCard = ({idSubasta,fechaSubasta,horaSubasta,categoriaSubasta,nombre
               borderWidth: 1.7,
               borderColor: '#FC9905'
             }}
-            containerStyle={{width: 165, alignSelf: 'flex-start'}}
+            containerStyle={{ width: 165, alignSelf: 'flex-start' }}
             onPress={() => {
-              sesionIniciada ?
+              sesionIniciada && puedeParticipar() ?
                 navigation.navigate('SubastaScreen', {
                   screen: 'ItemSubasta',
-                  params: {idSubasta, categoriaSubasta},
+                  params: { idSubasta, categoriaSubasta },
                 })
-                :
-                navigation.navigate('Login')
+                : !sesionIniciada ?
+                  navigation.navigate('Login')
+                  :
+                  toggleOverlay()
             }}
           />
+
+          <Overlay isVisible={visible} onBackdropPress={toggleOverlay} overlayStyle={styles.containerModal} >
+            <View style={{ flex: 0.8, flexDirection: 'column', justifyContent: 'center', }}>
+              <Text style={styles.title}>¡Ups!</Text>
+            </View>
+            <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'center', }}>
+              <Text style={styles.description}>No puedes participar de esta subasta</Text>
+              <Text style={styles.description}>¡Continua sumando puntos para subir de categoría!</Text>
+            </View>
+            <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'center', }}>
+              <Button
+                title='Aceptar'
+                type='outline'
+                buttonStyle={{ borderRadius: 5, borderWidth: 1.7, borderColor: '#FC9905', height: 50 }}
+                titleStyle={{ color: '#FC9905' }}
+                containerStyle={{ width: 110, alignSelf: 'center' }}
+                onPress={toggleOverlay}
+              />
+            </View>
+          </Overlay>
         </View>
 
-        <View style={{flex: 1, flexDirection: 'column', justifyContent: 'flex-end'}}>
+        <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'flex-end' }}>
           <Button
             title='Catálogo'
             type='outline'
@@ -93,7 +144,6 @@ const AuctionCard = ({idSubasta,fechaSubasta,horaSubasta,categoriaSubasta,nombre
             titleStyle={{color: '#FC9905'}}
             containerStyle={{width: 165, alignSelf: 'flex-end'}}
             onPress={()=> navigation.navigate('Catalogo', {idSubasta: idSubasta})}
-
           />
         </View>
       </View>
@@ -124,6 +174,23 @@ const styles = StyleSheet.create({
     height: 165,
     padding: 13,
     marginBottom: 15
+  },
+
+  containerModal: {
+    width: '95%',
+    height: 300,
+    borderRadius: 10,
+  },
+
+  title: {
+    fontSize: 38,
+    textAlign: 'center'
+  },
+
+  description: {
+    fontSize: 15,
+    textAlign: 'center',
+    lineHeight: 23,
   },
 
 });

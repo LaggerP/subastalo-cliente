@@ -79,7 +79,6 @@ const NuevaPuja = ({route, navigation}) => {
       setOfertaMaxima(true);
       setOfertaMinima(false);
       setAllowOferta(false);
-
     } else if (_oferta < minValue) {
       setOfertaMaxima(false);
       setOfertaMinima(true);
@@ -115,7 +114,6 @@ const NuevaPuja = ({route, navigation}) => {
         icon: 'subastaError'
       })
     }
-
     setSpinnerLoading(false)
   }
 
