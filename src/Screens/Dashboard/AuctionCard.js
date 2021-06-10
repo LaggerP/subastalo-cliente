@@ -30,20 +30,18 @@ const AuctionCard = ({
   }
 
   const puedeParticipar = () => {
+    let userCategoria = userData.categoria.toLowerCase();
+    let subastaCategoria = categoriaSubasta.toLowerCase();
     let participa;
-    if (userData.categoria.toLowerCase() == 'platino') {
+    if (userCategoria === 'platino') {
       participa = true;
-    } else if (userData.categoria.toLowerCase() === 'oro' && categoriaSubasta.toLowerCase() === ('oro' || 'plata' || 'especial' || 'comun')) {
+    } else if (userCategoria === 'oro' && subastaCategoria === 'oro' || subastaCategoria === 'plata' || subastaCategoria === 'especial' || subastaCategoria === 'comun') {
       participa = true;
-    } else if (userData.categoria.toLowerCase() === 'plata' && categoriaSubasta.toLowerCase() === ('plata' || 'especial' || 'comun')) {
+    } else if (userCategoria === 'plata' && subastaCategoria === 'plata' || subastaCategoria === 'especial' || subastaCategoria === 'comun') {
       participa = true;
-    } else if (userData.categoria.toLowerCase() === 'especial' && categoriaSubasta.toLowerCase() === ('especial' || 'comun')) {
+    } else if (userCategoria === 'especial' && subastaCategoria === 'especial' || subastaCategoria === 'comun') {
       participa = true;
-    } else if (userData.categoria.toLowerCase() === 'comun' && categoriaSubasta.toLowerCase() === ('comun')) {
-      participa = true;
-    } else {
-      participa = false
-    }
+    } else participa = userCategoria === 'comun' && subastaCategoria === 'comun';
     return participa;
   }
 
