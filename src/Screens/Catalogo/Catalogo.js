@@ -1,8 +1,7 @@
 import React, {useEffect, useContext, useState} from 'react';
-import {StyleSheet, Text, View, ScrollView, AsyncStorage, TouchableOpacity} from 'react-native';
+import {StyleSheet, Text, View, ScrollView, Image, TouchableOpacity} from 'react-native';
 import apiUrl from "../../api";
-import {Chip, Icon} from "react-native-elements";
-import Carousel from 'react-native-snap-carousel';
+import {Icon} from "react-native-elements";
 import CatalogoCarousel from "../../Components/Catalogo/CatalogoCarousel";
 
 const Catalogo = ({route, navigation}) => {
@@ -63,10 +62,13 @@ const Catalogo = ({route, navigation}) => {
                   <View style={styles.itemCatalogo} key={idx}>
 
                     <CatalogoCarousel images={catalogo} fotos={item.fotos}/>
-                    <Text style={{fontSize: 28, paddingLeft: 15}}>${item.precioBase} - <Text style={{fontSize:22}}>{item.disponible === 'si' ? 'Item disponible' : 'Item no disponible'}</Text>  </Text>
+                    <Text style={{fontSize: 28, paddingLeft: 15}}>${item.precioBase} - <Text
+                      style={{fontSize: 22}}>{item.disponible === 'si' ? 'Item disponible' : 'Item no disponible'}</Text>
+                    </Text>
                     <Text style={{fontSize: 18, paddingLeft: 15, paddingTop: 10}}>{item.descripcionCatalogo}</Text>
                     <Text style={{fontSize: 15, paddingLeft: 15, paddingTop: 10}}>Dueño/a: {item.duenioProducto}</Text>
-                    <Text style={{fontSize: 15, paddingLeft: 15, paddingTop: 10}}>Categoria: {item.categoriaProducto}</Text>
+                    <Text
+                      style={{fontSize: 15, paddingLeft: 15, paddingTop: 10}}>Categoria: {item.categoriaProducto}</Text>
                   </View>
                 )
               })
@@ -77,7 +79,16 @@ const Catalogo = ({route, navigation}) => {
       </View>
 
     )
-  } else return null
+  } else return (
+    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+      <Text style={{textAlign: 'center', fontWeight: 'bold', marginHorizontal: 20, fontSize: 20}}>¡Actualmente el
+        catalogo de esta subasta se encuentra en construcción! Intente más tarde</Text>
+      <Image
+        style={{marginTop:10}}
+        source={require('../../../assets/imageIcons/catalogoEnConstruccion.png')}
+      />
+    </View>
+  )
 
 
 };
