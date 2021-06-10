@@ -14,7 +14,6 @@ import {DataContext} from "../../context/DataContext";
 const ItemSubasta = ({route, navigation}) => {
 
   const [intervalStatus, setIntervalStatus] = useState(true);
-  const [didMount, setDidMount] = useState(false);
   const [showModal, setShowModal] = useState({
     visible: false,
     title: '¡Ups!',
@@ -50,10 +49,16 @@ const ItemSubasta = ({route, navigation}) => {
 
   useEffect(() => {
     getItemSubastandose(route.params.idSubasta);
-    setDidMount(true);
-    return () => setDidMount(false);
+    return () => {
+      setIntervalStatus(false)
+      setItem(null)
+    };
   }, []);
 
+  useEffect(() => {
+    return () => {
+    };
+  }, [item]);
 
   const changeItemEstado = async () => {
     return await fetch(`${apiUrl}/api/subastas/catalogo/change-item-estado`, {

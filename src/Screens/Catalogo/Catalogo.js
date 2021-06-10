@@ -14,7 +14,6 @@ const Catalogo = ({route, navigation}) => {
       try {
         let catalogo = await fetch(`${apiUrl}/api/subastas/catalogo/${route.params.idSubasta}/`);
         catalogo = await catalogo.json();
-        console.log(catalogo)
         setCatalogo(catalogo)
       } catch (e) {
       }
