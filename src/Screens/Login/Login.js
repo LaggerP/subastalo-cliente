@@ -1,5 +1,7 @@
 import React, {useContext, useState} from 'react';
+
 import {StyleSheet, Text, View, TextInput, AsyncStorage} from 'react-native';
+
 import {
   useFonts,
   CinzelDecorative_400Regular,
@@ -7,10 +9,21 @@ import {
   CinzelDecorative_900Black,
 } from '@expo-google-fonts/cinzel-decorative';
 import {Roboto_500Medium, Roboto_400Regular} from '@expo-google-fonts/roboto';
+
 import {Button} from "react-native-elements";
+
 import {DataContext} from '../../context/DataContext';
 
+import {ModalLogin} from "../../Components/Subasta/ModalLogin";
+
 const Login = ({navigation}) => {
+
+  const [showModal, setShowModal] = useState({
+    visible: false,
+    title: '¡Ups!',
+    msg: 'Correo y/o contraseña incorrectos. Por favor, compruebe sus credenciales y vuelva a intentarlo.',
+    icon: 'subastaError'
+  });
 
   const [loginInfo, setLoginInfo] = useState({
     email: '',
@@ -47,12 +60,13 @@ const Login = ({navigation}) => {
           params: {sesionIniciada: data === 'true', userData: user.userData},
         })
       }
+      if (loginDatos.status === 400 || loginDatos.status===500){
+        setShowModal({...showModal, visible: true});
+      }
     } catch (e) {
       console.log(e);
     }
   }
-
-
   return (
     <View style={styles.container}>
       <View style={styles.noMeLaContainer}>
@@ -99,6 +113,10 @@ const Login = ({navigation}) => {
           titleStyle={{color: "#FD9419"}}
         />
       </View>
+      {showModal.visible ? (
+        <ModalLogin modalData={showModal} setShowModal={setShowModal} navigation={navigation}/>) 
+        : (null)
+      }
     </View>
   )
 };

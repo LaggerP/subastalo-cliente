@@ -322,7 +322,7 @@ const Dashboard = ({route, navigation}) => {
                   borderColor: '#FFAE00'
                 }}
                 containerStyle={{width: 145, alignSelf: 'flex-end',}}
-                onPress={() => navigation.push('Login')}
+                onPress={() => navigation.navigate('LoginScreen', {screen: 'Login'})}
               />
             </View>
             : null

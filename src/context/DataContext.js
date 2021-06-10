@@ -6,6 +6,7 @@ export const DataProvider = ({children}) => {
 
   const [userData, setUserData] = useState();
   const [subastas, setSubastas] = useState([]);
+  const [userMailForgot, setUserMailForgot] = useState();
 
   return (
     <DataContext.Provider value={
@@ -14,6 +15,8 @@ export const DataProvider = ({children}) => {
         setUserData,
         subastas,
         setSubastas,
+        userMailForgot,
+        setUserMailForgot,
       }
     }>
       {children}

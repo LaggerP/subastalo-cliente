@@ -2,6 +2,7 @@ import {StatusBar} from 'expo-status-bar';
 import React, {useContex, useState} from 'react';
 import {StyleSheet, Text, View, TextInput} from 'react-native';
 import { Button } from "react-native-elements";
+import {ModalLogin} from "../../Components/Subasta/ModalLogin";
 
 const RegistroUno = ({navigation}) => {
 
@@ -16,8 +17,18 @@ const RegistroUno = ({navigation}) => {
     email: '',
   });
 
+  const [showModal, setShowModal] = useState({
+    visible: false,
+    title: '¡Ups!',
+    msg: 'Hubo un error. Por favor, compruebe sus datos y vuelva a intentarlo.',
+    icon: 'subastaError'
+  });
+
   const registro = async () => {
-    setRegistroInfo({...registroInfo, nombre: userNombre +' '+ userApellido})
+    // let nombreCompleto = userNombre + ' ' + userApellido;
+    // setRegistroInfo({...registroInfo, nombre: nombreCompleto});
+    // console.log(nombreCompleto);
+    // console.log(registroInfo);
     try{
       let registroDatos = await fetch('http://10.0.2.2:3000/api/user/new-user', {
       method: 'POST',
@@ -28,8 +39,11 @@ const RegistroUno = ({navigation}) => {
       body: JSON.stringify(registroInfo)
     });
     if (registroDatos.status == 201){
-      navigation.push('RegistroExito')
-    };
+      navigation.push('RegistroExito');
+    }
+    if(registroDatos.status=== 409 || registroDatos.status===500){ 
+      setShowModal({...showModal, visible: true});
+    }
   } catch (e) {
     console.log(e);
   }
@@ -47,14 +61,14 @@ const RegistroUno = ({navigation}) => {
         />
         <TextInput 
           style={styles.input}
-          placeholder="Nombre/s"
-          onChangeText={setUserNombre}
+          placeholder="Nombre/s y Apellido/s"
+          onChangeText={(text) => setRegistroInfo({...registroInfo, nombre: text})}
         />
-        <TextInput 
+        {/* <TextInput 
           style={styles.input}
           placeholder="Apellido/s"
           onChangeText={setUserApellido}
-        />
+        /> */}
         <TextInput 
           style={styles.input}
           placeholder="Dirección de domicilio"
@@ -77,6 +91,10 @@ const RegistroUno = ({navigation}) => {
           title="Crear cuenta"
         />
         <Text style={styles.textoAbajo}>El proceso de registro consta de dos (2) {"\n"}etapas. Cuando sus datos sean verificados {"\n"}recibirá un email con los pasos a seguir para {"\n"}poder hacer uso de Subastalo.</Text>
+      {showModal.visible ? (
+        <ModalLogin modalData={showModal} setShowModal={setShowModal} navigation={navigation}/>) 
+        : (null)
+      }
     </View>
   )
 };

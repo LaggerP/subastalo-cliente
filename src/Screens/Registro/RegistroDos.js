@@ -12,28 +12,37 @@ const RegistroDos = ({navigation}) => {
 
   const [userPassword, setUserPassword] = useState('');
 
+  const [showModal, setShowModal] = useState({
+    visible: false,
+    title: '¡Ups!',
+    msg: 'Hubo un error. Por favor, compruebe sus datos y vuelva a intentarlo.',
+    icon: 'subastaError'
+  });
+
   const registro = async () => {
     if(userPassword==registroInfo.password) {
-      console.log(registroInfo.password)
-
+      try{
+        let loginDatos = await fetch('http://10.0.2.2:3000/api/user/change-password', {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(registroInfo)
+      });
+      if (loginDatos.status === 201){
+        navigation.push('Login')
+      }
+      if (loginDatos.status === 500){
+        setShowModal({...showModal, msg: 'Ha ocurrido un error. Vuelva a intentarlo.', visible: true});
+      }
+    }catch (e) {
+      console.log(e);
     }
-  //   try{
-  //     let registroDatos = await fetch('http://10.0.2.2:3000/api/user/login', {
-  //     method: 'POST',
-  //     headers: {
-  //       'Accept': 'application/json',
-  //       'Content-Type': 'application/json'
-  //     },
-  //     body: JSON.stringify(registroInfo)
-  //   });
-  //   if (registroDatos.status == 200){
-  //     navigation.push('Dashboard')
-  //   }
-  // } catch (e) {
-  //   console.log(e);
-  // }
+  }else{
+    setShowModal({...showModal, msg: 'Las contraseñas no coinciden. Vuelva a intentarlo.', visible: true});
+  }
 }
-
 
   return (
     <View style={styles.container}>
@@ -70,6 +79,11 @@ const RegistroDos = ({navigation}) => {
           title="Finalizar"
         />
         <Text style={styles.textoAbajo}>Gracias por registrarse en Subastalo</Text>
+
+      {showModal.visible ? (
+        <ModalLogin modalData={showModal} setShowModal={setShowModal} navigation={navigation}/>) 
+        : (null)
+      }
     </View>
   )
 };
