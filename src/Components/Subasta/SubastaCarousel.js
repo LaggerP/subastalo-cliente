@@ -12,7 +12,7 @@ import {Icon} from 'react-native-elements'
 
 const {width: screenWidth} = Dimensions.get('window');
 
-const SubastaCarousel = ({ navigation: { goBack }, fotos, setIntervalStatus }) => {
+const SubastaCarousel = ({ navigation: { goBack, navigate }, fotos, setIntervalStatus, idSubasta }) => {
   const [entries, setEntries] = useState([]);
   const carouselRef = useRef(null);
 
@@ -71,7 +71,7 @@ const SubastaCarousel = ({ navigation: { goBack }, fotos, setIntervalStatus }) =
             paddingBottom: 10,
             paddingTop: 10
           }}
-          onPress={() => console.log("NOS VAMOS AL CATALOGO")}>
+          onPress={() => navigate('Catalogo', {idSubasta: idSubasta})}>
           <Icon
             name='pricetags-outline'
             type='ionicon'
@@ -105,7 +105,7 @@ export default SubastaCarousel;
 const styles = StyleSheet.create({
   item: {
     width: screenWidth - 60,
-    height: 280
+    height: 280,
   },
   imageContainer: {
     flex: 1,

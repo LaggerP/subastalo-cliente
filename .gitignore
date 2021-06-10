@@ -15,3 +15,7 @@ web-build/
 
 # IDES
 .idea
+
+#LOCK
+package-lock.json
+yarn.lock
