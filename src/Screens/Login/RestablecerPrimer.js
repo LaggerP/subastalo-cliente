@@ -1,15 +1,28 @@
 import {StatusBar} from 'expo-status-bar';
 import React, {useContext, useState} from 'react';
+
 import {StyleSheet, Text, View, TextInput} from 'react-native';
 import { Button } from "react-native-elements";
 
-const RestablecerPrimer = () => {
+import {DataContext} from '../../context/DataContext';
+import {ModalLogin} from "../../Components/Subasta/ModalLogin";
 
-  const {email, setEmail} = useState('');
+const RestablecerPrimer = ({navigation}) => {
+
+  const [email, setEmail] = useState('');
+
+  const {setUserMailForgot} = useContext(DataContext);
+
+  const [showModal, setShowModal] = useState({
+    visible: false,
+    title: '¡Ups!',
+    msg: 'Correo incorrecto. Por favor, compruebe sus correo y vuelva a intentarlo.',
+    icon: 'subastaError'
+  });
 
   const olvidado = async () => {
     try{
-      let loginDatos = await fetch('http://10.0.2.2:3000/api/user/change-password', {
+      let restablecerDatos = await fetch('http://10.0.2.2:3000/api/user/forgot-password', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -17,9 +30,16 @@ const RestablecerPrimer = () => {
       },
       body: JSON.stringify(email)
     });
-    if (loginDatos.status == 201){
-      navigation.push('Dashboard')
-    }
+    console.log(email)
+    console.log(restablecerDatos.status)
+    // if (loginDatos.status == 201){
+    //   setUserMailForgot(email);
+      // navigation.push('RestablecerSegundo')
+      
+    // }
+    // else {
+    //   setShowModal({...showModal, visible: true});
+    // }
   } catch (e) {
     console.log(e);
   }
@@ -46,6 +66,10 @@ const RestablecerPrimer = () => {
           onPress={olvidado}
           title="Enviar"
         />
+        {showModal.visible ? (
+        <ModalLogin modalData={showModal} setShowModal={setShowModal} navigation={navigation}/>) 
+        : (null)
+      }
     </View>
   )
 };

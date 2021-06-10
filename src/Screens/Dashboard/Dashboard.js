@@ -439,7 +439,6 @@ const Dashboard = ({route, navigation}) => {
             onPress={() => navigation.push('Login')}
           />
         </View>
-
       </View>
     )
   }

@@ -8,6 +8,7 @@ export const DataProvider = ({children}) => {
 
   const [userData, setUserData] = useState();
   const [subastas, setSubastas] = useState([]);
+  const [userMailForgot, setUserMailForgot] = useState();
   const [sesionIniciada, setSesionIniciada] = useState();
 
   const autoLogin = async (loginData) => {
@@ -57,6 +58,8 @@ export const DataProvider = ({children}) => {
         setUserData,
         subastas,
         setSubastas,
+        userMailForgot,
+        setUserMailForgot,
         autoLogin,
         sesionIniciada,
         setSesionIniciada

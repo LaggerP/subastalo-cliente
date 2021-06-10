@@ -17,7 +17,7 @@ const RegistroExito = ({navigation}) => {
           borderRadius: 5,
           }}
           containerStyle={{ margin: 5 }}
-          onPress={() => navigation.push('Dashboard')}
+          onPress={()=> navigation.push("RegistroDos")}
           title="Aceptar"
         />
     </View>
