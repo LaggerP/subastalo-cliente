@@ -16,7 +16,7 @@ import apiUrl from "../../api";
 
 import {DataContext} from '../../context/DataContext';
 
-import {ModalLogin} from "../../Components/Subasta/ModalLogin";
+import {ModalLogin} from "../../Components/Login/ModalLogin";
 
 const Login = ({navigation}) => {
 
@@ -24,7 +24,7 @@ const Login = ({navigation}) => {
     visible: false,
     title: '¡Ups!',
     msg: 'Correo y/o contraseña incorrectos. Por favor, compruebe sus credenciales y vuelva a intentarlo.',
-    icon: 'subastaError'
+    icon: 'wrongCredentials'
   });
 
   const [loginInfo, setLoginInfo] = useState({
@@ -66,7 +66,7 @@ const Login = ({navigation}) => {
           screen: 'Dashboard'
         })
       }
-      if (loginDatos.status === 400 || loginDatos.status===500){
+      if (loginDatos.status === 400 || loginDatos.status === 500) {
         setShowModal({...showModal, visible: true});
       }
     } catch (e) {
@@ -120,8 +120,8 @@ const Login = ({navigation}) => {
         />
       </View>
       {showModal.visible ? (
-        <ModalLogin modalData={showModal} setShowModal={setShowModal} navigation={navigation}/>) 
-        : (null)
+          <ModalLogin modalData={showModal} setShowModal={setShowModal} navigation={navigation}/>)
+        : null
       }
     </View>
   )

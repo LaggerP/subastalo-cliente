@@ -5,7 +5,7 @@ import {StyleSheet, Text, View, TextInput} from 'react-native';
 import { Button } from "react-native-elements";
 
 import {DataContext} from '../../context/DataContext';
-import {ModalLogin} from "../../Components/Subasta/ModalLogin";
+import {ModalLogin} from "../../Components/Login/ModalLogin";
 
 const RestablecerPrimer = ({navigation}) => {
 
@@ -17,7 +17,7 @@ const RestablecerPrimer = ({navigation}) => {
     visible: false,
     title: '¡Ups!',
     msg: 'Correo incorrecto. Por favor, compruebe sus correo y vuelva a intentarlo.',
-    icon: 'subastaError'
+    icon: 'wrongCredentials'
   });
 
   const olvidado = async () => {
@@ -68,7 +68,7 @@ const RestablecerPrimer = ({navigation}) => {
         />
         {showModal.visible ? (
         <ModalLogin modalData={showModal} setShowModal={setShowModal} navigation={navigation}/>) 
-        : (null)
+        : null
       }
     </View>
   )
@@ -93,7 +93,8 @@ const styles = StyleSheet.create({
     margin: 6,
     borderWidth: 2,
     borderRadius: 9,
-    borderColor: '#F3F2F2'
+    borderColor: '#F3F2F2',
+    paddingLeft: 10
   },
   textoAbajo: {
     color: '#7E7E7E',

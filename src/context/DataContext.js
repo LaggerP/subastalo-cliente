@@ -26,6 +26,7 @@ export const DataProvider = ({children}) => {
       if (loginDatos.status === 200) {
         await AsyncStorage.setItem('sesionIniciada', 'true');
         const data = await AsyncStorage.getItem('sesionIniciada');
+        setSesionIniciada(data === 'true')
       }
     } catch (e) {
       console.log(e);

@@ -1,13 +1,13 @@
 import React from 'react';
 import {Image, View} from 'react-native';
 import {Button, Overlay, Text} from 'react-native-elements';
-import subastaError from '../../../assets/imageIcons/subastaError.png'
+import shield from '../../../assets/imageIcons/shield.png'
 
 export const ModalLogin = ({modalData, setShowModal, navigation}) => {
   const {visible, title, msg, icon} = modalData
 
   let iconToShow = {
-    'subastaError': subastaError,
+    'wrongCredentials': shield,
   }
 
   const toggleOverlay = () => {
