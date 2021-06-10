@@ -12,7 +12,7 @@ import {Icon} from 'react-native-elements'
 
 const {width: screenWidth} = Dimensions.get('window');
 
-const SubastaCarousel = ({ navigation: { goBack }, fotos }) => {
+const SubastaCarousel = ({ navigation: { goBack, navigate }, fotos, setIntervalStatus, idSubasta }) => {
   const [entries, setEntries] = useState([]);
   const carouselRef = useRef(null);
 
@@ -40,16 +40,19 @@ const SubastaCarousel = ({ navigation: { goBack }, fotos }) => {
 
   return (
     <>
-      <View style={{ flexDirection:'row', alignItems: 'center', justifyContent:'center'}}>
+      <View style={{ flexDirection:'row', alignItems: 'flex-start', justifyContent:'flex-start'}}>
         <TouchableOpacity
           style={{
             justifyContent: 'flex-start',
-            marginTop: '15%',
+            marginTop: '12%',
             paddingLeft: 20,
             paddingBottom: 10,
             paddingTop: 10
           }}
-          onPress={() => goBack()}>
+          onPress={() => {
+            goBack()
+            setIntervalStatus(false)
+          }}>
           <Icon
             name='arrow-back-outline'
             type='ionicon'
@@ -63,12 +66,12 @@ const SubastaCarousel = ({ navigation: { goBack }, fotos }) => {
             flex: 1,
             flexDirection: 'row',
             justifyContent: 'flex-end',
-            marginTop: '15%',
+            marginTop: '12%',
             paddingRight: 20,
             paddingBottom: 10,
             paddingTop: 10
           }}
-          onPress={() => console.log("NOS VAMOS AL CATALOGO")}>
+          onPress={() => navigate('Catalogo', {idSubasta: idSubasta})}>
           <Icon
             name='pricetags-outline'
             type='ionicon'
@@ -102,7 +105,7 @@ export default SubastaCarousel;
 const styles = StyleSheet.create({
   item: {
     width: screenWidth - 60,
-    height: 280
+    height: 280,
   },
   imageContainer: {
     flex: 1,
