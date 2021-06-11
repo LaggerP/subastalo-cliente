@@ -106,11 +106,19 @@ const NuevaPuja = ({route, navigation}) => {
           ' al finalizar el tiempo.',
         icon: 'nuevaOferta'
       })
-    } else {
+    } else if(puja.existe) {
       setShowModal({
         visible: true,
         title: '¡Oferta existente!',
         msg: 'La oferta que usted realizó ya existe, por favor pruebe con otro importe mayor!',
+        icon: 'subastaError'
+      })
+    } else if (puja.ultima){
+      setShowModal({
+        visible: true,
+        title: '¡No puede ofertar de manera consecutiva!',
+        msg: 'La oferta que usted hizo es la última registrada. Por favor, espere a que otro participante oferte para' +
+          ' volver a ofertar!',
         icon: 'subastaError'
       })
     }

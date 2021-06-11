@@ -5,6 +5,7 @@ import {Icon} from 'react-native-elements';
 // Logos
 import visaIcon from '../../../assets/cardIcons/visa.png';
 import masterCardIcon from '../../../assets/cardIcons/mastercard.png';
+import americanExpress from '../../../assets/cardIcons/americanexpress.png';
 import {MetodoPagoContext} from '../../context/MetodoPagoContext';
 
 const TarjetaCard = ({navigation, data}) => {
@@ -13,6 +14,7 @@ const TarjetaCard = ({navigation, data}) => {
   const {entidad, idCliente, idTarjeta, lastNumbers, nombreTitular, numero, vencimiento} = data
 
   const financialCoIcon = {
+    3: americanExpress,
     4: visaIcon,
     5: masterCardIcon
   }

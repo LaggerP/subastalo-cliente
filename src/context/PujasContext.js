@@ -20,7 +20,10 @@ export const PujasProvider = ({children}) => {
 
   const newPuja = async (oferta) => {
     const exist = item.pujas.find(element => element.importe === oferta.importe)
-    if (!exist) {
+
+    const lastPuja = item.pujas[0].idCliente === oferta.idCliente
+
+    if (!exist && !lastPuja) {
       try {
         let puja = await fetch(`${apiUrl}/api/pujas/new-puja/`, {
           method: 'POST',
@@ -38,7 +41,7 @@ export const PujasProvider = ({children}) => {
       }
     } else {
       await getPujas();
-      return false
+      return {existe: exist !== undefined, ultima: lastPuja}
     }
 
   }

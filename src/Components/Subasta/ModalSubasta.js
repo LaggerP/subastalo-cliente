@@ -30,7 +30,7 @@ export const ModalSubasta = ({modalData, setShowModal, navigation}) => {
                  width: 350,
                  borderRadius: 10
                }}>
-        <Text h4 style={{marginTop: 20}}>{title}</Text>
+        <Text h4 style={{marginTop: 20, textAlign:'center'}}>{title}</Text>
         <Text style={{marginHorizontal: 18, marginTop: 20, textAlign: 'center'}}>{msg}</Text>
         <Image
           style={{width: 130, height: 130, marginVertical:30}}

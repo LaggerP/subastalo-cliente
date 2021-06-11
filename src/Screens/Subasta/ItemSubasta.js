@@ -10,6 +10,7 @@ import {PujasContext} from "../../context/PujasContext";
 import SubastaCarousel from '../../Components/Subasta/SubastaCarousel';
 import {ModalSubasta} from "../../Components/Subasta/ModalSubasta";
 import {DataContext} from "../../context/DataContext";
+import {MetodoPagoContext} from "../../context/MetodoPagoContext";
 
 const ItemSubasta = ({route, navigation}) => {
 
@@ -24,13 +25,16 @@ const ItemSubasta = ({route, navigation}) => {
 
   // Pujas Context
   const {getPujas, setItem, item, downCountClock} = useContext(PujasContext);
+  // User Context
   const {userData} = useContext(DataContext);
+  // Metodos de pago Context
+  const {metodosDePago} = useContext(MetodoPagoContext);
 
 
   const updatePujas = async () => {
     let pujasInterval
     if (item && intervalStatus) {
-      pujasInterval = setInterval(async () => await getPujas(), 8000);
+      pujasInterval = setInterval(async () => await getPujas(), 20000);
     } else {
       clearInterval(pujasInterval)
     }
@@ -82,7 +86,8 @@ const ItemSubasta = ({route, navigation}) => {
     return (
       <View style={styles.container}>
         <View style={styles.imagesContainer}>
-          <SubastaCarousel navigation={navigation} fotos={item.fotos} setIntervalStatus={setIntervalStatus} idSubasta={route.params.idSubasta}/>
+          <SubastaCarousel navigation={navigation} fotos={item.fotos} setIntervalStatus={setIntervalStatus}
+                           idSubasta={route.params.idSubasta}/>
         </View>
         <View style={styles.itemDescriptionContainer}>
           <Text style={styles.itemTitle}>
@@ -158,14 +163,14 @@ const ItemSubasta = ({route, navigation}) => {
                         </>
                         :
                         <>
-                          <Text style={{fontSize: 16, fontWeight: 'bold', }}>Realizó una oferta por</Text>
+                          <Text style={{fontSize: 16, fontWeight: 'bold',}}>Realizó una oferta por</Text>
                           <Text style={{
                             fontSize: 17,
                             fontWeight: 'bold',
                             backgroundColor: '#eaeaea',
                             padding: 5,
                             borderRadius: 5,
-                            color:'black'
+                            color: 'black'
                           }}>{item.importeToShow}</Text>
                         </>
                       }
@@ -190,7 +195,10 @@ const ItemSubasta = ({route, navigation}) => {
             {
               userData ? <Button
                   onPress={() => {
-                    navigation.navigate('NuevaPuja', {categoriaSubasta: route.params.categoriaSubasta})
+                    if (metodosDePago.cuentasBancarias.length === 0 || metodosDePago.tarjetas.length === 0)
+                      navigation.navigate('MetodosPagoScreen', {screen: 'MetodosPago'})
+                    else
+                      navigation.navigate('NuevaPuja', {categoriaSubasta: route.params.categoriaSubasta})
                   }}
                   title='Nueva Oferta'
                   type='solid'
