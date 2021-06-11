@@ -24,7 +24,7 @@ const RegistroDos = ({navigation}) => {
   const registro = async () => {
     if (userPassword === registroInfo.password) {
       try {
-        let loginDatos = await fetch(`${apiUrl}api/user/change-password`, {
+        let loginDatos = await fetch(`${apiUrl}/api/user/change-password`, {
           method: 'POST',
           headers: {
             'Accept': 'application/json',

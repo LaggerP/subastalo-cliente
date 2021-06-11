@@ -7,6 +7,8 @@ import { Button } from "react-native-elements";
 import {DataContext} from '../../context/DataContext';
 import {ModalLogin} from "../../Components/Login/ModalLogin";
 
+import apiUrl from '../../api';
+
 const RestablecerPrimer = ({navigation}) => {
 
   const [email, setEmail] = useState('');
@@ -22,24 +24,21 @@ const RestablecerPrimer = ({navigation}) => {
 
   const olvidado = async () => {
     try{
-      let restablecerDatos = await fetch('http://10.0.2.2:3000/api/user/forgot-password', {
+      let restablecerDatos = await fetch(`${apiUrl}/api/user/forgot-password`, {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(email)
+      body: JSON.stringify({email: email})
     });
-    console.log(email)
-    console.log(restablecerDatos.status)
-    // if (loginDatos.status == 201){
-    //   setUserMailForgot(email);
-      // navigation.push('RestablecerSegundo')
-      
-    // }
-    // else {
-    //   setShowModal({...showModal, visible: true});
-    // }
+    if (restablecerDatos.status == 200){
+      setUserMailForgot(email);
+      navigation.push('RestablecerSegundo')
+    }
+    else {
+      setShowModal({...showModal, visible: true});
+    }
   } catch (e) {
     console.log(e);
   }

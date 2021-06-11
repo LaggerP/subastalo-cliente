@@ -65,7 +65,7 @@ const Catalogo = ({ route, navigation }) => {
                   <View style={styles.itemCatalogo} key={idx}>
 
                     <CatalogoCarousel images={catalogo} fotos={item.fotos} />
-                    <Text style={{ fontSize: 28, paddingLeft: 15 }}>{sesionIniciada ? '$' + item.precioBase : '$XXX'} - <Text
+                    <Text style={{ fontSize: 25, paddingLeft: 15 }}>{sesionIniciada ? '$' + item.precioBase : '$***'} - <Text
                       style={{ fontSize: 22 }}>{item.disponible === 'si' ? 'Item disponible' : 'Item no disponible'}</Text>
                     </Text>
                     <Text style={{ fontSize: 18, paddingLeft: 15, paddingTop: 10 }}>{item.descripcionCatalogo}</Text>

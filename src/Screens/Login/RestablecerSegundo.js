@@ -4,11 +4,12 @@ import {StyleSheet, Text, View, TextInput} from 'react-native';
 import {Button} from "react-native-elements";
 import {ModalLogin} from "../../Components/Login/ModalLogin";
 import {DataContext} from '../../context/DataContext';
+import apiUrl from '../../api';
 
-const RestablecerSegundo = () => {
+const RestablecerSegundo = ({navigation}) => {
 
-  const {password, setPassword} = useState('');
-  const {secondPassword, setSecondPassword} = useState('');
+  const [password, setPassword] = useState('');
+  const [secondPassword, setSecondPassword] = useState('');
 
   const {userMailForgot} = useContext(DataContext);
 
@@ -19,7 +20,9 @@ const RestablecerSegundo = () => {
     icon: 'wrongCredentials'
   });
 
-  const olvidado = async ({navigation}) => {
+  const olvidado = async () => {
+    console.log(password)
+    console.log(secondPassword)
     if (password === secondPassword) {
       let user = {
         email: userMailForgot,
@@ -27,7 +30,7 @@ const RestablecerSegundo = () => {
       }
       console.log(user);
       try {
-        let loginDatos = await fetch('http://10.0.2.2:3000/api/user/change-password', {
+        let loginDatos = await fetch(`${apiUrl}/api/user/change-password`, {
           method: 'POST',
           headers: {
             'Accept': 'application/json',
@@ -35,6 +38,7 @@ const RestablecerSegundo = () => {
           },
           body: JSON.stringify(user)
         });
+        console.log(loginDatos.status);
         if (loginDatos.status === 201) {
           navigation.push('Login')
         } else {
@@ -101,7 +105,8 @@ const styles = StyleSheet.create({
     margin: 6,
     borderWidth: 2,
     borderRadius: 9,
-    borderColor: '#F3F2F2'
+    borderColor: '#F3F2F2',
+    paddingLeft: 8
   },
 });
 
