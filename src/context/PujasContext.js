@@ -19,11 +19,31 @@ export const PujasProvider = ({children}) => {
   }
 
   const newPuja = async (oferta) => {
-    const exist = item.pujas.find(element => element.importe === oferta.importe)
-
-    const lastPuja = item.pujas[0].idCliente === oferta.idCliente
-
-    if (!exist && !lastPuja) {
+    console.log(item.pujas)
+    if (item.pujas.length > 0) {
+      const exist = item.pujas.find(element => element.importe === oferta.importe)
+      const lastPuja = item.pujas[0].idCliente === oferta.idCliente
+      if (!exist && !lastPuja) {
+        try {
+          let puja = await fetch(`${apiUrl}/api/pujas/new-puja/`, {
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(oferta)
+          })
+          await getPujas();
+          setDownCountClock(60 * 50)
+          return await puja.json()
+        } catch (e) {
+          console.error(error)
+        }
+      } else {
+        await getPujas();
+        return {existe: exist !== undefined, ultima: lastPuja}
+      }
+    } else {
       try {
         let puja = await fetch(`${apiUrl}/api/pujas/new-puja/`, {
           method: 'POST',
@@ -39,10 +59,8 @@ export const PujasProvider = ({children}) => {
       } catch (e) {
         console.error(error)
       }
-    } else {
-      await getPujas();
-      return {existe: exist !== undefined, ultima: lastPuja}
     }
+
 
   }
 

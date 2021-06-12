@@ -13,6 +13,7 @@ import Catalogo from "./src/Screens/Catalogo/Catalogo";
 
 // Providers
 import { DataProvider } from "./src/context/DataContext";
+import PerfilScreen from "./src/Screens/Perfil/PerfilScreen";
 
 
 const AuthStack = createStackNavigator();
@@ -27,6 +28,7 @@ export default function App() {
           <AuthStack.Screen name='SubastaScreen' component={SubastaScreen} options={{ title: 'SubastaScreen', headerShown: false }} />
           <AuthStack.Screen name='LoginScreen' component={LoginScreen} options={{ title: 'LoginScreen', headerShown: false }} />
           <AuthStack.Screen name='MetodosPagoScreen' component={MetodosPagoScreen} options={{ title: 'MetodosPagoScreen', headerShown: false }} />
+          <AuthStack.Screen name='PerfilScreen' component={PerfilScreen} options={{ title: 'PerfilScreen', headerShown: false }} />
           <AuthStack.Screen name='Catalogo' component={Catalogo} options={{ title: 'Catalogo', headerShown: false }} />
         </AuthStack.Navigator>
       </NavigationContainer>

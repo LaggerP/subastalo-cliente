@@ -135,7 +135,7 @@ const Dashboard = ({route, navigation}) => {
                     reverseColor='#000000'
                     color='#FFCD61'
                     size={22}
-                    onPress={() => navigation.push('Perfil')}/>
+                    onPress={() => navigation.navigate('PerfilScreen',{screen: 'Perfil'})}/>
                   <Text textBreakStrategy='simple' style={{fontSize: 12, textAlign: 'center'}}>Mi Perfil</Text>
                 </View>
 
@@ -148,7 +148,9 @@ const Dashboard = ({route, navigation}) => {
                     reverseColor='#000000'
                     color='#FFCD61'
                     size={22}
-                    onPress={() => navigation.push('Perfil')}/>
+                    onPress={() => navigation.navigate('PerfilScreen', {
+                      screen: 'Perfil'
+                    })}/>
                   <Text style={{fontSize: 12, textAlign: 'center'}}>Historial</Text>
 
                 </View>

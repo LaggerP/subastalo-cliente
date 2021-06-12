@@ -13,7 +13,6 @@ const DashboardScreen = () => {
     return (
         <DashboardStack.Navigator>
             <DashboardStack.Screen name='Dashboard' component={Dashboard} options={{ title: '', headerTransparent: true, cardStyle: { backgroundColor: '#FC9905' } }} />
-            <DashboardStack.Screen name='Perfil' component={Perfil} options={{ title: 'Perfil', headerTransparent: true }} />
         </DashboardStack.Navigator>
     )
 };
