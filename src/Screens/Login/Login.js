@@ -54,23 +54,27 @@ const Login = ({navigation}) => {
       });
       let user = await loginDatos.json();
       await setUserData(user.userData);
+      console.log(loginDatos)
       if (loginDatos.status === 200) {
-        await AsyncStorage.multiSet([
-          ["email", loginInfo.email],
-          ["password", loginInfo.password]
-        ]);
-        await AsyncStorage.setItem('sesionIniciada', 'true');
-        const data = await AsyncStorage.getItem('sesionIniciada');
-        setSesionIniciada(data)
-        navigation.navigate('DashboardScreen', {
-          screen: 'Dashboard'
-        })
+        if (user.userData.primerInicio) {
+          navigation.navigate('RegistroDos')
+        } else {
+          await AsyncStorage.multiSet([
+            ["email", loginInfo.email],
+            ["password", loginInfo.password]
+          ]);
+          await AsyncStorage.setItem('sesionIniciada', 'true');
+          const data = await AsyncStorage.getItem('sesionIniciada');
+          setSesionIniciada(data)
+          navigation.navigate('DashboardScreen', {
+            screen: 'Dashboard'
+          })
+        }
       }
       if (loginDatos.status === 400 || loginDatos.status === 500) {
         setShowModal({...showModal, visible: true});
       }
     } catch (e) {
-      console.log(e);
     }
   }
   return (
@@ -88,7 +92,7 @@ const Login = ({navigation}) => {
         />
         <TextInput
           style={styles.inputText}
-          placeholder="Contraseña"
+          placeholder="Contraseña/código de acceso"
           secureTextEntry={true}
           onChangeText={(text) => setLoginInfo({...loginInfo, password: text})}
         />
