@@ -42,7 +42,7 @@ const NuevaPuja = ({route, navigation}) => {
   //Data from Data Context
   const {userData} = useContext(DataContext);
   //Data from Pujas Context
-  const {item, newPuja, downCountClock} = useContext(PujasContext);
+  const {item, newPuja} = useContext(PujasContext);
   const {descripcionCompleta, precioBase, idItemCatalogo, idSubasta, pujas} = item
   //Data from Metodo Pago Context
   const {metodoPagoElegido} = useContext(MetodoPagoContext);
@@ -150,7 +150,7 @@ const NuevaPuja = ({route, navigation}) => {
               Tiempo restante
             </Text>
             <CountDown
-              until={downCountClock}
+              until={route.params.clock}
               digitStyle={{backgroundColor: '#FFF', borderWidth: 2, borderColor: '#FC9905'}}
               separatorStyle={{color: '#000'}}
               timeToShow={['M', 'S']}

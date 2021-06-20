@@ -1,25 +1,25 @@
 import React, {createContext, useState} from 'react';
 import apiUrl from '../api'
+import socketClient from "socket.io-client";
 
 export const PujasContext = createContext(null);
 
 export const PujasProvider = ({children}) => {
-
+  const [socket, setSocket] = useState(socketClient (`${apiUrl}/socket-pujas`));
   const [item, setItem] = useState(null);
   const [downCountClock, setDownCountClock] = useState(60 * 50);
 
-
   const getPujas = async () => {
+    console.log("hola traigo nuevas pujas")
     try {
       let pujas = await fetch(`${apiUrl}/api/pujas/catalogo/${item.idItemCatalogo}/`);
       setItem({...item, pujas: await pujas.json()})
-    } catch (e) {
-      console.error(error);
+    } catch  {
     }
   }
 
   const newPuja = async (oferta) => {
-    console.log(item.pujas)
+
     if (item.pujas.length > 0) {
       const exist = item.pujas.find(element => element.importe === oferta.importe)
       const lastPuja = item.pujas[0].idCliente === oferta.idCliente
@@ -33,14 +33,12 @@ export const PujasProvider = ({children}) => {
             },
             body: JSON.stringify(oferta)
           })
-          await getPujas();
-          setDownCountClock(60 * 50)
+          const room = `${item.idSubasta}pujas`
+          socket.emit('pujas', {reload: true})
           return await puja.json()
-        } catch (e) {
-          console.error(error)
+        } catch {
         }
       } else {
-        await getPujas();
         return {existe: exist !== undefined, ultima: lastPuja}
       }
     } else {
@@ -53,21 +51,18 @@ export const PujasProvider = ({children}) => {
           },
           body: JSON.stringify(oferta)
         })
-        await getPujas();
-        setDownCountClock(60 * 50)
+        const room = `${item.idSubasta}pujas`
+        socket.emit('pujas', {reload: true})
         return await puja.json()
-      } catch (e) {
-        console.error(error)
+      } catch {
       }
     }
-
-
   }
 
   return (
     <PujasContext.Provider value={
       {
-        getPujas, newPuja, item, setItem, downCountClock, setDownCountClock
+        getPujas, newPuja, item, setItem, downCountClock, setDownCountClock, socket
       }
     }>
       {children}
