@@ -61,13 +61,13 @@ const RegistroDos = ({navigation}) => {
       />
       <TextInput
         style={styles.input}
-        placeholder="Ingrese su contraseña"
+        placeholder="Ingrese su nueva contraseña"
         secureTextEntry={true}
         onChangeText={(text) => setRegistroInfo({...registroInfo, password: text})}
       />
       <TextInput
         style={styles.input}
-        placeholder="Re-ingrese su contraseña"
+        placeholder="Re-ingrese su nueva contraseña"
         secureTextEntry={true}
         onChangeText={setUserPassword}
       />
