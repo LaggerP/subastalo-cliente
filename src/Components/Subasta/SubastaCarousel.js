@@ -1,4 +1,4 @@
-import React, {useRef, useState, useEffect} from 'react';
+import React, {useRef, useState, useEffect, useContext} from 'react';
 import Carousel, {ParallaxImage} from 'react-native-snap-carousel';
 import {
   View,
@@ -9,12 +9,15 @@ import {
   Platform,
 } from 'react-native';
 import {Icon} from 'react-native-elements'
+import {PujasContext} from "../../context/PujasContext";
 
 const {width: screenWidth} = Dimensions.get('window');
 
-const SubastaCarousel = ({ navigation: { goBack, navigate }, fotos, setIntervalStatus, idSubasta }) => {
+const SubastaCarousel = ({navigation: {goBack, navigate}, fotos, setIntervalStatus, idSubasta}) => {
   const [entries, setEntries] = useState([]);
   const carouselRef = useRef(null);
+
+  const {socket} = useContext(PujasContext)
 
   useEffect(() => {
     setEntries(fotos);
@@ -40,7 +43,7 @@ const SubastaCarousel = ({ navigation: { goBack, navigate }, fotos, setIntervalS
 
   return (
     <>
-      <View style={{ flexDirection:'row', alignItems: 'flex-start', justifyContent:'flex-start'}}>
+      <View style={{flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'flex-start'}}>
         <TouchableOpacity
           style={{
             justifyContent: 'flex-start',
@@ -52,6 +55,7 @@ const SubastaCarousel = ({ navigation: { goBack, navigate }, fotos, setIntervalS
           onPress={() => {
             goBack()
             setIntervalStatus(false)
+            socket.disconnect()
           }}>
           <Icon
             name='arrow-back-outline'
