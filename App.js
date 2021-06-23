@@ -10,16 +10,15 @@ import SubastaScreen from "./src/Screens/Subasta/SubastaScreen";
 import LoginScreen from "./src/Screens/Login/LoginScreen";
 import MetodosPagoScreen from "./src/Screens/MetodosPago/MetodosPagoScreen";
 import Catalogo from "./src/Screens/Catalogo/Catalogo";
+import PerfilScreen from "./src/Screens/Perfil/PerfilScreen";
+import MisProductosScreen from "./src/Screens/MisProductos/MisProductosScreen";
 
 // Providers
 import { DataProvider } from "./src/context/DataContext";
-import PerfilScreen from "./src/Screens/Perfil/PerfilScreen";
-
 
 const AuthStack = createStackNavigator();
 
 export default function App() {
-
   return (
     <DataProvider>
       <NavigationContainer >
@@ -30,6 +29,7 @@ export default function App() {
           <AuthStack.Screen name='MetodosPagoScreen' component={MetodosPagoScreen} options={{ title: 'MetodosPagoScreen', headerShown: false }} />
           <AuthStack.Screen name='PerfilScreen' component={PerfilScreen} options={{ title: 'PerfilScreen', headerShown: false }} />
           <AuthStack.Screen name='Catalogo' component={Catalogo} options={{ title: 'Catalogo', headerShown: false }} />
+          <AuthStack.Screen name='MisProductosScreen' component={MisProductosScreen} options={{ title: 'MisProductosScreen', headerShown: false }} />
         </AuthStack.Navigator>
       </NavigationContainer>
     </DataProvider>

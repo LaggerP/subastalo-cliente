@@ -1,5 +1,5 @@
-import React, {useEffect, useContext, useState} from 'react';
-import {StyleSheet, Text, View, ScrollView, AsyncStorage} from 'react-native';
+import React, {useContext, useEffect, useState} from 'react';
+import {ScrollView, StyleSheet, Text, View} from 'react-native';
 import {Avatar, Button} from 'react-native-elements'
 import CountDown from 'react-native-countdown-component';
 import apiUrl from "../../api";
@@ -14,6 +14,8 @@ import {MetodoPagoContext} from "../../context/MetodoPagoContext";
 
 const ItemSubasta = ({route, navigation}) => {
 
+  const [timerClock, setTimerClock] = useState(60*20);
+  const [loading, setLoading] = useState(true);
   const [intervalStatus, setIntervalStatus] = useState(true);
   const [showModal, setShowModal] = useState({
     visible: false,
@@ -24,28 +26,45 @@ const ItemSubasta = ({route, navigation}) => {
   });
 
   // Pujas Context
-  const {getPujas, setItem, item, downCountClock} = useContext(PujasContext);
+  const {getPujas, setItem, item, downCountClock, socket} = useContext(PujasContext);
   // User Context
   const {userData} = useContext(DataContext);
   // Metodos de pago Context
   const {metodosDePago} = useContext(MetodoPagoContext);
 
-
-  const updatePujas = async () => {
-    let pujasInterval
-    if (item && intervalStatus) {
-      pujasInterval = setInterval(async () => await getPujas(), 20000);
-    } else {
-      clearInterval(pujasInterval)
+  socket.on('pujas', async data => {
+    await getPujas()
+    if (data.reload === true && item) {
+      setTimerClock(calculateClock(item.pujas[0].horario))
     }
+  })
+
+
+
+  const calculateClock = (date) => {
+    let actualDate = new Date()
+    let aH = actualDate.getUTCHours() - 3;
+    let aM = actualDate.getUTCMinutes();
+    let aS = actualDate.getUTCSeconds();
+
+    let pujaDate = new Date(date);
+    let pH = pujaDate.getUTCHours(); // Hours
+    let pM = pujaDate.getUTCMinutes();
+    let pS = pujaDate.getUTCSeconds();
+
+    return (aH + pH) * 60 + (aM + pM) + (60*30)
   }
-  updatePujas();
+
 
   const getItemSubastandose = async (idSubasta) => {
     try {
       setItem(null)
       let _item = await fetch(`${apiUrl}/api/subastas/catalogo/${idSubasta}/item-catalogo`);
-      setItem(await _item.json())
+      _item = await _item.json()
+      setItem(_item)
+      setTimerClock(calculateClock(_item.pujas[0].horario))
+      setLoading(false)
+
     } catch (e) {
       setShowModal({...showModal, visible: true});
     }
@@ -61,8 +80,9 @@ const ItemSubasta = ({route, navigation}) => {
 
   useEffect(() => {
     return () => {
-    };
-  }, [item]);
+    }
+  })
+
 
   const changeItemEstado = async () => {
     return await fetch(`${apiUrl}/api/subastas/catalogo/change-item-estado`, {
@@ -82,7 +102,7 @@ const ItemSubasta = ({route, navigation}) => {
       });
   }
 
-  if (item && downCountClock > 0) {
+  if (!loading && item && timerClock > 0) {
     return (
       <View style={styles.container}>
         <View style={styles.imagesContainer}>
@@ -111,7 +131,7 @@ const ItemSubasta = ({route, navigation}) => {
                 Tiempo restante
               </Text>
               <CountDown
-                until={downCountClock}
+                until={timerClock}
                 onFinish={() => changeItemEstado()}
                 digitStyle={{backgroundColor: '#FFF', borderWidth: 2, borderColor: '#FC9905'}}
                 separatorStyle={{color: '#000'}}
@@ -198,7 +218,10 @@ const ItemSubasta = ({route, navigation}) => {
                     if (metodosDePago.cuentasBancarias.length === 0 || metodosDePago.tarjetas.length === 0)
                       navigation.navigate('MetodosPagoScreen', {screen: 'MetodosPago'})
                     else
-                      navigation.navigate('NuevaPuja', {categoriaSubasta: route.params.categoriaSubasta})
+                      navigation.navigate('NuevaPuja', {
+                        categoriaSubasta: route.params.categoriaSubasta,
+                        clock: downCountClock
+                      })
                   }}
                   title='Nueva Oferta'
                   type='solid'

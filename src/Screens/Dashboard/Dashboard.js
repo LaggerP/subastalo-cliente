@@ -164,7 +164,9 @@ const Dashboard = ({route, navigation}) => {
                     reverseColor='#000000'
                     color='#FFCD61'
                     size={22}
-                    onPress={() => navigation.push('Perfil')}/>
+                    onPress={() => navigation.navigate('MisProductosScreen', {
+                      screen: 'MisProductos'
+                    })}/>
                   <Text style={{fontSize: 12, textAlign: 'center'}}>Mis</Text>
                   <Text style={{fontSize: 12, textAlign: 'center'}}>Productos</Text>
                 </View>
