@@ -100,7 +100,7 @@ const ItemSubasta = ({route, navigation}) => {
       setShowModal({
         visible: true,
         title: '¡Suerte para la próxima!',
-        msg: 'Su oferta no fue la más alta, suerte para la próxima.',
+        msg: 'Lamentablemente su oferta no fue la más alta, pero puede seguir participando por otros artículos.',
         icon: 'gameOver'
       })
     }
