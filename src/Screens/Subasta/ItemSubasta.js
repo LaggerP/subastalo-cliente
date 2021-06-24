@@ -52,7 +52,7 @@ const ItemSubasta = ({route, navigation}) => {
     let pM = pujaDate.getUTCMinutes();
     let pS = pujaDate.getUTCSeconds();
 
-    return (aH + pH) * 60 + (aM + pM) + (60*30)
+    return 60 * (aM - pM)
   }
 
 
@@ -62,7 +62,11 @@ const ItemSubasta = ({route, navigation}) => {
       let _item = await fetch(`${apiUrl}/api/subastas/catalogo/${idSubasta}/item-catalogo`);
       _item = await _item.json()
       setItem(_item)
-      setTimerClock(calculateClock(_item.pujas[0].horario))
+      //Caso en el que existan pujas realizadas.
+      if (_item.pujas[0] !== undefined) {
+        setTimerClock(calculateClock(_item.pujas[0].horario))
+      }
+
       setLoading(false)
 
     } catch (e) {
