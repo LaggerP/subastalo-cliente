@@ -1,6 +1,6 @@
 import React, {createContext, useContext, useEffect, useState} from 'react';
 import {DataContext} from "./DataContext";
-import apiUrl from "../api";
+import { apiUrl } from "../api";
 
 
 export const MetodoPagoContext = createContext(null);

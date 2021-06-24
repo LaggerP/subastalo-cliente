@@ -7,7 +7,7 @@ import { Button } from "react-native-elements";
 import {DataContext} from '../../context/DataContext';
 import {ModalLogin} from "../../Components/Login/ModalLogin";
 
-import apiUrl from '../../api';
+import { apiUrl } from '../../api';
 
 const RestablecerPrimer = ({navigation}) => {
 

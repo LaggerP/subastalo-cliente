@@ -12,7 +12,7 @@ import {Roboto_500Medium, Roboto_400Regular} from '@expo-google-fonts/roboto';
 
 import {Button} from "react-native-elements";
 
-import apiUrl from "../../api";
+import { apiUrl } from "../../api";
 
 import {DataContext} from '../../context/DataContext';
 

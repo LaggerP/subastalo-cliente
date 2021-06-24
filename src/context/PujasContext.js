@@ -1,5 +1,5 @@
 import React, {createContext, useState} from 'react';
-import apiUrl from '../api'
+import { apiUrl } from '../api'
 import socketClient from "socket.io-client";
 
 export const PujasContext = createContext(null);

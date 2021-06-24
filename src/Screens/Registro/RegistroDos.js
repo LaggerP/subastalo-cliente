@@ -2,7 +2,7 @@ import {StatusBar} from 'expo-status-bar';
 import React, {useContext, useState} from 'react';
 import {StyleSheet, Text, View, TextInput} from 'react-native';
 import {Button} from "react-native-elements";
-import apiUrl from "../../api";
+import { apiUrl } from "../../api";
 import {ModalLogin} from "../../Components/Login/ModalLogin";
 
 const RegistroDos = ({navigation}) => {

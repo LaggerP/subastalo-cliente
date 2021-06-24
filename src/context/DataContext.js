@@ -1,6 +1,6 @@
 import React, {createContext, useEffect, useState} from 'react'
 import {AsyncStorage} from "react-native";
-import apiUrl from "../api";
+import { apiUrl } from "../api";
 
 export const DataContext = createContext(null);
 
