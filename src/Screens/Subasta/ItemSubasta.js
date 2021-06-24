@@ -2,7 +2,7 @@ import React, {useContext, useEffect, useState} from 'react';
 import {ScrollView, StyleSheet, Text, View} from 'react-native';
 import {Avatar, Button} from 'react-native-elements'
 import CountDown from 'react-native-countdown-component';
-import apiUrl from "../../api";
+import {apiUrl} from "../../api";
 
 //Context
 import {PujasContext} from "../../context/PujasContext";
