@@ -18,15 +18,6 @@ import BBVALogo from "../../../assets/bankIcons/BBVA.png";
 import santanderLogo from "../../../assets/bankIcons/Santander.png";
 import galiciaLogo from "../../../assets/bankIcons/Galicia.png";
 
-
-let initStatePuja = {
-  idSubasta: 0,
-  idCliente: 0,
-  numeroPostor: 0,
-  importe: 0,
-  idItem: 0,
-  asistente: 0
-}
 const financialCoIcon = {
   4: visaIcon,
   5: masterCardIcon

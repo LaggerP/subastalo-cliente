@@ -4,6 +4,8 @@ import {Button, Overlay, Text} from 'react-native-elements';
 import trophy from '../../../assets/imageIcons/trophy.png';
 import nuevaOferta from '../../../assets/imageIcons/nuevaOferta.png';
 import subastaError from '../../../assets/imageIcons/subastaError.png'
+import gameOver from '../../../assets/imageIcons/gameOver.png'
+
 
 export const ModalSubasta = ({modalData, setShowModal, navigation}) => {
   const {visible, title, msg, icon} = modalData
@@ -12,6 +14,7 @@ export const ModalSubasta = ({modalData, setShowModal, navigation}) => {
     'winner': trophy,
     'nuevaOferta': nuevaOferta,
     'subastaError': subastaError,
+    'gameOver': gameOver
   }
 
   const toggleOverlay = () => {

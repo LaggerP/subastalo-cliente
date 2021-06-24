@@ -26,7 +26,7 @@ const ItemSubasta = ({route, navigation}) => {
   });
 
   // Pujas Context
-  const {getPujas, setItem, item, downCountClock, socket} = useContext(PujasContext);
+  const {getPujas, setItem, item, socket} = useContext(PujasContext);
   // User Context
   const {userData} = useContext(DataContext);
   // Metodos de pago Context
@@ -88,6 +88,23 @@ const ItemSubasta = ({route, navigation}) => {
 
 
   const changeItemEstado = async () => {
+    if (item.pujas[0].idCliente === userData.idCliente) {
+      setShowModal({
+        visible: true,
+        title: '¡Felicitaciones!',
+        msg: 'De todas las ofertas, la suya ha sido la más alta. Pronto nos estaremos comunicando con usted para' +
+          ' coordinar la entrega.',
+        icon: 'winner'
+      })
+    } else {
+      setShowModal({
+        visible: true,
+        title: '¡Suerte para la próxima!',
+        msg: 'Su oferta no fue la más alta, suerte para la próxima.',
+        icon: 'gameOver'
+      })
+    }
+
     return await fetch(`${apiUrl}/api/subastas/catalogo/change-item-estado`, {
       method: 'POST',
       headers: {
@@ -108,6 +125,7 @@ const ItemSubasta = ({route, navigation}) => {
   if (!loading && item) {
     return (
       <View style={styles.container}>
+        <ModalSubasta modalData={showModal} setShowModal={setShowModal} navigation={navigation}/>
         <View style={styles.imagesContainer}>
           <SubastaCarousel navigation={navigation} fotos={item.fotos} setIntervalStatus={setIntervalStatus}
                            idSubasta={route.params.idSubasta}/>
@@ -223,7 +241,7 @@ const ItemSubasta = ({route, navigation}) => {
                     else
                       navigation.navigate('NuevaPuja', {
                         categoriaSubasta: route.params.categoriaSubasta,
-                        clock: downCountClock
+                        clock: timerClock
                       })
                   }}
                   title='Nueva Oferta'
