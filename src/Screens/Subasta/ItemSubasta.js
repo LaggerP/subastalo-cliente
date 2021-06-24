@@ -51,9 +51,9 @@ const ItemSubasta = ({route, navigation}) => {
     let pS = pujaDate.getUTCSeconds();
     // En el caso de que la puja se realice a minutos cercanos a 00,01,02,03, etc.
     if (pM < aM) {
-      return 60 * 20 - (60 * (aM - pM) - (aS - pS))
+      return 60 * 5 - (60 * (aM - pM) + (aS - pS))
     }
-    return 60 * 20 - (60 * (pM - aM) - (aS - pS))
+    return 60 * 5 - (60 * (pM - aM) + (aS - pS))
   }
 
 
