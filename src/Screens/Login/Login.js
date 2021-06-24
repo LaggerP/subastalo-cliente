@@ -54,7 +54,6 @@ const Login = ({navigation}) => {
       });
       let user = await loginDatos.json();
       await setUserData(user.userData);
-      console.log(loginDatos)
       if (loginDatos.status === 200) {
         if (user.userData.primerInicio) {
           navigation.navigate('RegistroDos')

@@ -14,7 +14,7 @@ import {MetodoPagoContext} from "../../context/MetodoPagoContext";
 
 const ItemSubasta = ({route, navigation}) => {
 
-  const [timerClock, setTimerClock] = useState(60*20);
+  const [timerClock, setTimerClock] = useState(60 * 20);
   const [loading, setLoading] = useState(true);
   const [intervalStatus, setIntervalStatus] = useState(true);
   const [showModal, setShowModal] = useState({
@@ -34,12 +34,10 @@ const ItemSubasta = ({route, navigation}) => {
 
   socket.on('pujas', async data => {
     await getPujas()
-    if (data.reload === true && item) {
+    if (data.reload === true && item.pujas[0].horario !== undefined) {
       setTimerClock(calculateClock(item.pujas[0].horario))
     }
   })
-
-
 
   const calculateClock = (date) => {
     let actualDate = new Date()
@@ -51,8 +49,11 @@ const ItemSubasta = ({route, navigation}) => {
     let pH = pujaDate.getUTCHours(); // Hours
     let pM = pujaDate.getUTCMinutes();
     let pS = pujaDate.getUTCSeconds();
-
-    return (aH + pH) * 60 + (aM + pM) + (60*30)
+    // En el caso de que la puja se realice a minutos cercanos a 00,01,02,03, etc.
+    if (pM < aM) {
+      return 60 * 5 - (60 * (aM - pM) + (aS - pS))
+    }
+    return 60 * 5 - (60 * (pM - aM) + (aS - pS))
   }
 
 
@@ -62,9 +63,11 @@ const ItemSubasta = ({route, navigation}) => {
       let _item = await fetch(`${apiUrl}/api/subastas/catalogo/${idSubasta}/item-catalogo`);
       _item = await _item.json()
       setItem(_item)
-      setTimerClock(calculateClock(_item.pujas[0].horario))
+      //Caso en el que existan pujas realizadas.
+      if (_item.pujas[0] !== undefined) {
+        setTimerClock(calculateClock(_item.pujas[0].horario))
+      }
       setLoading(false)
-
     } catch (e) {
       setShowModal({...showModal, visible: true});
     }
@@ -102,7 +105,7 @@ const ItemSubasta = ({route, navigation}) => {
       });
   }
 
-  if (!loading && item && timerClock > 0) {
+  if (!loading && item) {
     return (
       <View style={styles.container}>
         <View style={styles.imagesContainer}>
