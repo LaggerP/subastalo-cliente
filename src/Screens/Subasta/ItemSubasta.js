@@ -2,7 +2,7 @@ import React, {useContext, useEffect, useState} from 'react';
 import {ScrollView, StyleSheet, Text, View} from 'react-native';
 import {Avatar, Button} from 'react-native-elements'
 import CountDown from 'react-native-countdown-component';
-import apiUrl from "../../api";
+import {apiUrl} from "../../api";
 
 //Context
 import {PujasContext} from "../../context/PujasContext";
@@ -14,7 +14,7 @@ import {MetodoPagoContext} from "../../context/MetodoPagoContext";
 
 const ItemSubasta = ({route, navigation}) => {
 
-  const [timerClock, setTimerClock] = useState(60*20);
+  const [timerClock, setTimerClock] = useState(60 * 20);
   const [loading, setLoading] = useState(true);
   const [intervalStatus, setIntervalStatus] = useState(true);
   const [showModal, setShowModal] = useState({
@@ -26,7 +26,7 @@ const ItemSubasta = ({route, navigation}) => {
   });
 
   // Pujas Context
-  const {getPujas, setItem, item, downCountClock, socket} = useContext(PujasContext);
+  const {getPujas, setItem, item, socket} = useContext(PujasContext);
   // User Context
   const {userData} = useContext(DataContext);
   // Metodos de pago Context
@@ -34,12 +34,10 @@ const ItemSubasta = ({route, navigation}) => {
 
   socket.on('pujas', async data => {
     await getPujas()
-    if (data.reload === true && item) {
+    if (data.reload === true && item.pujas[0].horario !== undefined) {
       setTimerClock(calculateClock(item.pujas[0].horario))
     }
   })
-
-
 
   const calculateClock = (date) => {
     let actualDate = new Date()
@@ -51,8 +49,11 @@ const ItemSubasta = ({route, navigation}) => {
     let pH = pujaDate.getUTCHours(); // Hours
     let pM = pujaDate.getUTCMinutes();
     let pS = pujaDate.getUTCSeconds();
-
-    return (aH + pH) * 60 + (aM + pM) + (60*30)
+    // En el caso de que la puja se realice a minutos cercanos a 00,01,02,03, etc.
+    if (pM < aM) {
+      return 60 * 5 - (60 * (aM - pM) + (aS - pS))
+    }
+    return 60 * 5 - (60 * (pM - aM) + (aS - pS))
   }
 
 
@@ -62,9 +63,11 @@ const ItemSubasta = ({route, navigation}) => {
       let _item = await fetch(`${apiUrl}/api/subastas/catalogo/${idSubasta}/item-catalogo`);
       _item = await _item.json()
       setItem(_item)
-      setTimerClock(calculateClock(_item.pujas[0].horario))
+      //Caso en el que existan pujas realizadas.
+      if (_item.pujas[0] !== undefined) {
+        setTimerClock(calculateClock(_item.pujas[0].horario))
+      }
       setLoading(false)
-
     } catch (e) {
       setShowModal({...showModal, visible: true});
     }
@@ -85,6 +88,23 @@ const ItemSubasta = ({route, navigation}) => {
 
 
   const changeItemEstado = async () => {
+    if (item.pujas[0].idCliente === userData.idCliente) {
+      setShowModal({
+        visible: true,
+        title: '¡Felicitaciones!',
+        msg: 'De todas las ofertas, la suya ha sido la más alta. Pronto nos estaremos comunicando con usted para' +
+          ' coordinar la entrega.',
+        icon: 'winner'
+      })
+    } else {
+      setShowModal({
+        visible: true,
+        title: '¡Suerte para la próxima!',
+        msg: 'Lamentablemente su oferta no fue la más alta, pero puede seguir participando por otros artículos.',
+        icon: 'gameOver'
+      })
+    }
+
     return await fetch(`${apiUrl}/api/subastas/catalogo/change-item-estado`, {
       method: 'POST',
       headers: {
@@ -102,9 +122,10 @@ const ItemSubasta = ({route, navigation}) => {
       });
   }
 
-  if (!loading && item && timerClock > 0) {
+  if (!loading && item) {
     return (
       <View style={styles.container}>
+        <ModalSubasta modalData={showModal} setShowModal={setShowModal} navigation={navigation}/>
         <View style={styles.imagesContainer}>
           <SubastaCarousel navigation={navigation} fotos={item.fotos} setIntervalStatus={setIntervalStatus}
                            idSubasta={route.params.idSubasta}/>
@@ -220,7 +241,7 @@ const ItemSubasta = ({route, navigation}) => {
                     else
                       navigation.navigate('NuevaPuja', {
                         categoriaSubasta: route.params.categoriaSubasta,
-                        clock: downCountClock
+                        clock: timerClock
                       })
                   }}
                   title='Nueva Oferta'

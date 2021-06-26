@@ -8,7 +8,7 @@ import {ModalMetodosPago} from '../../Components/MetodoDePago/ModalMetodosPago';
 
 //Context
 import {DataContext} from "../../context/DataContext";
-import apiUrl from "../../api";
+import { apiUrl } from "../../api";
 import {MetodoPagoContext} from "../../context/MetodoPagoContext";
 
 const NuevaTarjeta = ({navigation}) => {

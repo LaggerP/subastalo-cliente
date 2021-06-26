@@ -1,20 +1,19 @@
 import React, {createContext, useState} from 'react';
-import apiUrl from '../api'
+import {apiUrl} from '../api'
 import socketClient from "socket.io-client";
 
 export const PujasContext = createContext(null);
 
 export const PujasProvider = ({children}) => {
-  const [socket, setSocket] = useState(socketClient (`${apiUrl}/socket-pujas`));
+  const [socket, setSocket] = useState(socketClient(`${apiUrl}/socket-pujas`));
   const [item, setItem] = useState(null);
   const [downCountClock, setDownCountClock] = useState(60 * 50);
 
   const getPujas = async () => {
-    console.log("hola traigo nuevas pujas")
     try {
       let pujas = await fetch(`${apiUrl}/api/pujas/catalogo/${item.idItemCatalogo}/`);
       setItem({...item, pujas: await pujas.json()})
-    } catch  {
+    } catch {
     }
   }
 

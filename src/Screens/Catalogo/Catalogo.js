@@ -1,6 +1,6 @@
 import React, {useEffect, useContext, useState} from 'react';
 import {StyleSheet, Text, View, ScrollView, Image, TouchableOpacity} from 'react-native';
-import apiUrl from "../../api";
+import { apiUrl } from "../../api";
 import {Icon} from "react-native-elements";
 import CatalogoCarousel from "../../Components/Catalogo/CatalogoCarousel";
 

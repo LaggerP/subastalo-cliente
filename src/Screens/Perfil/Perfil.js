@@ -1,4 +1,4 @@
-import apiUrl from "../../api";
+import { apiUrl } from "../../api";
 import React, { useContext, useState } from 'react';
 import { StyleSheet, Text, View, AsyncStorage, ScrollView, } from 'react-native';
 import { useFonts, Roboto_500Medium, } from '@expo-google-fonts/roboto';
@@ -20,7 +20,6 @@ const Perfil = ({ navigation }) => {
     title: '',
     msg: '',
   });
-
 
   const updateUserData = async () => {
     try {

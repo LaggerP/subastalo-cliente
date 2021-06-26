@@ -4,7 +4,7 @@ import {StyleSheet, Text, View, TextInput} from 'react-native';
 import {Button} from "react-native-elements";
 import {ModalLogin} from "../../Components/Login/ModalLogin";
 import {DataContext} from '../../context/DataContext';
-import apiUrl from '../../api';
+import { apiUrl } from '../../api';
 
 const RestablecerSegundo = ({navigation}) => {
 

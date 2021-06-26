@@ -1,21 +1,24 @@
-import apiUrl from "../../api";
-import React, { useContext, useState } from 'react';
-import { StyleSheet, Text, View, AsyncStorage, Image, ScrollView, TouchableOpacity } from 'react-native';
+import { apiUrl } from "../../api";
+import React, { useContext, useEffect, useState } from 'react';
+import { StyleSheet, Text, View, AsyncStorage, Image, ScrollView, ActivityIndicator } from 'react-native';
 import { useFonts, Roboto_500Medium, } from '@expo-google-fonts/roboto';
-import { Icon, Button } from "react-native-elements";
+import { Icon, } from "react-native-elements";
 
 //Context
 import { DataContext } from "../../context/DataContext";
 
 //Image Picker
 import * as ImagePicker from 'expo-image-picker';
+import { uploadImage } from "../../api";
 
 const FotoPerfil = ({ navigation }) => {
-    const { setUserData, userData, setSesionIniciada } = useContext(DataContext);
-    const [pickedImagePath, setPickedImagePath] = useState('');
+    const { setUserData, userData } = useContext(DataContext);
+    const [spinner, setSpinner] = useState(false);
 
-    const updateProfileImage = async () => {
+    const updateProfileImage = async (file) => {
         try {
+            setSpinner(true);
+            let imageUrl = await uploadImage(file);
             let updatePhoto = await fetch(`${apiUrl}/api/user/update-image`, {
                 method: 'POST',
                 headers: {
@@ -23,17 +26,12 @@ const FotoPerfil = ({ navigation }) => {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    imageUrl: pickedImagePath,
+                    imageUrl: imageUrl,
                     idCliente: userData.idCliente
                 })
             });
             if (updatePhoto.status === 201) {
-                console.log('ENTRÓ 201: ' + pickedImagePath)
-                setUserData({ ...userData, foto: pickedImagePath })
-                console.log('201')
-            }
-            if (updatePhoto.status === 500) {
-                console.log('500')
+                setUserData({ ...userData, foto: imageUrl })
             }
         } catch (e) {
             console.log(e);
@@ -53,13 +51,15 @@ const FotoPerfil = ({ navigation }) => {
             return;
         }
         const result = await ImagePicker.launchImageLibraryAsync();
-        // Explore the result
-        console.log(result);
+
         if (!result.cancelled) {
-            console.log('RESULT.URI: ' + result.uri);
-            setPickedImagePath(result.uri);
-            console.log('PICKED IMAGE PATH: ' + pickedImagePath);
-            updateProfileImage();
+            let file = {
+                uri: result.uri,
+                type: `test/${result.uri.split(".")[1]}`,
+                name: `test/${result.uri.split(".")[1]}`,
+            }
+            await updateProfileImage(file);
+            setSpinner(false);
         }
     }
 
@@ -71,22 +71,21 @@ const FotoPerfil = ({ navigation }) => {
             return;
         }
         const result = await ImagePicker.launchCameraAsync();
-        // Explore the result
-        console.log(result);
+
         if (!result.cancelled) {
-            setPickedImagePath(result.uri);
-            console.log(result.uri);
+            let file = {
+                uri: result.uri,
+                type: `test/${result.uri.split(".")[1]}`,
+                name: `test/${result.uri.split(".")[1]}`,
+            }
+            await updateProfileImage(file);
+            setSpinner(false);
         }
     }
 
-    //Linea
-    const Linea = () => {
-        return (
-            <View style={{ flexDirection: 'row', alignItems: 'center', }}>
-                <View style={{ flex: 1, height: 1.5, backgroundColor: '#CACACA' }} />
-            </View>
-        )
-    };
+    useEffect(() => {
+        return () => { }
+    }, [])
 
     if (!fontsLoaded) {
         return <Text>Loading</Text>;
@@ -96,13 +95,16 @@ const FotoPerfil = ({ navigation }) => {
                 <View style={styles.container}>
                     <View style={styles.userCard}>
                         <View style={styles.userSection}>
-                            <TouchableOpacity style={{ flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
-                                <Image
-                                    style={{ height: '100%', width: '100%', borderRadius: 10, }}
-                                    source={{ uri: pickedImagePath !== '' ? pickedImagePath : userData.foto }}
-                                    
-                                />
-                            </TouchableOpacity >
+                            <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+                                {spinner ?
+                                    <ActivityIndicator size={70} color="#FFAE00" />
+                                    :
+                                    <Image
+                                        style={{ height: '100%', width: '100%', borderRadius: 10, }}
+                                        source={{ uri: userData.foto }}
+                                    />
+                                }
+                            </View >
                         </View>
                     </View>
                 </View>
@@ -223,7 +225,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         marginLeft: 15,
         marginRight: 20,
-        justifyContent: 'flex-start',
+        justifyContent: 'center',
     },
 
     btn: {

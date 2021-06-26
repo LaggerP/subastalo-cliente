@@ -12,7 +12,7 @@ import {Roboto_500Medium, Roboto_400Regular} from '@expo-google-fonts/roboto';
 
 import {Button} from "react-native-elements";
 
-import apiUrl from "../../api";
+import { apiUrl } from "../../api";
 
 import {DataContext} from '../../context/DataContext';
 
@@ -54,7 +54,6 @@ const Login = ({navigation}) => {
       });
       let user = await loginDatos.json();
       await setUserData(user.userData);
-      console.log(loginDatos)
       if (loginDatos.status === 200) {
         if (user.userData.primerInicio) {
           navigation.navigate('RegistroDos')
