@@ -120,6 +120,7 @@ const MisProductos = ({ navigation }) => {
 
   useEffect(() => {
     getProductos();
+    return () => { }
   }, [])
 
   if (!fontsLoaded) {

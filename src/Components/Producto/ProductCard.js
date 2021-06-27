@@ -23,7 +23,7 @@ const ProductCard = ({ navigation, idProducto, estado, descripcionCatalogo }) =>
 
     const getProductImages = async () => {
         setSpinner(true);
-        return await fetch(`${apiUrl}/api/productos/producto/${idProducto}`) //RECORDAR CAMBIAR EL 2 POR ${idproducto}
+        return await fetch(`${apiUrl}/api/productos/producto/${idProducto}`)
             .then((response) => response.json())
             .then((json) => {
                 setImages(json.fotos);
@@ -57,7 +57,7 @@ const ProductCard = ({ navigation, idProducto, estado, descripcionCatalogo }) =>
                 </View>
                 <View style={{ flexDirection: 'column', flex: 0.65, }}>
                     <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-start', }}>
-                        <Text style={{ fontSize: 15, alignSelf: 'flex-start', fontWeight: 'bold' }}>{descripcionCatalogo}</Text>
+                        <Text numberOfLines={1} style={{ fontSize: 15, alignSelf: 'flex-start', fontWeight: 'bold', paddingRight: 10 }}>{descripcionCatalogo}</Text>
                     </View>
                     <View style={{ flex: 2, flexDirection: 'row', justifyContent: 'flex-start', }}>
                         <Text style={{ fontSize: 13, alignSelf: 'flex-start', marginTop: 5 }}><Strong>Estado:</Strong> {estado} </Text>
