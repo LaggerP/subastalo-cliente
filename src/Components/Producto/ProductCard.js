@@ -10,16 +10,8 @@ import { ProductosContext } from "../../context/ProductosContext";
 
 const ProductCard = ({ navigation, idProducto, estado, descripcionCatalogo }) => {
 
-    const { userData } = useContext(DataContext);
-    const { productos } = useContext(ProductosContext);
     const [images, setImages] = useState();
     const [spinner, setSpinner] = useState(false);
-
-    //Error categoria modal
-    const [visible, setVisible] = useState(false);
-    const toggleOverlay = () => {
-        setVisible(!visible);
-    };
 
     const getProductImages = async () => {
         setSpinner(true);
