@@ -66,7 +66,7 @@ const MisProductos = ({ navigation }) => {
   const [check, setCheck] = useState({
     aceptado: false,
     rechazado: false,
-    pendiente: false
+    pendiente: false,
   });
   const [filter, setFilterVisible] = useState(false);
   const toggleFilter = () => {
@@ -77,18 +77,18 @@ const MisProductos = ({ navigation }) => {
     y = ''
   ]);
 
-  //Filtro desplegable
+  //Filtro 
   let filteredProducts = search ? productos.filter((i) =>
     (i.descripcionCatalogo.toLowerCase()).includes(search.toLowerCase()) ||
     (i.descripcionCompleta.toLowerCase()).includes(search.toLowerCase()))
     : check.pendiente && check.aceptado && check.rechazado ?
-      productos.filter((i) => (i.estado === 'pendiente' || 'aceptado' || 'rechazado'))
+      productos.filter((i) => (i.estado === 'pendiente' || i.estado === 'aceptado' || i.estado === 'rechazado'))
       : check.pendiente && check.aceptado && !check.rechazado ?
-        productos.filter((i) => (i.estado === ('pendiente' || 'aceptado')))
+        productos.filter((i) => (i.estado === 'pendiente' || i.estado === 'aceptado'))
         : check.pendiente && !check.aceptado && check.rechazado ?
-          productos.filter((i) => (i.estado === ('pendiente' || 'rechazado')))
+          productos.filter((i) => (i.estado === 'pendiente' || i.estado === 'rechazado'))
           : !check.pendiente && check.aceptado && check.rechazado ?
-            productos.filter((i) => (i.estado === ('aceptado' || 'rechazado')))
+            productos.filter((i) => (i.estado === 'aceptado' || i.estado === 'rechazado'))
             : !check.pendiente && !check.aceptado && check.rechazado ?
               productos.filter((i) => (i.estado === 'rechazado'))
               : !check.pendiente && check.aceptado && !check.rechazado ?
@@ -218,7 +218,7 @@ const MisProductos = ({ navigation }) => {
                     borderBottomWidth: 0
                   }}
                   placeholder="Buscar"
-                  onChangeText={setSearch}
+                  onChangeText={(text) => { setSearch(text) }}
                   value={search}
                   platform="default" />
               </View>
