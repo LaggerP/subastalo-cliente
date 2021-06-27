@@ -8,6 +8,9 @@ import { ProfileModal } from "../../Components/Perfil/ProfileModal";
 //Context
 import { DataContext } from "../../context/DataContext";
 
+//Components
+import Loading from "../../Components/Loading/Loading";
+
 const Perfil = ({ navigation }) => {
   const { setUserData, userData, setSesionIniciada } = useContext(DataContext);
   const [newUserData, setNewUserData] = useState({
@@ -96,7 +99,7 @@ const Perfil = ({ navigation }) => {
   };
 
   if (!fontsLoaded) {
-    return <Text>Loading</Text>;
+    return <Loading color="#FC9905" />;
   } else return (
     <View style={{ flex: 1 }}>
       <ProfileModal modalData={showModal} setShowModal={setShowModal} navigation={navigation} />

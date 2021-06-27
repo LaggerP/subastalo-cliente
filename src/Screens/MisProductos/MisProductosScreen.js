@@ -11,7 +11,7 @@ const PerfilStack = createStackNavigator();
 const MisProductosScreen = () => {
   return (
     <PerfilStack.Navigator>
-      <PerfilStack.Screen name='MisProductos' component={MisProductos} options={{title: 'Perfil', headerTransparent: true, headerShown: false}}/>
+      <PerfilStack.Screen name='MisProductos' component={MisProductos} options={{title: 'Perfil', headerShown: false, cardStyle: { backgroundColor: '#FC9905' } }}/>
     </PerfilStack.Navigator>
   )
 };
