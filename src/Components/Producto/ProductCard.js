@@ -30,8 +30,7 @@ const ProductCard = ({ navigation, idProducto, estado, descripcionCatalogo }) =>
                 setSpinner(false);
             })
             .catch((error) => {
-                console.error(error);
-                setImages(' ');
+                setImages(null);
                 setSpinner(false);
 
             });
@@ -54,7 +53,7 @@ const ProductCard = ({ navigation, idProducto, estado, descripcionCatalogo }) =>
                         :
                         <Image
                             style={{ height: '100%', width: '100%', borderRadius: 10, }}
-                            source={{ uri: images[0].foto }}
+                            source={{ uri: (images === null) ? ' ' : images[0].foto }}
                         />
                     }
                 </View>
