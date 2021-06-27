@@ -38,7 +38,6 @@ const MisProductos = ({ navigation }) => {
         setProductos(json.productos);
       })
       .catch((error) => {
-        console.error(error);
         toggleOverlay();
       });
   }
@@ -61,7 +60,6 @@ const MisProductos = ({ navigation }) => {
     });
     return { publicados, aceptados, rechazados, pendientes };
   }
-
 
   //Checkbox filter & Searchbar
   const [search, setSearch] = useState('');
@@ -99,6 +97,7 @@ const MisProductos = ({ navigation }) => {
                   productos.filter((i) => (i.estado === 'pendiente'))
                   : productos.sort((a, b) => a.estado.localeCompare(b.estado) || a.fecha.localeCompare(b.fecha));
 
+  console.log(filteredProducts)
 
   //Fonts
   let [fontsLoaded] = useFonts({
@@ -306,7 +305,7 @@ const MisProductos = ({ navigation }) => {
             </View>
 
             {
-              Object.keys(filteredProducts).length > 0 ?
+              (Object.keys(filteredProducts).length !== 0) ?
 
                 <View style={styles.auctionsContainer}>
                   {filteredProducts.map((producto, i) => (
@@ -316,7 +315,7 @@ const MisProductos = ({ navigation }) => {
                 :
                 <View style={styles.noProducts}>
                   <View style={{ flex: 0.9, flexDirection: 'column', justifyContent: 'center', }}>
-                    <Text style={{ alignSelf: 'center', fontSize: 17 }}>Usted no ha registrado ningún producto</Text>
+                    <Text style={{ alignSelf: 'center', fontSize: 17 }}>No existen productos</Text>
                   </View>
                 </View>
             }
