@@ -1,19 +1,19 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { StyleSheet, Text, View, ActivityIndicator, } from 'react-native';
 import { Image, } from 'react-native-elements'
-import { DataContext } from "../../context/DataContext";
 import { apiUrl } from "../../api";
 
+//Context
+import { DataContext } from "../../context/DataContext";
+import { ProductosContext } from "../../context/ProductosContext";
 
-const ProductCard = ({ navigation }) => {
 
-    const { sesionIniciada, userData } = useContext(DataContext);
+const ProductCard = ({ navigation, idProducto, estado, descripcionCatalogo }) => {
 
-    const Strong = (props) => <Text style={{ fontWeight: 'bold' }}>{props.children}</Text>
-
+    const { userData } = useContext(DataContext);
+    const { productos } = useContext(ProductosContext);
     const [images, setImages] = useState([]);
-
-    const [spinner, setSpinner] = useState(true);
+    const [spinner, setSpinner] = useState(false);
 
     //Error categoria modal
     const [visible, setVisible] = useState(false);
@@ -23,7 +23,7 @@ const ProductCard = ({ navigation }) => {
 
     const getProductImages = async () => {
         setSpinner(true);
-        return await fetch(`${apiUrl}/api/productos/producto/2`) //RECORDAR CAMBIAR EL 2 POR ${idproducto}
+        return await fetch(`${apiUrl}/api/productos/producto/${idProducto}`) //RECORDAR CAMBIAR EL 2 POR ${idproducto}
             .then((response) => response.json())
             .then((json) => {
                 setImages(json.fotos);
@@ -31,8 +31,13 @@ const ProductCard = ({ navigation }) => {
             })
             .catch((error) => {
                 console.error(error);
+                setImages(' ');
+                setSpinner(false);
+
             });
     }
+
+    const Strong = (props) => <Text style={{ fontWeight: 'bold' }}>{props.children}</Text>
 
     useEffect(() => {
         getProductImages();
@@ -45,7 +50,7 @@ const ProductCard = ({ navigation }) => {
             <View style={{ flexDirection: 'row', flex: 1, }}>
                 <View style={{ flexDirection: 'column', flex: 0.35, paddingRight: 13, justifyContent: 'center', }}>
                     {spinner ?
-                        <ActivityIndicator size={40} color="#FFAE00" style={{alignSelf: 'center',}} />
+                        <ActivityIndicator size={40} color="#FFAE00" style={{ alignSelf: 'center', }} />
                         :
                         <Image
                             style={{ height: '100%', width: '100%', borderRadius: 10, }}
@@ -55,10 +60,10 @@ const ProductCard = ({ navigation }) => {
                 </View>
                 <View style={{ flexDirection: 'column', flex: 0.65, }}>
                     <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-start', }}>
-                        <Text style={{ fontSize: 18, alignSelf: 'flex-start', fontWeight: 'bold' }}>Descripción del ítem</Text>
+                        <Text style={{ fontSize: 15, alignSelf: 'flex-start', fontWeight: 'bold' }}>{descripcionCatalogo}</Text>
                     </View>
                     <View style={{ flex: 2, flexDirection: 'row', justifyContent: 'flex-start', }}>
-                        <Text style={{ fontSize: 13, alignSelf: 'flex-start', marginTop: 5 }}><Strong>Estado:</Strong> Pendiente </Text>
+                        <Text style={{ fontSize: 13, alignSelf: 'flex-start', marginTop: 5 }}><Strong>Estado:</Strong> {estado} </Text>
                     </View>
                     <View style={{ flex: 0.5, flexDirection: 'row', justifyContent: 'flex-end', }}>
                         <Text style={styles.link}>Ver detalles</Text>

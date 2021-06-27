@@ -22,8 +22,7 @@ const MisProductos = ({ navigation }) => {
 
   //Data from context provider
   const { userData } = useContext(DataContext);
-  // const { productos, setProductos } = useContext(ProductosContext);
-  const [productos, setProductos] = useState([]);
+  const { productos, setProductos } = useContext(ProductosContext);
 
   //Error modal
   const [visible, setVisible] = useState(false);
@@ -32,12 +31,13 @@ const MisProductos = ({ navigation }) => {
   };
 
   const getProductos = async () => {
-    return await fetch(`${apiUrl}/api/productos/cliente/2`) //RECORDAR CAMBIAR EL 2 POR ${UserData.idCliente}
+    return await fetch(`${apiUrl}/api/productos/cliente/${userData.idCliente}`)
       .then((response) => response.json())
       .then((json) => {
         setProductos(json.productos);
       })
-      .catch((error) => {
+      .catch((e) => {
+        console.log(e);
         toggleOverlay();
       });
   }
@@ -77,7 +77,7 @@ const MisProductos = ({ navigation }) => {
     y = ''
   ]);
 
-
+  //Filtro desplegable
   let filteredProducts = search ? productos.filter((i) =>
     (i.descripcionCatalogo.toLowerCase()).includes(search.toLowerCase()) ||
     (i.descripcionCompleta.toLowerCase()).includes(search.toLowerCase()))
@@ -96,8 +96,6 @@ const MisProductos = ({ navigation }) => {
                 : check.pendiente && !check.aceptado && !check.rechazado ?
                   productos.filter((i) => (i.estado === 'pendiente'))
                   : productos.sort((a, b) => a.estado.localeCompare(b.estado) || a.fecha.localeCompare(b.fecha));
-
-  console.log(filteredProducts)
 
   //Fonts
   let [fontsLoaded] = useFonts({
