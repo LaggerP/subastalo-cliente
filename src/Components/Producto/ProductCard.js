@@ -12,7 +12,7 @@ const ProductCard = ({ navigation, idProducto, estado, descripcionCatalogo }) =>
 
     const { userData } = useContext(DataContext);
     const { productos } = useContext(ProductosContext);
-    const [images, setImages] = useState([]);
+    const [images, setImages] = useState();
     const [spinner, setSpinner] = useState(false);
 
     //Error categoria modal
@@ -32,7 +32,6 @@ const ProductCard = ({ navigation, idProducto, estado, descripcionCatalogo }) =>
             .catch((error) => {
                 setImages(null);
                 setSpinner(false);
-
             });
     }
 
@@ -43,7 +42,6 @@ const ProductCard = ({ navigation, idProducto, estado, descripcionCatalogo }) =>
     }, [])
 
     return (
-
         <View style={styles.productCard}>
 
             <View style={{ flexDirection: 'row', flex: 1, }}>
@@ -53,7 +51,7 @@ const ProductCard = ({ navigation, idProducto, estado, descripcionCatalogo }) =>
                         :
                         <Image
                             style={{ height: '100%', width: '100%', borderRadius: 10, }}
-                            source={{ uri: (images === null) ? ' ' : images[0].foto }}
+                            source={{ uri: (images == null) ? ' ' : images[0].foto }}
                         />
                     }
                 </View>
