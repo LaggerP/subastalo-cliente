@@ -231,7 +231,7 @@ const Dashboard = ({ route, navigation }) => {
                   iconStyle={{ alignSelf: 'center', }}
                   containerStyle={{ alignSelf: 'center' }}
                   onPress={() => {
-                    goToTop();
+                    // goToTop();
                     toggleFilter()
                   }}
                 />
