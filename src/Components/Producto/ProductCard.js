@@ -1,11 +1,30 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, ActivityIndicator, } from 'react-native';
 import { Image, } from 'react-native-elements'
 
 
-const ProductCard = ({ navigation, estado, descripcionCatalogo, fotos }) => {
+const ProductCard = ({ navigation, idProducto, idCategoria, categoria, precioBase, fecha, descripcionCatalogo, descripcionCompleta, revisor, nombreRevisor, duenio, estado, fotos }) => {
 
     const [spinner, setSpinner] = useState(false);
+
+    let producto = {
+        idProducto: idProducto,
+        idCategoria: idCategoria,
+        categoria: categoria,
+        precioBase: precioBase,
+        fecha: fecha,
+        descripcionCatalogo: descripcionCatalogo,
+        descripcionCompleta: descripcionCompleta,
+        revisor: revisor,
+        nombreRevisor: nombreRevisor,
+        duenio: duenio,
+        estado: estado,
+        fotos: fotos
+    }
+
+    useEffect(() => {
+        return () => { }
+    }, [])
 
     const Strong = (props) => <Text style={{ fontWeight: 'bold' }}>{props.children}</Text>
 
@@ -31,7 +50,7 @@ const ProductCard = ({ navigation, estado, descripcionCatalogo, fotos }) => {
                         <Text style={{ fontSize: 13, alignSelf: 'flex-start', marginTop: 5 }}><Strong>Estado:</Strong> {estado} </Text>
                     </View>
                     <View style={{ flex: 0.5, flexDirection: 'row', justifyContent: 'flex-end', }}>
-                        <Text style={styles.link}>Ver detalles</Text>
+                        <Text style={styles.link} onPress={() => navigation.navigate('DetallesProducto', { producto: producto })} >Ver detalles</Text>
                     </View>
                 </View>
             </View>
