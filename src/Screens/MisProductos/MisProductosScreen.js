@@ -8,6 +8,7 @@ import { ProductosProvider } from '../../context/ProductosContext';
 
 // Components
 import MisProductos from "./MisProductos";
+import DetallesProducto from "./DetallesProducto";
 
 const PerfilStack = createStackNavigator();
 
@@ -16,6 +17,7 @@ const MisProductosScreen = () => {
     <ProductosProvider>
       <PerfilStack.Navigator>
         <PerfilStack.Screen name='MisProductos' component={MisProductos} options={{ title: 'Perfil', headerShown: false, cardStyle: { backgroundColor: '#FC9905' } }} />
+        <PerfilStack.Screen name='DetallesProducto' component={DetallesProducto} options={{ title: 'Perfil', headerShown: false, cardStyle: { backgroundColor: '#FC9905' } }} />
       </PerfilStack.Navigator>
     </ProductosProvider>
   )
