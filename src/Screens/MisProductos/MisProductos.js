@@ -105,6 +105,10 @@ const MisProductos = ({ navigation }) => {
       try {
         let productos = await fetch(`${apiUrl}/api/productos/cliente/${userData.idCliente}`)
         productos = await productos.json();
+        productos.forEach(producto => {
+          if (producto.fotos.length == 0)
+            producto.fotos = ' ';
+        });
         setProductos(productos)
       } catch (e) {
       }

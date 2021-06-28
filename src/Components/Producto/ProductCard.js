@@ -1,14 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, ActivityIndicator, } from 'react-native';
 import { Image, } from 'react-native-elements'
 
 
-const ProductCard = ({ navigation, idProducto, precioBase, fecha, descripcionCatalogo, descripcionCompleta, revisor, nombreRevisor, duenio, estado, fotos }) => {
+const ProductCard = ({ navigation, idProducto, idCategoria, categoria, precioBase, fecha, descripcionCatalogo, descripcionCompleta, revisor, nombreRevisor, duenio, estado, fotos }) => {
 
     const [spinner, setSpinner] = useState(false);
 
     let producto = {
         idProducto: idProducto,
+        idCategoria: idCategoria,
+        categoria: categoria,
         precioBase: precioBase,
         fecha: fecha,
         descripcionCatalogo: descripcionCatalogo,
@@ -19,6 +21,10 @@ const ProductCard = ({ navigation, idProducto, precioBase, fecha, descripcionCat
         estado: estado,
         fotos: fotos
     }
+
+    useEffect(() => {
+        return () => { }
+    }, [])
 
     const Strong = (props) => <Text style={{ fontWeight: 'bold' }}>{props.children}</Text>
 
