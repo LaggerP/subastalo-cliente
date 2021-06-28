@@ -6,7 +6,7 @@ import {
     CinzelDecorative_700Bold,
     CinzelDecorative_900Black,
 } from '@expo-google-fonts/cinzel-decorative';
-import { StyleSheet, Text, View, ScrollView, SafeAreaView, Dimensions, Platform } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, Dimensions, Platform } from 'react-native';
 import { Badge } from 'react-native-elements';
 import Moment from 'moment';
 import Carousel, { ParallaxImage } from 'react-native-snap-carousel';
@@ -16,7 +16,6 @@ import { DataContext } from "../../context/DataContext";
 import { ProductosContext } from "../../context/ProductosContext";
 
 // Components
-import ProductCard from '../../Components/Producto/ProductCard';
 import Loading from "../../Components/Loading/Loading";
 
 const { width: screenWidth } = Dimensions.get('window');
@@ -38,15 +37,6 @@ const DetallesProducto = ({ route, navigation }) => {
         CinzelDecorative_900Black,
         Roboto_500Medium,
     });
-
-    //Linea
-    const Linea = () => {
-        return (
-            <View style={{ flexDirection: 'row', alignItems: 'center', }}>
-                <View style={{ flex: 1, height: 1.5, backgroundColor: '#CACACA', }} />
-            </View>
-        )
-    };
 
     const badgetColor = () => {
         let color;
@@ -116,8 +106,8 @@ const DetallesProducto = ({ route, navigation }) => {
                                 renderItem={renderItem}
                                 hasParallaxImages={true} />
                         </View>
+                        
                         <View style={styles.card}>
-
                             <View style={{ flex: 1, flexDirection: 'row', paddingBottom: 10, }}>
                                 <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'flex-start', }}>
                                     <Text style={{ fontWeight: 'bold', fontSize: 16 }}>Detalles</Text>
@@ -144,6 +134,7 @@ const DetallesProducto = ({ route, navigation }) => {
                                 </View>
                             </View>
                         </View>
+
                         <View style={styles.card}>
                             <View style={{ flex: 1, flexDirection: 'row' }}>
                                 <View style={{ flex: 0.49, flexDirection: 'column', }}>
