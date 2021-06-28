@@ -10,7 +10,7 @@ import { StyleSheet, Text, View, ScrollView, } from 'react-native';
 import { Icon, Avatar, SearchBar, Overlay, CheckBox, Button, FAB } from 'react-native-elements';
 import { apiUrl } from "../../api";
 
-//Provider
+//Providers
 import { DataContext } from "../../context/DataContext";
 import { ProductosContext } from "../../context/ProductosContext";
 
@@ -23,24 +23,6 @@ const MisProductos = ({ navigation }) => {
   //Data from context provider
   const { userData } = useContext(DataContext);
   const { productos, setProductos } = useContext(ProductosContext);
-
-  //Error modal
-  const [visible, setVisible] = useState(false);
-  const toggleOverlay = () => {
-    setVisible(!visible);
-  };
-
-  const getProductos = async () => {
-    return await fetch(`${apiUrl}/api/productos/cliente/${userData.idCliente}`)
-      .then((response) => response.json())
-      .then((json) => {
-        setProductos(json.productos);
-      })
-      .catch((e) => {
-        console.log(e);
-        toggleOverlay();
-      });
-  }
 
   const estadoProductos = () => {
     let publicados = productos.length;
@@ -119,11 +101,19 @@ const MisProductos = ({ navigation }) => {
   };
 
   useEffect(() => {
+    const getProductos = async () => {
+      try {
+        let productos = await fetch(`${apiUrl}/api/productos/cliente/${userData.idCliente}`)
+        productos = await productos.json();
+        setProductos(productos)
+      } catch (e) {
+      }
+    }
     getProductos();
     return () => { }
   }, [])
 
-  if (!fontsLoaded) {
+  if (!fontsLoaded && !productos) {
     return <Loading color="white" />;
   } else {
     return (
