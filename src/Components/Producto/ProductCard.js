@@ -1,37 +1,13 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, Text, View, ActivityIndicator, } from 'react-native';
 import { Image, } from 'react-native-elements'
-import { apiUrl } from "../../api";
-
-//Context
-import { DataContext } from "../../context/DataContext";
-import { ProductosContext } from "../../context/ProductosContext";
 
 
-const ProductCard = ({ navigation, idProducto, estado, descripcionCatalogo }) => {
+const ProductCard = ({ navigation, estado, descripcionCatalogo, fotos }) => {
 
-    const [images, setImages] = useState();
     const [spinner, setSpinner] = useState(false);
 
-    const getProductImages = async () => {
-        setSpinner(true);
-        return await fetch(`${apiUrl}/api/productos/producto/${idProducto}`)
-            .then((response) => response.json())
-            .then((json) => {
-                setImages(json.fotos);
-                setSpinner(false);
-            })
-            .catch((error) => {
-                setImages(null);
-                setSpinner(false);
-            });
-    }
-
     const Strong = (props) => <Text style={{ fontWeight: 'bold' }}>{props.children}</Text>
-
-    useEffect(() => {
-        getProductImages();
-    }, [])
 
     return (
         <View style={styles.productCard}>
@@ -43,7 +19,7 @@ const ProductCard = ({ navigation, idProducto, estado, descripcionCatalogo }) =>
                         :
                         <Image
                             style={{ height: '100%', width: '100%', borderRadius: 10, }}
-                            source={{ uri: (images == null) ? ' ' : images[0].foto }}
+                            source={{ uri: fotos[0].foto }}
                         />
                     }
                 </View>

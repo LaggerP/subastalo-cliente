@@ -23,7 +23,7 @@ const AuctionCard = ({
     let color;
     let estado;
 
-    if ((Moment(fechaSubasta).format('DD/MM/YYYY') == Moment(Date.now()).format('DD/MM/YYYY')) && (Moment(horaSubasta).format('HH:mm')) <= Moment(Date.now()).utcOffset(-3).format('HH:mm')) {
+    if ((Moment(fechaSubasta).format('DD/MM/YYYY') == Moment(Date.now()).utcOffset(-3).format('DD/MM/YYYY')) && (Moment(horaSubasta).format('HH:mm')) <= Moment(Date.now()).utcOffset(-3).format('HH:mm')) {
       estado = 'En vivo';
       color = '#51BE35';
     } else {
