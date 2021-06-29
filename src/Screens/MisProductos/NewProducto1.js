@@ -115,7 +115,6 @@ const NewProducto1 = ({ navigation }) => {
               borderColor: '#FFAE00'
             }}
             containerStyle={{ width: 145, alignSelf: 'flex-end', }}
-            // onPress={() => navigation.navigate('MisProductosScreen', {screen: 'NewProducto2'})}
             onPress={createProducto1}
           />
         </View>
