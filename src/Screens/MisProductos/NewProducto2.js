@@ -45,8 +45,7 @@ const NewProducto2 = ({ navigation }) => {
             type: `test/${result.uri.split(".")[1]}`,
             name: `test/${result.uri.split(".")[1]}`,
         }
-        // await updateProfileImage(file);
-        setNewProduct({fotos: file});
+        setNewProduct({...newProduct, fotos: file});
         setSpinner(false);
     }
   }

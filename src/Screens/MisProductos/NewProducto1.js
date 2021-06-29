@@ -25,10 +25,6 @@ const NewProducto1 = ({ navigation }) => {
   //Data from context provider
   const { userData } = useContext(DataContext);
   const { newProduct, setNewProduct } = useContext(ProductosContext);
-  console.log('PRODUCTO', newProduct)
-  console.log('NOMBRE', nombre)
-  console.log('CATEGORIA', selectedCategoria)
-  console.log('DESCRIPCION', descripcion)
 
   const createProducto1 = () => {
     if (nombre != null && selectedCategoria != null && descripcion != null) {
