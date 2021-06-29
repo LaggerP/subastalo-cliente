@@ -9,7 +9,7 @@ export const ProductosProvider = ({children}) => {
 
   const {userData} = useContext(DataContext)
 
-  const [producto, setProducto] = useState({
+  const [newProduct, setNewProduct] = useState({
     disponible: '',
     descripcionCatalogo: '',
     descripcionCompleta: '',
@@ -26,10 +26,10 @@ export const ProductosProvider = ({children}) => {
   return (
     <ProductosContext.Provider value={
       {
+        newProduct,
+        setNewProduct,
         productos,
-        setProductos,
-        producto,
-        setProducto
+        setProductos
       }
     }>
       {children}
