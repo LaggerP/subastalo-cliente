@@ -10,7 +10,7 @@ import { StyleSheet, Text, View, ScrollView, } from 'react-native';
 import { Icon, Avatar, SearchBar, Overlay, CheckBox, Button, FAB } from 'react-native-elements';
 import { apiUrl } from "../../api";
 
-//Provider
+//Providers
 import { DataContext } from "../../context/DataContext";
 import { ProductosContext } from "../../context/ProductosContext";
 
@@ -23,24 +23,6 @@ const MisProductos = ({ navigation }) => {
   //Data from context provider
   const { userData } = useContext(DataContext);
   const { productos, setProductos } = useContext(ProductosContext);
-
-  //Error modal
-  const [visible, setVisible] = useState(false);
-  const toggleOverlay = () => {
-    setVisible(!visible);
-  };
-
-  const getProductos = async () => {
-    return await fetch(`${apiUrl}/api/productos/cliente/${userData.idCliente}`)
-      .then((response) => response.json())
-      .then((json) => {
-        setProductos(json.productos);
-      })
-      .catch((e) => {
-        console.log(e);
-        toggleOverlay();
-      });
-  }
 
   const estadoProductos = () => {
     let publicados = productos.length;
@@ -66,7 +48,7 @@ const MisProductos = ({ navigation }) => {
   const [check, setCheck] = useState({
     aceptado: false,
     rechazado: false,
-    pendiente: false
+    pendiente: false,
   });
   const [filter, setFilterVisible] = useState(false);
   const toggleFilter = () => {
@@ -77,18 +59,18 @@ const MisProductos = ({ navigation }) => {
     y = ''
   ]);
 
-  //Filtro desplegable
+  //Filtro 
   let filteredProducts = search ? productos.filter((i) =>
     (i.descripcionCatalogo.toLowerCase()).includes(search.toLowerCase()) ||
     (i.descripcionCompleta.toLowerCase()).includes(search.toLowerCase()))
     : check.pendiente && check.aceptado && check.rechazado ?
-      productos.filter((i) => (i.estado === 'pendiente' || 'aceptado' || 'rechazado'))
+      productos.filter((i) => (i.estado === 'pendiente' || i.estado === 'aceptado' || i.estado === 'rechazado'))
       : check.pendiente && check.aceptado && !check.rechazado ?
-        productos.filter((i) => (i.estado === ('pendiente' || 'aceptado')))
+        productos.filter((i) => (i.estado === 'pendiente' || i.estado === 'aceptado'))
         : check.pendiente && !check.aceptado && check.rechazado ?
-          productos.filter((i) => (i.estado === ('pendiente' || 'rechazado')))
+          productos.filter((i) => (i.estado === 'pendiente' || i.estado === 'rechazado'))
           : !check.pendiente && check.aceptado && check.rechazado ?
-            productos.filter((i) => (i.estado === ('aceptado' || 'rechazado')))
+            productos.filter((i) => (i.estado === 'aceptado' || i.estado === 'rechazado'))
             : !check.pendiente && !check.aceptado && check.rechazado ?
               productos.filter((i) => (i.estado === 'rechazado'))
               : !check.pendiente && check.aceptado && !check.rechazado ?
@@ -119,11 +101,23 @@ const MisProductos = ({ navigation }) => {
   };
 
   useEffect(() => {
+    const getProductos = async () => {
+      try {
+        let productos = await fetch(`${apiUrl}/api/productos/cliente/${userData.idCliente}`)
+        productos = await productos.json();
+        productos.forEach(producto => {
+          if (producto.fotos.length == 0)
+            producto.fotos = ' ';
+        });
+        setProductos(productos)
+      } catch (e) {
+      }
+    }
     getProductos();
     return () => { }
   }, [])
 
-  if (!fontsLoaded) {
+  if (!fontsLoaded && !productos) {
     return <Loading color="white" />;
   } else {
     return (
@@ -218,7 +212,7 @@ const MisProductos = ({ navigation }) => {
                     borderBottomWidth: 0
                   }}
                   placeholder="Buscar"
-                  onChangeText={setSearch}
+                  onChangeText={(text) => { setSearch(text) }}
                   value={search}
                   platform="default" />
               </View>

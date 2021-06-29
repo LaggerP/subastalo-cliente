@@ -1,37 +1,32 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, ActivityIndicator, } from 'react-native';
 import { Image, } from 'react-native-elements'
-import { apiUrl } from "../../api";
-
-//Context
-import { DataContext } from "../../context/DataContext";
-import { ProductosContext } from "../../context/ProductosContext";
 
 
-const ProductCard = ({ navigation, idProducto, estado, descripcionCatalogo }) => {
+const ProductCard = ({ navigation, idProducto, idCategoria, categoria, precioBase, fecha, descripcionCatalogo, descripcionCompleta, revisor, nombreRevisor, duenio, estado, fotos }) => {
 
-    const [images, setImages] = useState();
     const [spinner, setSpinner] = useState(false);
 
-    const getProductImages = async () => {
-        setSpinner(true);
-        return await fetch(`${apiUrl}/api/productos/producto/${idProducto}`)
-            .then((response) => response.json())
-            .then((json) => {
-                setImages(json.fotos);
-                setSpinner(false);
-            })
-            .catch((error) => {
-                setImages(null);
-                setSpinner(false);
-            });
+    let producto = {
+        idProducto: idProducto,
+        idCategoria: idCategoria,
+        categoria: categoria,
+        precioBase: precioBase,
+        fecha: fecha,
+        descripcionCatalogo: descripcionCatalogo,
+        descripcionCompleta: descripcionCompleta,
+        revisor: revisor,
+        nombreRevisor: nombreRevisor,
+        duenio: duenio,
+        estado: estado,
+        fotos: fotos
     }
 
-    const Strong = (props) => <Text style={{ fontWeight: 'bold' }}>{props.children}</Text>
-
     useEffect(() => {
-        getProductImages();
+        return () => { }
     }, [])
+
+    const Strong = (props) => <Text style={{ fontWeight: 'bold' }}>{props.children}</Text>
 
     return (
         <View style={styles.productCard}>
@@ -43,7 +38,7 @@ const ProductCard = ({ navigation, idProducto, estado, descripcionCatalogo }) =>
                         :
                         <Image
                             style={{ height: '100%', width: '100%', borderRadius: 10, }}
-                            source={{ uri: (images == null) ? ' ' : images[0].foto }}
+                            source={{ uri: fotos[0].foto }}
                         />
                     }
                 </View>
@@ -55,7 +50,7 @@ const ProductCard = ({ navigation, idProducto, estado, descripcionCatalogo }) =>
                         <Text style={{ fontSize: 13, alignSelf: 'flex-start', marginTop: 5 }}><Strong>Estado:</Strong> {estado} </Text>
                     </View>
                     <View style={{ flex: 0.5, flexDirection: 'row', justifyContent: 'flex-end', }}>
-                        <Text style={styles.link}>Ver detalles</Text>
+                        <Text style={styles.link} onPress={() => navigation.navigate('DetallesProducto', { producto: producto })} >Ver detalles</Text>
                     </View>
                 </View>
             </View>
