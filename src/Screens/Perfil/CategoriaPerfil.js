@@ -85,13 +85,13 @@ const CategoriaPerfil = ({ navigation }) => {
 
           <View style={{ flexDirection: 'row', flex: 1 }}>
 
-            <View style={{ flexDirection: 'column', flex: 0.3, justifyContent: 'center', }}>
+            {/* <View style={{ flexDirection: 'column', flex: 0.3, justifyContent: 'center', }}>
               <View style={{ flexDirection: 'row', justifyContent: 'center', }}>
               </View>
-            </View>
+            </View> */}
 
-            <View style={{ flexDirection: 'column', flex: 0.7, justifyContent: 'center', }}>
-              <View style={{ flexDirection: 'row', justifyContent: 'flex-start', }}>
+            <View style={{ flexDirection: 'column', flex: 1, justifyContent: 'center', }}>
+              <View style={{ flexDirection: 'row', justifyContent: 'center', }}>
                 <Text style={{ fontSize: 17, paddingLeft: 5 }}>Estás en la categoría <Text style={{ color: '#FC9905', textTransform: 'capitalize' }}>{(userData.categoria) == 'comun' ? 'común' : userData.categoria}</Text></Text>
               </View>
             </View>
