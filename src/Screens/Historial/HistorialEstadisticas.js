@@ -113,8 +113,8 @@ const HistorialEstadisticas = ({navigation}) => {
         <Text style={styles.pieTxtImportante}>{itemsTotales}</Text>
         <Text style={styles.pieTxt}>Cantidad total</Text>
 
-        <View style={styles.boxBlue}><Text style={{width:300, height:100, marginLeft:30, fontSize: 20}}>Articulos Ganados ({itemsGanados/itemsTotales*100}%)</Text></View>
-        <View style={styles.boxCeleste}><Text style={{width:300, height:100, marginLeft:30, fontSize: 20}}>Participaciones ({itemsParticipados/itemsTotales*100}%)</Text></View>
+        <View style={styles.boxBlue}><Text style={{width:300, height:100, marginLeft:30, fontSize: 20}}>Articulos Ganados ({(itemsGanados/itemsTotales*100).toFixed(1)}%)</Text></View>
+        <View style={styles.boxCeleste}><Text style={{width:300, height:100, marginLeft:30, fontSize: 20}}>Participaciones ({(itemsParticipados/itemsTotales*100).toFixed(1)}%)</Text></View>
         </View>
 
      
