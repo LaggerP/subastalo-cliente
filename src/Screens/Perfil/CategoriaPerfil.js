@@ -29,7 +29,7 @@ const CategoriaPerfil = ({ navigation }) => {
           />
         </TouchableOpacity>
       </View>
-      
+
       <View style={styles.container}>
         <View style={styles.infoContainer}>
           <Text style={{ paddingTop: 12, fontSize: 18, fontWeight: 'bold', alignSelf: 'center', }}>¡Sumá puntos y subí de categoría!</Text>
@@ -87,13 +87,12 @@ const CategoriaPerfil = ({ navigation }) => {
 
             <View style={{ flexDirection: 'column', flex: 0.3, justifyContent: 'center', }}>
               <View style={{ flexDirection: 'row', justifyContent: 'center', }}>
-                <Text>Grafico de dona</Text>
               </View>
             </View>
 
             <View style={{ flexDirection: 'column', flex: 0.7, justifyContent: 'center', }}>
               <View style={{ flexDirection: 'row', justifyContent: 'flex-start', }}>
-                <Text style={{ fontSize: 17, paddingLeft: 5 }}>Estás en la categoría <Text style={{ color: '#FC9905', textTransform: 'capitalize' }}>{userData.categoria}</Text></Text>
+                <Text style={{ fontSize: 17, paddingLeft: 5 }}>Estás en la categoría <Text style={{ color: '#FC9905', textTransform: 'capitalize' }}>{(userData.categoria) == 'comun' ? 'común' : userData.categoria}</Text></Text>
               </View>
             </View>
 
