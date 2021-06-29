@@ -330,6 +330,7 @@ const MisProductos = ({ navigation }) => {
             bottom: 25,
             right: 20,
           }}
+          onPress={() => navigation.navigate('NewProducto1')}
         />
 
       </View>
