@@ -150,7 +150,7 @@ const Perfil = ({ navigation }) => {
             <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center', height: 40 }}>
               <Input
                 disabled={true}
-                value={userData.categoria}
+                value={(userData.categoria) == 'comun' ? 'común' : userData.categoria}
                 inputStyle={{ borderRadius: 8, borderWidth: 1.5, borderColor: '#E3AD37', paddingLeft: 11, textTransform: 'capitalize', }}
                 inputContainerStyle={{ borderBottomWidth: 0, width: '100%', }}
               />
