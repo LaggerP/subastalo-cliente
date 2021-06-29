@@ -9,6 +9,17 @@ export const ProductosProvider = ({children}) => {
 
   const {userData} = useContext(DataContext)
 
+  const [producto, setProducto] = useState({
+    disponible: '',
+    descripcionCatalogo: '',
+    descripcionCompleta: '',
+    revisor: 0,
+    duenio: 0,
+    estado: '',
+    categoria: 0,
+    fotos: []
+  });
+
   const [productos, setProductos] = useState([]);
 
 
@@ -17,6 +28,8 @@ export const ProductosProvider = ({children}) => {
       {
         productos,
         setProductos,
+        producto,
+        setProducto
       }
     }>
       {children}
