@@ -1,18 +1,18 @@
 import React, {createContext, useState} from 'react'
 
-export const LoginContext = createContext(null);
+export const HistorialContext = createContext(null);
 
-export const LoginProvider = ({children}) => {
+export const HistorialProvider = ({children}) => {
 
   const [userMail, setUserMail] = useState();
 
   return (
-    <LoginContext.Provider value={
+    <HistorialContext.Provider value={
       {
         userMail,
         setUserMail,
       }
     }>
       {children}
-    </LoginContext.Provider>)
+    </HistorialContext.Provider>)
 }
