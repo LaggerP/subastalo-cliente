@@ -8,7 +8,7 @@ import { ProductosContext } from "../../context/ProductosContext";
 import { apiUrl } from "../../api";
 
 // Icons
-import galleryIcon from '../../../assets/imageIcons/image-gallery.png';
+import galleryIcon from '../../../assets/imageIcons/addImage.png';
 
 // Components
 import { ModalProducto } from '../../Components/Producto/ModalProducto';
@@ -19,6 +19,7 @@ import { uploadImage } from "../../api";
 
 const NewProducto2 = ({ navigation }) => {
   const [spinner, setSpinner] = useState(false);
+  const [imagenes, setImagenes] = useState([]);
   const [showModal, setShowModal] = useState({
     visible: false,
     title: '',
@@ -46,29 +47,39 @@ const NewProducto2 = ({ navigation }) => {
             name: `test/${result.uri.split(".")[1]}`,
         }
         setNewProduct({...newProduct, fotos: file});
+        setImagenes(imagenes.concat(file));
         setSpinner(false);
     }
   }
 
   const createProducto2 = async () => {
-    let imageUrl = await uploadImage(newProduct.fotos);
-    let dataProducto = {
-      disponible: newProduct.disponible,
-      descripcionCatalogo: newProduct.descripcionCatalogo,
-      descripcionCompleta: newProduct.descripcionCompleta,
-      revisor: newProduct.revisor,
-      duenio: userData.idCliente,
-      estado: newProduct.estado,
-      categoria: newProduct.categoria,
-      fotos: imageUrl,
-    }
-    const nuevoProducto = await createProd(dataProducto);
-    if (nuevoProducto.status === 201) {
+    if (imagenes.length > 0) {
+      let imageUrl = await uploadImage(newProduct.fotos);
+      let dataProducto = {
+        disponible: newProduct.disponible,
+        descripcionCatalogo: newProduct.descripcionCatalogo,
+        descripcionCompleta: newProduct.descripcionCompleta,
+        revisor: newProduct.revisor,
+        duenio: userData.idCliente,
+        estado: newProduct.estado,
+        categoria: newProduct.categoria,
+        fotos: imageUrl,
+      }
+      const nuevoProducto = await createProd(dataProducto);
+      if (nuevoProducto.status === 201) {
+        setShowModal({
+          visible: true,
+          title: '¡Producto creado con éxito!',
+          msg: 'Recuerde que antes de poner su producto en subasta, tenemos que verificarlo. Se le notificará por email cuando este proceso esté completo',
+          icon: 'newProducto'
+        })
+      }
+    } else {
       setShowModal({
         visible: true,
-        title: '¡Producto creado con éxito!',
-        msg: 'Recuerde que antes de poner su producto en subasta, tenemos que verificarlo. Se le notificará por email cuando este proceso esté completo',
-        icon: 'newProducto'
+        title: '¡Datos inválidos!',
+        msg: 'Para continuar debe colocar por lo menos una imágen del producto',
+        icon: 'warning'
       })
     }
   };
@@ -109,6 +120,9 @@ const NewProducto2 = ({ navigation }) => {
                     source={galleryIcon}
                   />
               </Pressable>
+              <View style={styles.imageContainer} >
+                <Image style={styles.image} source={newProduct.fotos}/>
+              </View>
             </View>
             <View style={styles.footerApp}>
               <Button
@@ -157,13 +171,11 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: '#fff',
-        paddingVertical: 15,
-        paddingHorizontal: 10,
-        borderRadius: 4,
+        borderRadius: 10,
         marginVertical: 20,
         marginHorizontal:15,
-        width: 170,
-        height: 120,
+        width: 100,
+        height: 100,
         shadowColor: "#000",
         shadowOffset: {
           width: 0,
@@ -183,7 +195,31 @@ const styles = StyleSheet.create({
       icons: {
         width: 50, 
         height: 50,
-        marginHorizontal:10,
+        marginLeft: 7
+      },
+      imageContainer: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: '#fff',
+        width: 150,
+        height: 150,
+        marginVertical: 20, 
+        borderRadius: 10,
+        marginVertical: 20,
+        marginHorizontal:15,
+        shadowColor: "#000",
+        shadowOffset: {
+          width: 0,
+          height: 4,
+        },
+        shadowOpacity: 0.30,
+        shadowRadius: 4.65,
+        elevation: 8,
+      },
+      image: {
+        width: 120,
+        height: 120,
+        borderRadius: 10, 
       },
     footerApp: {
       backgroundColor: '#14181B',

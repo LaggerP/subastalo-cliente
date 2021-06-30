@@ -21,7 +21,6 @@ const NewProducto1 = ({ navigation }) => {
     icon: ''
   });
 
-
   //Data from context provider
   const { userData } = useContext(DataContext);
   const { newProduct, setNewProduct } = useContext(ProductosContext);
@@ -79,7 +78,7 @@ const NewProducto1 = ({ navigation }) => {
 
               <Picker.Item label='Antigüedades' value='1' />
               <Picker.Item label='Indumentaria' value='2' />
-              <Picker.Item label='Vehículos y Accesorios' value='3' />
+              <Picker.Item label='Accesorios Vehiculares y Vehículos' value='3' />
               <Picker.Item label='Joyería' value='4' />
               <Picker.Item label='Deportes' value='5' />
               <Picker.Item label='Bazar' value='6' />

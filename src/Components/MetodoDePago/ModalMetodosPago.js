@@ -6,6 +6,7 @@ import nuevaOferta from '../../../assets/imageIcons/nuevaOferta.png';
 import subastaError from '../../../assets/imageIcons/subastaError.png';
 import newMP from '../../../assets/imageIcons/newMP.png';
 import pagoError from '../../../assets/imageIcons/warning.png';
+import createError from '../../../assets/imageIcons/error-producto.png';
 
 export const ModalMetodosPago = ({modalData, setShowModal, navigation}) => {
   const {visible, title, msg, icon} = modalData
@@ -15,12 +16,13 @@ export const ModalMetodosPago = ({modalData, setShowModal, navigation}) => {
     'nuevaOferta': nuevaOferta,
     'subastaError': subastaError,
     'newMP': newMP,
-    'warning': pagoError
+    'warning': pagoError,
+    'createError': createError
   }
 
   const toggleOverlay = () => {
     setShowModal({...modalData, visible: !visible});
-    if (modalData.icon === 'newMP') {
+    if (modalData.icon === 'newMP' || modalData.icon === 'createError') {
       navigation.goBack();
     }
   };

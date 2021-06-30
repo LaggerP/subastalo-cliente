@@ -64,6 +64,13 @@ const NuevaTarjeta = ({navigation}) => {
           msg: 'Recuerde que su tarjeta debe ser revisada y autorizada antes de utilizarla. Este proceso puede demorar hasta 24hs',
           icon: 'newMP'
         })
+      } else {
+        setShowModal({
+          visible: true,
+          title: '¡Ups!',
+          msg: 'Ha ocurrido un error a la hora de registrar su método de pago. Vuelva a intentarlo más tarde.',
+          icon: 'createError'
+        })
       }
     } else {
       setShowModal({
