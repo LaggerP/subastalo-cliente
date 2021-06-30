@@ -8,6 +8,7 @@ import {
 } from '@expo-google-fonts/cinzel-decorative';
 import { StyleSheet, Text, View, ScrollView, AsyncStorage, } from 'react-native';
 import { Icon, Avatar, SearchBar, Overlay, CheckBox, Button } from 'react-native-elements';
+import Moment from 'moment';
 import { apiUrl } from "../../api";
 
 //Provider
@@ -62,17 +63,16 @@ const Dashboard = ({ route, navigation }) => {
     x = '',
     y = ''
   ]);
+
+
   let filteredAuctions = search ? subastas.filter((i) =>
     (i.categoriaSubasta.toLowerCase()).includes(search.toLowerCase()) ||
     (i.nombreSubastador.toLowerCase()).includes(search.toLowerCase()))
-    : openedCheck && closedCheck ?
-      subastas.filter((i) => (i.estadoSubasta === 'abierta' || 'cerrada'))
-      : openedCheck && !closedCheck ?
-        subastas.filter((i) => (i.estadoSubasta === 'abierta'))
-        : !openedCheck && closedCheck ?
-          subastas.filter((i) => (i.estadoSubasta === 'cerrada'))
-          :
-          subastas.sort((a, b) => a.estadoSubasta.localeCompare(b.estadoSubasta) || a.fechaSubasta.localeCompare(b.fechaSubasta));
+    : openedCheck && !closedCheck ?
+      subastas.filter((i) => (((Moment(i.fechaSubasta).format('DD/MM/YYYY') == Moment(Date.now()).utcOffset(-3).format('DD/MM/YYYY')) && (Moment(i.horaSubasta).format('HH:mm')) <= Moment(Date.now()).utcOffset(-3).format('HH:mm'))))
+      : !openedCheck && closedCheck ?
+        subastas.filter((i) => ((!(Moment(i.fechaSubasta).format('DD/MM/YYYY') == Moment(Date.now()).utcOffset(-3).format('DD/MM/YYYY')) && (Moment(i.horaSubasta).format('HH:mm')) <= Moment(Date.now()).utcOffset(-3).format('HH:mm'))))
+        : subastas.sort((a, b) => a.estadoSubasta.localeCompare(b.estadoSubasta) || a.fechaSubasta.localeCompare(b.fechaSubasta));
 
   //Fonts
   let [fontsLoaded] = useFonts({
