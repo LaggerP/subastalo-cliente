@@ -13,7 +13,7 @@ import { apiUrl } from "../../api";
 import { DataContext } from "../../context/DataContext";
 
 import HistorialCard from './HistorialCard';
-import ErrorModal from '../Dashboard/ErrorModal';
+import ErrorModalHistorial from './ErrorModalHistorial';
 
 const DashboardHistorial = ({navigation}) => {
 
@@ -267,7 +267,7 @@ const DashboardHistorial = ({navigation}) => {
                     <Text style={{ alignSelf: 'center', fontSize: 17 }}>No existe el historial, haga alguna puja.</Text>
                   </View>
                 </View>
-            <ErrorModal
+            <ErrorModalHistorial
               toggleOverlay={toggleOverlay}
               isVisible={visible}
             />
