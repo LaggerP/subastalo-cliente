@@ -144,13 +144,13 @@ const DashboardHistorial = ({navigation}) => {
                 color='#FFCD61'
                 size={22}
                 onPress={() => navigation.push('HistorialEstadisticas')} />
-              <Text style={{ fontSize: 12, textAlign: 'center' }}>Estadisticas</Text>
+              <Text style={{ fontSize: 12, textAlign: 'center' }}>Estadísticas</Text>
             </View>
 
             <View style={styles.btn}>
               <Text style={styles.buttonText}>{itemsGanados}</Text>
-              <Text style={{ fontSize: 12, textAlign: 'center', marginTop: 4 }}>Articulos</Text>
-              <Text style={{ fontSize: 12, textAlign: 'center' }}>Ganados</Text>
+              <Text style={{ fontSize: 12, textAlign: 'center', marginTop: 4 }}>Artículos</Text>
+              <Text style={{ fontSize: 12, textAlign: 'center' }}>ganados</Text>
             </View>
           </View>
 
