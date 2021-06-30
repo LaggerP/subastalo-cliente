@@ -31,7 +31,7 @@ const {userData} = useContext(DataContext);
         <ScrollView vertical showsVerticalScrollIndicator={false} contentContainerStyle={{flexGrow: 1}}>
           <View>
             <View style={styles.descriptionCatalogo}>
-              <Text style={{fontSize: 20, fontWeight: 'bold', textAlign: 'center'}}>Historial de Ofertas</Text>
+              <Text style={{fontSize: 20, fontWeight: 'bold', textAlign: 'center'}}>Historial de ofertas</Text>
             </View>
           </View>
           
