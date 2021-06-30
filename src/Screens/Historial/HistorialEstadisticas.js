@@ -84,7 +84,7 @@ const HistorialEstadisticas = ({navigation}) => {
 
           <View style={styles.buttonsSection}>
             <View style={styles.btn}>
-              <Text style={styles.buttonText}>{itemsParticipados}</Text>
+              <Text style={styles.buttonText}>{itemsTotales}</Text>
               <Text textBreakStrategy='simple' style={{ fontSize: 12, textAlign: 'center', marginTop: 4  }}>Participaciones</Text>
             </View>
 
@@ -114,7 +114,7 @@ const HistorialEstadisticas = ({navigation}) => {
         <Text style={styles.pieTxt}>Cantidad total</Text>
 
         <View style={styles.boxBlue}><Text style={{width:300, height:100, marginLeft:30, fontSize: 20}}>Artículos ganados ({(itemsGanados/itemsTotales*100).toFixed(1)}%)</Text></View>
-        <View style={styles.boxCeleste}><Text style={{width:300, height:100, marginLeft:30, fontSize: 20}}>Participaciones ({(itemsParticipados/itemsTotales*100).toFixed(1)}%)</Text></View>
+        <View style={styles.boxCeleste}><Text style={{width:300, height:100, marginLeft:30, fontSize: 20}}>Artículos perdidos ({(itemsParticipados/itemsTotales*100).toFixed(1)}%)</Text></View>
         </View>
 
      

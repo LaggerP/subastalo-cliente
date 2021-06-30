@@ -156,8 +156,8 @@ const styles = StyleSheet.create({
     elevation: 8,
     shadowRadius: 4.65,
     borderRadius: 8,
-    paddingRight: 20,
-    paddingLeft: 20,
+    paddingRight: 10,
+    paddingLeft: 10,
     marginTop: 20,
   },
 

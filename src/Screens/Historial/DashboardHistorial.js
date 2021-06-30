@@ -27,6 +27,8 @@ const DashboardHistorial = ({navigation}) => {
   let itemsTotales = [...new Set(pujas.map(a => a.item))].length;
 
   let itemsParticipados = itemsTotales - itemsGanados;
+  
+  let datosFiltros;
 
   const getSubastas = async () => {
   
@@ -57,6 +59,7 @@ const DashboardHistorial = ({navigation}) => {
   useEffect(() => {
     getSubastas();
     getPujas();
+    datosFiltros={...subastas,...pujas}
   }, [])
 
   const [visible, setVisible] = useState(false);
@@ -130,7 +133,7 @@ const DashboardHistorial = ({navigation}) => {
 
           <View style={styles.buttonsSection}>
             <View style={styles.btn}>
-              <Text style={styles.buttonText}>{itemsParticipados}</Text>
+              <Text style={styles.buttonText}>{itemsTotales}</Text>
               <Text textBreakStrategy='simple' style={{ fontSize: 12, textAlign: 'center', marginTop: 4 }}>Participaciones</Text>
             </View>
 
@@ -258,10 +261,17 @@ const DashboardHistorial = ({navigation}) => {
               ))}
             </View>
             :
+            <View>
+            <View style={styles.noHistorial}>
+                  <View style={{ flex: 0.9, flexDirection: 'column', justifyContent: 'center', }}>
+                    <Text style={{ alignSelf: 'center', fontSize: 17 }}>No existe el historial, haga alguna puja.</Text>
+                  </View>
+                </View>
             <ErrorModal
               toggleOverlay={toggleOverlay}
               isVisible={visible}
             />
+            </View>
         }
       </View>
     </ScrollView>
@@ -343,7 +353,15 @@ const styles = StyleSheet.create({
     height: '100%'
   },
 
-  bannerApp: {
+  checkContainer: {
+    width: '100%',
+    backgroundColor: '#EDEDED',
+    alignSelf: 'center',
+    marginTop: 0,
+    marginBottom: 0,
+  },
+
+  noHistorial: {
     shadowColor: '#00000021',
     shadowOffset: {
       width: 0,
@@ -353,30 +371,15 @@ const styles = StyleSheet.create({
     shadowRadius: 7.49,
     elevation: 7,
 
-    flex: 1,
-    backgroundColor: '#14181B',
-    width: '100%',
-    height: 73,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 30,
-    marginBottom: 15,
-  },
-
-  footerApp: {
-    backgroundColor: '#14181B',
-    width: '100%',
-    height: 67,
-    justifyContent: 'center',
-  },
-
-  checkContainer: {
-    width: '100%',
-    backgroundColor: '#EDEDED',
-    alignSelf: 'center',
-    marginTop: 0,
-    marginBottom: 0,
-  },
+    flexDirection: 'column',
+    backgroundColor: '#FAFAFA',
+    borderRadius: 10,
+    marginTop: 10,
+    padding: 10,
+    marginBottom: 20,
+    height: 100,
+    width: 375,
+  }
 
 });
 
