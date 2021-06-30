@@ -14,7 +14,7 @@ const HistorialEstadisticas = ({navigation}) => {
   const [pujas, setPujas] = useState([]);
 
   const {userData} = useContext(DataContext);
-  
+
   let itemsGanados = pujas.filter(pujas =>pujas.ganador === 'si').length;
 
   let itemsTotales = [...new Set(pujas.map(a => a.item))].length;
@@ -41,7 +41,6 @@ const HistorialEstadisticas = ({navigation}) => {
       setPujas(json.pujas)
     })
     .catch((error) => {
-      console.error(error);
       toggleOverlay();
     })
   }
@@ -89,7 +88,7 @@ const HistorialEstadisticas = ({navigation}) => {
             </View>
 
             <View style={styles.btn}>
-   
+
             </View>
 
             <View style={styles.btn}>
@@ -109,15 +108,17 @@ const HistorialEstadisticas = ({navigation}) => {
                 outerRadius={'100%'}
                 innerRadius={'60%'}
             />
-        
+
         <Text style={styles.pieTxtImportante}>{itemsTotales}</Text>
         <Text style={styles.pieTxt}>Cantidad total</Text>
 
-        <View style={styles.boxBlue}><Text style={{width:300, height:100, marginLeft:30, fontSize: 20}}>Artículos ganados ({(itemsGanados/itemsTotales*100).toFixed(1)}%)</Text></View>
-        <View style={styles.boxCeleste}><Text style={{width:300, height:100, marginLeft:30, fontSize: 20}}>Artículos perdidos ({(itemsParticipados/itemsTotales*100).toFixed(1)}%)</Text></View>
+        <View style={styles.boxBlue}><Text style={{width:300, height:100, marginLeft:30, fontSize: 20}}>Artículos ganados ({
+          isNaN((itemsGanados/itemsTotales*100)) ? 0 : (itemsGanados/itemsTotales*100).toFixed(1) }%)</Text></View>
+        <View style={styles.boxCeleste}><Text style={{width:300, height:100, marginLeft:30, fontSize: 20}}>Artículos perdidos ({
+          isNaN((itemsParticipados/itemsTotales*100)) ? 0 : (itemsParticipados/itemsTotales*100).toFixed(1)}%)</Text></View>
         </View>
 
-     
+
       </View>
     </ScrollView>
   </View>
@@ -198,7 +199,7 @@ const styles = StyleSheet.create({
       width: 0,
       height: 4,
     },
-    
+
     shadowOpacity: 0.30,
     elevation: 8,
     shadowRadius: 4.65,
@@ -208,7 +209,7 @@ const styles = StyleSheet.create({
     height: 500,
     paddingLeft: 45,
     paddingRight: 45,
-    
+
   },
   pieTxt: {
     fontSize: 14,

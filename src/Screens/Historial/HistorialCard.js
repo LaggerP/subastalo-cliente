@@ -48,7 +48,7 @@ const HistorialCard = ({
 
     <View style={{flex: 1, flexDirection: 'column', justifyContent: 'flex-end'}}>
         <Button
-            title='Ver ofertas'
+            title='Ver mis ofertas'
             type='outline'
             buttonStyle={{borderRadius: 5, borderWidth: 1.7, borderColor: '#FC9905', height: 35}}
             titleStyle={{color: '#FC9905'}}

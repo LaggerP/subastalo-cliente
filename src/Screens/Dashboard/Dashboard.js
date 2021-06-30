@@ -34,7 +34,6 @@ const Dashboard = ({ route, navigation }) => {
         setSubastas(json.subastas);
       })
       .catch((error) => {
-        console.error(error);
         toggleOverlay();
       });
   }

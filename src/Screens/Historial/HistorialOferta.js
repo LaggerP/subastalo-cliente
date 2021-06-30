@@ -1,16 +1,16 @@
-import { ISO_8601 } from 'moment';
+import {ISO_8601} from 'moment';
 import React, {useEffect, useContext, useState} from 'react';
 import {StyleSheet, Text, View, ScrollView, Image, TouchableOpacity} from 'react-native';
-import {Avatar} from 'react-native-elements'
-import { apiUrl } from "../../api";
+import {Avatar, Button} from 'react-native-elements'
+import {apiUrl} from "../../api";
 
 import {DataContext} from "../../context/DataContext";
 
 const HistorialOferta = ({route, navigation}) => {
 
-const [pujas, setPujas] = useState();
-const {userData} = useContext(DataContext);
- 
+  const [pujas, setPujas] = useState();
+  const {userData} = useContext(DataContext);
+
   useEffect(() => {
     const getPujas = async () => {
       try {
@@ -34,73 +34,99 @@ const {userData} = useContext(DataContext);
               <Text style={{fontSize: 20, fontWeight: 'bold', textAlign: 'center'}}>Historial de ofertas</Text>
             </View>
           </View>
-          
+
           <View style={{marginVertical: 30, marginBottom: 50}}>
             <View style={styles.pujasListContainer}>
-                
-                <ScrollView vertical showsVerticalScrollIndicator={false}>
+
+              <ScrollView vertical showsVerticalScrollIndicator={false}>
                 {
-                    (pujas.length > 0) ? pujas.map((item, idx) => {
-                        
-                        let importeToShow = 0
-                        const numFormatter = (importe) => {
+                  (pujas.length > 0) ? pujas.map((item, idx) => {
+
+                      let importeToShow = 0
+                      const numFormatter = (importe) => {
                         if (importe > 999 && importe < 1000000) return item.importeToShow = (importe / 1000).toFixed(1) + 'K';
                         else if (importe > 1000000) return item.importeToShow = (importe / 1000000).toFixed(1) + 'M';
                         else if (importe < 900) return importe;
-                        }
+                      }
 
-                        numFormatter(item.importe);
+                      numFormatter(item.importe);
 
-                        return (
+                      return (
                         <View style={styles.itemPuja} key={idx}>
-                            <Avatar
+                          <Avatar
                             rounded
                             size='medium'
                             source={{
-                                uri: `${item.foto}`,
+                              uri: `${item.foto}`,
                             }}
-                            />
-                            {(userData && userData.nombreCompleto === item.nombrePujador) ?
+                          />
+                          {(userData && userData.nombreCompleto === item.nombrePujador) ?
                             <>
-                                <Text style={{fontSize: 16, fontWeight: 'bold'}}>Hiciste una oferta por</Text>
-                                <Text style={{
+                              <Text style={{fontSize: 16, fontWeight: 'bold'}}>Hiciste una oferta por</Text>
+                              <Text style={{
                                 fontSize: 17,
                                 fontWeight: 'bold',
                                 color: '#fff',
                                 backgroundColor: '#FC9905',
                                 padding: 5,
                                 borderRadius: 5,
-                                }}>{item.importeToShow}</Text>
+                              }}>{item.importeToShow}</Text>
                             </>
                             :
                             <>
-                                <Text style={{fontSize: 16, fontWeight: 'bold',}}>Realizó una oferta por</Text>
-                                <Text style={{
+                              <Text style={{fontSize: 16, fontWeight: 'bold',}}>Realizó una oferta por</Text>
+                              <Text style={{
                                 fontSize: 17,
                                 fontWeight: 'bold',
                                 backgroundColor: '#eaeaea',
                                 padding: 5,
                                 borderRadius: 5,
                                 color: 'black'
-                                }}>{item.importeToShow}</Text>
+                              }}>{item.importeToShow}</Text>
                             </>
-                            }
+                          }
                         </View>
-                        )
+                      )
                     })
-                :
-                <Text style={{
-                  left: 0,
-                  right: 0,
-                  top: '50%',
-                  height: 200,
-                  textAlign: 'center',
-                  fontSize: 20,
-                  fontWeight: 'bold'
-                }}>¡Sé la primera persona en ofertar!</Text>
+                    :
+                    <View>
+                      <Text style={{
+                        paddingHorizontal: 5,
+                        height: 110,
+                        textAlign: 'center',
+                        textAlignVertical: 'center',
+                        fontSize: 18,
+                        fontWeight: 'bold'
+                      }}>¡Este ítem no posee ofertas! realice una o espere a que otro usuario lo haga. </Text>
+                      <Button
+                        disabledStyle={{borderColor: '#C4C4C4'}}
+                        title='Pujar por el item'
+                        type='solid'
+                        titleStyle={{fontWeight: '100'}}
+                        buttonStyle={{
+                          backgroundColor: '#FC9905',
+                          borderRadius: 5,
+                          height: 40,
+                          borderWidth: 1.7,
+                          borderColor: '#FC9905',
+                          marginBottom:20
+                        }}
+                        containerStyle={{width: 300, alignSelf: 'center'}}
+                        onPress={() => {
+                          navigation.navigate('SubastaScreen', {
+                            screen: 'ItemSubasta',
+                            params: {
+                              idSubasta: route.params.idSubasta,
+                              categoriaSubasta: route.params.categoriaSubasta
+                            },
+                          })
+                        }}
+                      />
+                    </View>
+
 
                 }
-                </ScrollView>
+              </ScrollView>
             </View>
           </View>
         </ScrollView>
@@ -109,7 +135,8 @@ const {userData} = useContext(DataContext);
     )
   } else return (
     <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-      <Text style={{textAlign: 'center', fontWeight: 'bold', marginHorizontal: 20, fontSize: 20}}>Ha ocurrido un error al encontrar el historial. Vuelva a intentarlo más tarde.</Text>
+      <Text style={{textAlign: 'center', fontWeight: 'bold', marginHorizontal: 20, fontSize: 20}}>Ha ocurrido un error
+        al encontrar el historial. Vuelva a intentarlo más tarde.</Text>
       <Image
         style={{marginTop: 10}}
         source={require('../../../assets/imageIcons/catalogoEnConstruccion.png')}

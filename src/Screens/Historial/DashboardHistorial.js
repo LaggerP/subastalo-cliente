@@ -38,7 +38,6 @@ const DashboardHistorial = ({navigation}) => {
         setSubastas(json.subastas);
       })
       .catch((error) => {
-        console.error(error);
         toggleOverlay();
       });
   }
@@ -51,7 +50,6 @@ const DashboardHistorial = ({navigation}) => {
       setPujas(json.pujas)
     })
     .catch((error) => {
-      console.error(error);
       toggleOverlay();
     })
   }
@@ -83,7 +81,7 @@ const DashboardHistorial = ({navigation}) => {
      (i.categoriaSubasta.toLowerCase()).includes(search.toLowerCase()) ||
      (i.nombreSubastador.toLowerCase()).includes(search.toLowerCase()))
      : openedCheck && closedCheck ?
-       subastas.filter((i) => (i.estadoSubasta === 'abierta' || 'cerrada'))
+       subastas.filter((i) => (i.estadoSubasta === 'abierta' || i.estadoSubasta === 'cerrada'))
        : openedCheck && !closedCheck ?
          subastas.filter((i) => (i.estadoSubasta === 'abierta'))
          : !openedCheck && closedCheck ?
@@ -183,73 +181,6 @@ const DashboardHistorial = ({navigation}) => {
               value={search}
               platform="default" />
           </View>
-          <View style={{
-            flexDirection: 'column',
-            flex: 0.4,
-            borderTopRightRadius: 5,
-            borderBottomRightRadius: 5,
-            backgroundColor: '#FFFFFF',
-            shadowColor: '#00000021',
-            elevation: 5,
-            justifyContent: 'center',
-          }}>
-            <Icon
-              name='options-outline'
-              type='ionicon'
-              size={29}
-              iconStyle={{ alignSelf: 'center', }}
-              containerStyle={{ alignSelf: 'center' }}
-              onPress={() => {
-                goToTop();
-                toggleFilter()
-              }}
-            />
-          </View>
-        </View>
-
-        <View>
-          <Overlay isVisible={filter} onBackdropPress={() => {
-            toggleFilter()
-          }} overlayStyle={{
-            width: 194,
-            height: 140,
-            padding: 0,
-            paddingTop: 8,
-            paddingBottom: 10,
-            position: 'absolute',
-            transform: [{ translateX: (filterPosition.x + 80) }, { translateY: (filterPosition.y - 275) }]
-          }}>
-            <View style={{ justifyContent: 'flex-start', height: 30, }}>
-              <Text style={{ fontSize: 15, fontWeight: 'bold', marginLeft: 10, }}>Filtrar por:</Text>
-            </View>
-            <Linea />
-            <CheckBox
-              title='En Vivo'
-              checkedIcon='dot-circle-o'
-              uncheckedIcon='circle-o'
-              iconRight={true}
-              size={20}
-              containerStyle={styles.checkContainer}
-              wrapperStyle={{ justifyContent: 'space-between', }}
-              onPress={() => {
-                setOpenedCheck(!openedCheck)
-              }}
-              checked={openedCheck}
-            />
-            <Linea />
-            <CheckBox
-              title='Próximo'
-              checkedIcon='dot-circle-o'
-              uncheckedIcon='circle-o'
-              iconRight={true}
-              size={20}
-              containerStyle={styles.checkContainer}
-              wrapperStyle={{ justifyContent: 'space-between', }}
-              onPress={() => setClosedCheck(!closedCheck)}
-              checked={closedCheck}
-            />
-            <Linea />
-          </Overlay>
         </View>
 
         {
