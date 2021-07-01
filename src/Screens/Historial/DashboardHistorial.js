@@ -166,7 +166,7 @@ const DashboardHistorial = ({navigation}) => {
                 borderTopWidth: 0,
                 borderBottomWidth: 0
               }}
-              placeholder="Buscar"
+              placeholder="Buscar por categoría"
               onChangeText={setSearch}
               value={search}
               platform="default" />
