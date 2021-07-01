@@ -4,26 +4,24 @@ import {Button, Overlay, Text} from 'react-native-elements';
 import trophy from '../../../assets/imageIcons/trophy.png';
 import nuevaOferta from '../../../assets/imageIcons/nuevaOferta.png';
 import subastaError from '../../../assets/imageIcons/subastaError.png';
-import newMP from '../../../assets/imageIcons/newMP.png';
-import pagoError from '../../../assets/imageIcons/warning.png';
-import createError from '../../../assets/imageIcons/error-producto.png';
+import newProducto from '../../../assets/imageIcons/new-producto.png';
+import productoError from '../../../assets/imageIcons/warning.png';
 
-export const ModalMetodosPago = ({modalData, setShowModal, navigation}) => {
+export const ModalProducto = ({modalData, setShowModal, navigation}) => {
   const {visible, title, msg, icon} = modalData
 
   let iconToShow = {
     'winner': trophy,
     'nuevaOferta': nuevaOferta,
     'subastaError': subastaError,
-    'newMP': newMP,
-    'warning': pagoError,
-    'createError': createError
+    'newProducto': newProducto,
+    'warning': productoError
   }
 
   const toggleOverlay = () => {
     setShowModal({...modalData, visible: !visible});
-    if (modalData.icon === 'newMP' || modalData.icon === 'createError') {
-      navigation.goBack();
+    if (modalData.icon === 'newProducto') {
+      navigation.push('MisProductos');
     }
   };
 
