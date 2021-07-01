@@ -77,17 +77,7 @@ const DashboardHistorial = ({navigation}) => {
      x = '',
      y = ''
    ]);
-   let filteredAuctions = search ? subastas.filter((i) =>
-     (i.categoriaSubasta.toLowerCase()).includes(search.toLowerCase()) ||
-     (i.nombreSubastador.toLowerCase()).includes(search.toLowerCase()))
-     : openedCheck && closedCheck ?
-       subastas.filter((i) => (i.estadoSubasta === 'abierta' || i.estadoSubasta === 'cerrada'))
-       : openedCheck && !closedCheck ?
-         subastas.filter((i) => (i.estadoSubasta === 'abierta'))
-         : !openedCheck && closedCheck ?
-           subastas.filter((i) => (i.estadoSubasta === 'cerrada'))
-           :
-           subastas.sort((a, b) => a.estadoSubasta.localeCompare(b.estadoSubasta) || a.fechaSubasta.localeCompare(b.fechaSubasta));
+   let filteredAuctions = subastas.filter((i) => (i.categoriaSubasta.toLowerCase()).includes(search.toLowerCase()));
  
 
   const Linea = () => {
