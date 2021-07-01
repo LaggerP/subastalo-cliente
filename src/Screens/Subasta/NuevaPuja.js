@@ -17,6 +17,7 @@ import masterCardIcon from "../../../assets/cardIcons/mastercard.png";
 import BBVALogo from "../../../assets/bankIcons/BBVA.png";
 import santanderLogo from "../../../assets/bankIcons/Santander.png";
 import galiciaLogo from "../../../assets/bankIcons/Galicia.png";
+import itauLogo from "../../../assets/bankIcons/Itau.png";
 
 const financialCoIcon = {
   4: visaIcon,
@@ -26,6 +27,7 @@ const bankCoIcon = {
   'bbva': BBVALogo,
   'santander': santanderLogo,
   'galicia': galiciaLogo,
+  'itau':itauLogo
 }
 
 const NuevaPuja = ({route, navigation}) => {

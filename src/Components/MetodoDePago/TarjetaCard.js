@@ -40,19 +40,6 @@ const TarjetaCard = ({navigation, data}) => {
               </Text>
 
             </View>
-            <View style={{
-              display: 'flex',
-              flex: 1,
-              flexDirection: 'row',
-              justifyContent: 'flex-end', paddingRight: 20
-            }}>
-              <Icon
-                name='chevron-forward-outline'
-                type='ionicon'
-                color='#000'
-                size={30}
-              />
-            </View>
 
           </View>
         </TouchableWithoutFeedback>
