@@ -41,19 +41,17 @@ const ItemSubasta = ({route, navigation}) => {
 
   const calculateClock = (date) => {
     let actualDate = new Date()
-    let aH = actualDate.getUTCHours() - 3;
     let aM = actualDate.getUTCMinutes();
     let aS = actualDate.getUTCSeconds();
 
     let pujaDate = new Date(date);
-    let pH = pujaDate.getUTCHours(); // Hours
     let pM = pujaDate.getUTCMinutes();
     let pS = pujaDate.getUTCSeconds();
     // En el caso de que la puja se realice a minutos cercanos a 00,01,02,03, etc.
     if (pM < aM) {
-      return 60 * 5 - (60 * (aM - pM) + (aS - pS))
+      return 60 * 2 - (60 * (aM - pM) + (aS - pS))
     }
-    return 60 * 5 - (60 * (pM - aM) + (aS - pS))
+    return 60 * 2 - (60 * (pM - aM) + (aS - pS))
   }
 
 
