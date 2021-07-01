@@ -1,5 +1,6 @@
 node_modules/
 .expo/
+.expo-shared
 npm-debug.*
 *.jks
 *.p8
@@ -11,3 +12,10 @@ web-build/
 
 # macOS
 .DS_Store
+
+# IDES
+.idea
+
+#LOCK
+package-lock.json
+yarn.lock
