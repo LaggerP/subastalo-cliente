@@ -111,7 +111,7 @@ const ItemSubasta = ({route, navigation}) => {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({idItemCatalogo: item.idItemCatalogo, idProducto: item.idProducto})
+      body: JSON.stringify({idItemCatalogo: item.idItemCatalogo, idProducto: item.idProducto, idPujo:item.pujas[0].idPujo})
     })
       .then((response) => response.text())
       .then((responseData) => {

@@ -42,7 +42,7 @@ const CatalogoCarousel = ({fotos}) => {
         ref={carouselRef}
         sliderWidth={screenWidth}
         sliderHeight={screenWidth}
-        itemWidth={screenWidth-60}
+        itemWidth={screenWidth-20}
         data={entries}
         renderItem={renderItem}
         hasParallaxImages={true}
@@ -55,7 +55,12 @@ export default CatalogoCarousel;
 
 const styles = StyleSheet.create({
   container: {
-    marginTop:20
+    marginTop:20,
+    borderWidth: 2,
+    borderTopColor: '#CACACA',
+    borderBottomColor: '#CACACA', 
+    borderLeftColor: '#FAFAFA',
+    borderRightColor: '#FAFAFA',
   },
   item: {
     width: screenWidth - 60,
@@ -63,6 +68,7 @@ const styles = StyleSheet.create({
   },
   imageContainer: {
     flex: 1,
+    marginTop: 20,
     marginBottom: Platform.select({ios: 0, android: 1}), // Prevent a random Android rendering issue
     backgroundColor: 'white',
     borderRadius: 8,

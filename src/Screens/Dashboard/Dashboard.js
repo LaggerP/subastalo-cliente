@@ -35,7 +35,6 @@ const Dashboard = ({ route, navigation }) => {
         setSubastas(json.subastas);
       })
       .catch((error) => {
-        console.error(error);
         toggleOverlay();
       });
   }
@@ -148,9 +147,7 @@ const Dashboard = ({ route, navigation }) => {
                     reverseColor='#000000'
                     color='#FFCD61'
                     size={22}
-                    onPress={() => navigation.navigate('PerfilScreen', {
-                      screen: 'Perfil'
-                    })} />
+                    onPress={() => navigation.navigate('HistorialScreen', { screen: 'DashboardHistorial' })} />
                   <Text style={{ fontSize: 12, textAlign: 'center' }}>Historial</Text>
 
                 </View>
